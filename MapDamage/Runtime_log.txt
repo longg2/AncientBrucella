@@ -1,0 +1,7 @@
+2021-12-14 15:16:05,183	INFO	main: Started with the command: /usr/bin/mapDamage --merge-reference-sequences -t BmelMapped -i tmp1.sam -r ../BmelReference/GCF_000007125.1_ASM712v1_genomic.fna -d MapDamage/BmelMapped
+2021-12-14 15:19:48,934	DEBUG	main: BAM read in 229.077149 seconds
+2021-12-14 15:19:50,544	INFO	mapdamage.rscript: Performing Bayesian estimates
+2021-12-14 15:19:50,545	DEBUG	mapdamage.rscript: Call: Rscript /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/runGeneral.R --args 30 10000 10 50000 0 0 1 1 0 0 1 12 MapDamage/BmelMapped/ /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/ MapDamage/BmelMapped/Stats_out 0 0 0 MapDamage/BmelMapped/acgt_ratio.csv 0 0
+2021-12-14 15:27:00,872	DEBUG	mapdamage.rscript: Bayesian estimates completed in 430.326408 seconds
+2021-12-14 15:27:00,873	INFO	main: Successful run
+2021-12-14 15:27:00,873	DEBUG	main: Run completed in 661.016457 seconds
