@@ -15,6 +15,7 @@ library(pheatmap)
 library(dendextend)
 library(FactoMineR)
 library(factoextra)
+library(gtools)
 
 ## Functions
 CorrectingGC <- function(depthData){ # From the iREP Paper
@@ -50,13 +51,21 @@ colour <- c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#
 '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3',
 '#808000', '#ffd8b1', '#000075', '#808080', '#f0f0f0', '#000000')
 
+# Reading the MLST Results
+MLSTResults <- read.delim("MLSTResults.txt") %>% as_tibble()
+MLSTResults <- MLSTResults %>% select(Sample, ST) %>% mutate(ST = gsub("\\*","", ST))
+colnames(MLSTResults)[1] <- "Genome"
+STColours <- MLSTResults %>% select(ST) %>% distinct() %>% mutate(Colours = colour[2:17]) %>% bind_rows(data.frame(ST = "Ancient", Colours = colour[1]))
+STColours <- STColours %>% mutate(ST = mixedsort(ST)) # UGLY AND DOESN'T SOLVE FUNDAMENTAL ISSUE BUT IT WORKS FOR NOW
+ann_colors <- as.list(STColours$Colours)
+names(ann_colors) <- STColours$ST
 
-ann_colors = list(Pathovar = c("Ancient" = colour[1], "Commensal" = "#ffffff","EAEC" = colour[2], "EIEC" = "#22662A", "ETEC" = colour[16], "ExPEC" = colour[4],
-			       "Hybrid ExPEC/InPEC" = colour[3], "STEC" = colour[9],"Unknown" = colour[20]),
-		  #Host = c("Environment" = colour[10], "Food" = colour[11], "Human" = colour[12], "Livestock" = colour[13], "Porc" = colour[14], "Wild animal" = colour[15],"?" = colour[3]),
-		  ST = c("1429" = colour[6], "325" = colour[7], "3630" = colour[8], "399" = colour[12], "4995" = colour[18], "Other" = colour[20], "Ancient" = colour[1]),
-		  Ancient = c("Yes" = colour[22], "No" = colour[21]))
-
+#ann_colors = list(Pathovar = c("Ancient" = colour[1], "Commensal" = "#ffffff","EAEC" = colour[2], "EIEC" = "#22662A", "ETEC" = colour[16], "ExPEC" = colour[4],
+#			       "Hybrid ExPEC/InPEC" = colour[3], "STEC" = colour[9],"Unknown" = colour[20]),
+#		  #Host = c("Environment" = colour[10], "Food" = colour[11], "Human" = colour[12], "Livestock" = colour[13], "Porc" = colour[14], "Wild animal" = colour[15],"?" = colour[3]),
+#		  ST = c("1429" = colour[6], "325" = colour[7], "3630" = colour[8], "399" = colour[12], "4995" = colour[18], "Other" = colour[20], "Ancient" = colour[1]),
+#		  Ancient = c("Yes" = colour[22], "No" = colour[21]))
+#
 ########### Pulling out the Phylogroups #######
 #phylogroup <- read.csv("VirulenceHeatmapOlivier.csv") %>% as_tibble()
  
@@ -93,7 +102,7 @@ ann_colors = list(Pathovar = c("Ancient" = colour[1], "Commensal" = "#ffffff","E
 ############ Let's get the Depths ###########
 op <- pboptions(type = "timer")
 ncores = 8
-depthDf <- do.call(bind_rows, pblapply("BmelDepths.tab.gz", cl = ncores,function(f){
+depthDf <- do.call(bind_rows, pblapply("JessSample.tab.gz", cl = ncores,function(f){
 		tmp <- as_tibble(read.delim(f, header = F, col.names = c("Gene", "Pos", "Coverage")))
 		tmp$Genome <- gsub(".*/", "", gsub("\\..*|_genomic","",f)) 	
 		tmp <- tmp %>% group_by(Genome, Gene) %>%
@@ -126,25 +135,24 @@ ancientData <- depthDf %>% filter(GCCorrected >= 10, CV <=1) %>%
 	pivot_wider(names_from = c(Genome), values_from=GCCorrected) %>% select(-c(MeanCoverage,GC,sdCoverage, PercentCoverage, CV)) #%>%
 	#mutate(Genome = "10x - CV Filter")
 
-ancientData %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% ggplot(aes(x = BmelDepths, fill = Status)) + 
+ancientData %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% ggplot(aes(x = JessSample, fill = Status)) + 
 	geom_histogram(position = "identity", alpha = 0.75, colour = "black", binwidth = 1) +
 	scale_fill_manual(values = c(Accessory = "#007dba",Core = "#f8333c")) + theme_bw() +
 	xlab("Mean Read Depth") + ylab("Genes") + theme(legend.position = "bottom") + 
-	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0, 500))
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0, 750))
 ggsave("GenePresenceHistogram.pdf", width = 6, height = 4)
 
 #####################################################################
 # Gene Presence table
-
-AllPA <- roaryOutput %>% left_join(ancientData) %>% mutate(BmelDepths = ifelse(is.na(BmelDepths)|BmelDepths == 0, 0,1))
+AllPA <- roaryOutput %>% left_join(ancientData) %>% mutate(JessSample = ifelse(is.na(JessSample)|JessSample == 0, 0,1))
 
 # Now to make a boxplot to compare our gene to everyone else
 tmp <- AllPA %>% select(-Gene) %>% summarize_all(sum) %>% t() %>% as.data.frame()
 tmp$Genome <- rownames(tmp)
 geneCounts <- tmp %>% as_tibble() 
 colnames(geneCounts)[1] <- "Genes"
-geneCounts %>% filter(Genome != "BmelDepths") %>% ggplot(aes(y = Genes)) + geom_boxplot() + theme_bw() +
-	geom_point(data = geneCounts %>% filter(Genome == "BmelDepths"), aes(colour = Genome, x = 0)) +
+geneCounts %>% filter(Genome != "JessSample") %>% ggplot(aes(y = Genes)) + geom_boxplot() + theme_bw() +
+	geom_point(data = geneCounts %>% filter(Genome == "JessSample"), aes(colour = Genome, x = 0)) +
 	scale_colour_manual(values = colour) + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), axis.title.x = element_blank(), legend.position = "bottom")
 ggsave("GeneCountsBmel.pdf", width = 6, height = 9)
 
@@ -172,7 +180,7 @@ tmp <- sapply(tmp, function(x){
 	gsub(pattern = "\\.",replacement = "-")
 colnames(coreDf) <- tmp
 
-ancientData <- depthDf %>% filter(Genome %in%  c("BmelDepths"), GCCorrected >= 10, PercentCoverage >= 0.9) %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% filter(Status == "Core") %>%
+ancientData <- depthDf %>% filter(Genome %in%  c("JessSample"), GCCorrected >= 10, PercentCoverage >= 0.9) %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% filter(Status == "Core") %>%
 	pivot_wider(names_from = c(Genome), values_from=GCCorrected) %>% select(-c(MeanCoverage, GC,sdCoverage, PercentCoverage, CV, Status))
 
 #KosticData <- depthDf %>% filter(Genome %in% c("Lib4_3_bin","Lib4_7_bin","Lib4_8_bin"), MeanCoverage >= 1, PercentCoverage >= 0.9) %>%
@@ -195,7 +203,7 @@ ancientData <- depthDf %>% filter(Genome %in%  c("BmelDepths"), GCCorrected >= 1
 ##	select(-Gene) %>% summarize_all(list(~ ifelse(. > 0, 1,.))) %>% summarize_all(sum)
 
 coreData <- coreDf %>% left_join(ancientData) %>%
-       	mutate(BmelDepths = ifelse(is.na(BmelDepths) | BmelDepths == 0, 0, 1))
+       	mutate(JessSample = ifelse(is.na(JessSample) | JessSample == 0, 0, 1))
 
 # Here, we're trying to plot the core P/A data as a heatmap and/or a hierachical cluster
 #coreData <- depthDf %>% filter(Genome %in% strainListOlivier, MeanCoverage >= 1, PercentCoverage >= 0.9) %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% filter(Status == "Core") %>%
@@ -297,10 +305,10 @@ ancientData <- depthDf %>% filter(GCCorrected >= 10, CV <= 1) %>% mutate(Status 
 ancientData <- ancientData %>%
 	group_by(Gene) %>% summarize_all(list(~ sum(., na.rm = T))) %>%
 	ungroup() %>%
-       	mutate(BmelDepths = ifelse(is.na(BmelDepths) | BmelDepths == 0, 0, 1))# %>%
+       	mutate(JessSample = ifelse(is.na(JessSample) | JessSample == 0, 0, 1))# %>%
 
-accessData <- accessDf %>% left_join(ancientData) %>%# mutate(BmelDepths = ifelse(is.na(BmelDepths), 0, 1))
-       	mutate(BmelDepths = ifelse(is.na(BmelDepths) | BmelDepths == 0, 0, 1))
+accessData <- accessDf %>% left_join(ancientData) %>%# mutate(JessSample = ifelse(is.na(JessSample), 0, 1))
+       	mutate(JessSample = ifelse(is.na(JessSample) | JessSample == 0, 0, 1))
 
 # Now, we'll be doing the same thing for the accessory genome.  Firstly, however, is going to be the removal genes which are barely present.  We'll do a separate one with unique genes
 #accessData <- depthDf %>% filter(Genome %in% strainListOlivier, MeanCoverage >= 1) %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% filter(Status == "Accessory") %>%
@@ -329,9 +337,9 @@ accessDataSub <- accessDataSub[,!ind]
 
 # Getting the Metadata Setup
 #rownames(accessDataSub)[which(rownames(accessDataSub) %in% "KaeroEcoli")] <-"AncientEcoli"
-rownamesHeatmap <- ifelse(rownames(accessDataSub) == "AncientEcoli", "AncientEcoli","")
-olivierTableHeatmap <- phylogroup[,c(4,2)] %>% as.data.frame()
-olivierTableHeatmap$Pathovar <- sapply(olivierTableHeatmap$Pathovar, function(x){ifelse(x == "?", "Unknown",x)})
+#rownamesHeatmap <- ifelse(rownames(accessDataSub) == "AncientEcoli", "AncientEcoli","")
+#olivierTableHeatmap <- phylogroup[,c(4,2)] %>% as.data.frame()
+#olivierTableHeatmap$Pathovar <- sapply(olivierTableHeatmap$Pathovar, function(x){ifelse(x == "?", "Unknown",x)})
 #rownames(olivierTableHeatmap) <- phylogroup$Genome
 #olivierTableHeatmap <- olivierTableHeatmap[rownames(accessDataSub),]
 #olivierTableHeatmap["AncientEcoli","ST"] <- "Ancient"
@@ -341,7 +349,7 @@ specDist <- dist(accessDataSub, method = "binary")
 clusteredSpec <- hclust(specDist, method = "ward.D2") # 
 rownameOrder <- clusteredSpec$order
 
-treeColours <- ifelse(rownames(accessDataSub)[rownameOrder] == "BmelDepths", "red", "black")
+treeColours <- ifelse(rownames(accessDataSub)[rownameOrder] == "JessSample", "red", "black")
 dend <- as.dendrogram(clusteredSpec)
 labels_colors(dend) <- treeColours
 
@@ -360,28 +368,29 @@ fit <- cmdscale(geneDist, eig = T, k = 4, add =T)
 coord <- fit$points %>% as_tibble()
 coord$Genome <- rownames(fit$points)
 contrib <- fit$eig/sum(fit$eig) * 100
-coord$Colour <- ifelse(coord$Genome == "BmelDepths", "Ancient", "Modern")
+coord <- coord %>% left_join(MLSTResults)
+coord$ST[which(coord$Genome == "JessSample")] <- "Ancient" 
 
 p1 <- coord %>%
-       	ggplot(aes(x = V1, y = V2, label = Genome, colour = Colour)) +
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
 	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
 	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
-	scale_colour_manual(values = c("red", "black")) +
+	scale_colour_manual(values = ann_colors) +
 	#geom_text_repel(show.legend = F) +
 	theme_classic()
 p1
 
 p2 <- coord %>%
-       	ggplot(aes(x = V3, y = V4, label = Genome, colour = Colour)) +
+       	ggplot(aes(x = V3, y = V4, label = Genome, colour = ST)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
 	xlab(bquote("PCoA 3 ("~.(round(contrib[3],2))~"%)")) +
 	ylab(bquote("PCoA 4 ("~.(round(contrib[4],2))~"%)")) +
-	scale_colour_manual(values = c("red", "black")) +
+	scale_colour_manual(values = ann_colors) +
 	#geom_text_repel(show.legend = F) +
 	theme_classic()
 p2
@@ -393,32 +402,32 @@ ggsave("PCoA_Accessory.pdf", width = 9, height = 6)
 sil <- sapply(2:6, function(i){clara(coord[,-c(5,6)], i)$silinfo$avg.width})
 plot(2:6, sil, type = "b")
 
-clustered <- clara(coord[,-c(5,6)], 4)
+clustered <- clara(coord[,-c(5,6,6)], 4)
 
 coord$clusters <- factor(clustered$clustering)
 
 p1 <- coord %>%
-       	ggplot(aes(x = V1, y = V2, label = Genome, colour = Colour, shape = clusters)) +
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, shape = clusters, group = clusters)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
 	stat_ellipse() +
 	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
 	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
-	scale_colour_manual(values = c("red", "black")) +
+	scale_colour_manual(values = ann_colors) +
 	#geom_text_repel(show.legend = F) +
 	theme_classic()
 p1
 
 p2 <- coord %>%
-       	ggplot(aes(x = V3, y = V4, label = Genome, colour = Colour, shape = clusters)) +
+       	ggplot(aes(x = V3, y = V4, label = Genome, colour = ST, shape = clusters, group = clusters)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
 	stat_ellipse() +
 	xlab(bquote("PCoA 3 ("~.(round(contrib[3],2))~"%)")) +
 	ylab(bquote("PCoA 4 ("~.(round(contrib[4],2))~"%)")) +
-	scale_colour_manual(values = c("red", "black")) +
+	scale_colour_manual(values = ann_colors) +
 	#geom_text_repel(show.legend = F) +
 	theme_classic()
 p2
@@ -445,28 +454,29 @@ fit <- cmdscale(geneDist, eig = T, k = 4, add =T)
 coord <- fit$points %>% as_tibble()
 coord$Genome <- rownames(fit$points)
 contrib <- fit$eig/sum(fit$eig) * 100
-coord$Colour <- ifelse(coord$Genome == "BmelDepths", "Ancient", "Modern")
+coord <- coord %>% left_join(MLSTResults)
+coord$ST[which(coord$Genome == "JessSample")] <- "Ancient" 
 
 p1 <- coord %>%
-       	ggplot(aes(x = V1, y = V2, label = Genome, colour = Colour)) +
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
 	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
 	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
-	scale_colour_manual(values = c("red", "black")) +
+	scale_colour_manual(values = ann_colors) +
 	#geom_text_repel(show.legend = F) +
 	theme_classic()
 p1
 
 p2 <- coord %>%
-       	ggplot(aes(x = V3, y = V4, label = Genome, colour = Colour)) +
+       	ggplot(aes(x = V3, y = V4, label = Genome, colour = ST)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
 	xlab(bquote("PCoA 3 ("~.(round(contrib[3],2))~"%)")) +
 	ylab(bquote("PCoA 4 ("~.(round(contrib[4],2))~"%)")) +
-	scale_colour_manual(values = c("red", "black")) +
+	scale_colour_manual(values = ann_colors) +
 	#geom_text_repel(show.legend = F) +
 	theme_classic()
 p2
@@ -482,27 +492,27 @@ clustered <- clara(coord[,-c(5,6)], 3)
 coord$clusters <- factor(clustered$clustering)
 
 p1 <- coord %>%
-       	ggplot(aes(x = V1, y = V2, label = Genome, colour = Colour, shape = clusters)) +
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, shape = clusters, group = clusters)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
 	stat_ellipse() +
 	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
 	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
-	scale_colour_manual(values = c("red", "black")) +
+	scale_colour_manual(values = ann_colors) +
 	#geom_text_repel(show.legend = F) +
 	theme_classic()
 p1
 
 p2 <- coord %>%
-       	ggplot(aes(x = V3, y = V4, label = Genome, colour = Colour, shape = clusters)) +
+       	ggplot(aes(x = V3, y = V4, label = Genome, colour = ST, shape = clusters, group = clusters)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
 	stat_ellipse() +
 	xlab(bquote("PCoA 3 ("~.(round(contrib[3],2))~"%)")) +
 	ylab(bquote("PCoA 4 ("~.(round(contrib[4],2))~"%)")) +
-	scale_colour_manual(values = c("red", "black")) +
+	scale_colour_manual(values = ann_colors) +
 	#geom_text_repel(show.legend = F) +
 	theme_classic()
 p2
@@ -515,7 +525,7 @@ ggsave(p1,file = "PCoA_Accessory_ClusterAxes12.pdf", width = 9, height = 6)
 tmp <- data.frame(accessDataSub)
 tmp <- sapply(tmp, as.logical)
 MCAResults <- MCA(tmp, graph = F)
-tmpHabillage <- ifelse(rownames(tmp) == "BmelDepths", "Ancient", "Modern") 
+tmpHabillage <- ifelse(rownames(tmp) == "JessSample", "Ancient", "Modern") 
 fviz_mca_ind(MCAResults, habillage = factor(tmpHabillage), geom = "point", palette= c("black", "red"), axes = c(1,2))
 
 #####################################
@@ -530,23 +540,22 @@ plot(y = sil, x = 2:15, type = "b")
 small <- cutree(geneClust, k = 4)
 clusterBorder <- colour[small] %>% unique()
 
-annotationData <- coord[,c(5:7)] %>% as.data.frame()
-rownames(annotationData) <- annotationData$Genome
-annotationData <- annotationData[,-1]
-annotationData$clusters <- as.factor(annotationData$clusters)
-ann_colors <- list(Colour = c("Modern" = "#ffffff", "Ancient" = colour[1]), clusters = c("1" = colour[6], "2" = colour[7], "3" = colour[8], "4" = colour[9]))
+annotationData <- MLSTResults %>% bind_rows(data.frame(Genome = "JessSamples",ST = "Ancient")) %>% as.data.frame()
+annotationData2 <- as.data.frame(annotationData[,-1])
+rownames(annotationData2) <- annotationData$Genome
+annotationData <- annotationData2
+rm(annotationData2)
+colnames(annotationData) <- "ST"
+#annotationData$clusters <- as.factor(annotationData$clusters)
+#ann_colors <- list(Colour = c("Modern" = "#ffffff", "Ancient" = colour[1]), clusters = c("1" = colour[6], "2" = colour[7], "3" = colour[8], "4" = colour[9]))
+ann_colors_heatmap <- list(ST = unlist(ann_colors))
+#ann_colors_heatmap <- list("ST" = ann_colors)
 
-pheatmap(accessDataSub[rownameOrder,], annotation_row = annotationData,
+pheatmap(accessDataSub, annotation_row = annotationData,
 	 color = c("#007dba", "#f8333c"), clustering_method = "ward.D2", legend = F, show_colnames = F,
 	show_rownames = F, 
 	 #border_color = NA, annotation_colors = ann_colors)#, main = "Accessory Presence/Absence")
-	 width = 12, height = 8, border_color = NA, annotation_colors = ann_colors)#, main = "Accessory Presence/Absence")
-
-pheatmap(accessDataSub[rownameOrder,], annotation_row = annotationData,
-	 color = c("#007dba", "#f8333c"), clustering_method = "ward.D2", legend = F, show_colnames = F,
-	show_rownames = F, 
-	 #border_color = NA, annotation_colors = ann_colors)#, main = "Accessory Presence/Absence")
-	 filename = "AccessoryHeatmap.pdf", width = 12, height = 8, border_color = NA, annotation_colors = ann_colors)#, main = "Accessory Presence/Absence")
+	 filename = "AccessoryHeatmap.pdf", width = 12, height = 8, border_color = NA, annotation_colors = ann_colors_heatmap)#, main = "Accessory Presence/Absence")
 
 ################################################
 ### Now to perform the presence absence Test ###

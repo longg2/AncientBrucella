@@ -9,6 +9,34 @@ library(emmeans)
 library(car)
 colour = c("#f8333c", "#007dba")
 
+CorrectingGC <- function(depthData){ # From the iREP Paper
+	GCModel <- lm(Mean ~ GCContent, data = depthData)
+	resids <- abs(summary(GCModel)$residuals) # Trying to find the top 1% largest residuals. Don't care about location
+	residFilt <- resids < quantile(resids,0.99)
+	GCModelFilt <- lm(Mean ~ GCContent, data = depthData[residFilt,])
+	adjr2 <- summary(GCModel)$adj.r.squared
+	beforeGC <- depthData[residFilt,] %>% ggplot(aes(x = GCContent, y = Mean)) +
+		geom_point() + geom_density_2d(colour = "grey") + theme_bw() + geom_smooth(method = "lm") +
+	       	ggtitle(bquote("Before GC Correction"~R[adj]^2 == .(round(adjr2, 3))), subtitle = "Top 1% Residuals Filtered") + 
+	       	ylab("Mean Coverage") + xlab("GC Content")
+	if(adjr2 > 0){ # We make the correction
+		covAverage <- mean(depthData$Mean)
+		correction <- covAverage - predict(GCModel, data = depthData$GCContent)
+		depthData <- depthData %>% mutate(GCCorrected = Mean + correction)
+	}else{
+		depthData <- depthData %>% mutate(GCCorrected = Mean)
+	}
+	NewGCModel <- lm(GCCorrected ~ GCContent, data = depthData[residFilt,])
+	adjr2 <- summary(NewGCModel)$adj.r.squared
+	afterGC <- depthData[residFilt,] %>% ggplot(aes(x = GCContent, y = GCCorrected)) +
+		geom_point() + geom_density_2d(colour = "grey") + theme_bw() + geom_smooth(method = "lm") +
+	       	ggtitle(bquote("After GC Correction"~R[adj]^2 == .(round(adjr2, 3))), subtitle = "Top 1% Residuals Filtered") +
+	       	ylab("Mean Coverage") + xlab("GC Content")
+	GCPlots <- ggarrange(beforeGC, afterGC, ncol = 2, align = "hv")
+	return(list("Plot" = GCPlots, UpdatedDepths = depthData))
+
+}
+
 PlasmidMapping <- function(depthtmp, snpstmp,windowKProp = 0.1, Chromo, fasta, gff){
 	fasta <- read.fasta(fasta)
 	#bed <- read.delim(bed, header = F)[,2:3]
@@ -95,6 +123,70 @@ PlasmidMapping <- function(depthtmp, snpstmp,windowKProp = 0.1, Chromo, fasta, g
 	circos.clear()
 }
 
+GenomeMappingGCCorrected <- function(depthtmp, snpstmp,windowKProp = 0.1, Chromo, fasta){
+	fasta <- read.fasta(fasta)
+	depthtmpV2 <- depthtmp %>% filter(Chromosome == Chromo) %>% mutate(Base = as.character(fasta[[Chromo]]))
+	snpstmpV2 <- snpstmp %>% filter(CHROM == Chromo) %>% select(CHROM, POS) %>% mutate(SNP = 1)
+	colnames(snpstmpV2) <- c("Chromosome", "Position", "SNP")
+	majorTicks <- nrow(depthtmpV2)/10
+	depthtmpV3 <- depthtmpV2 %>% full_join(snpstmpV2) %>% mutate(windowK = floor(windowKProp * length(Chromosome)), Interval = floor(`Position`/windowK), SNP = ifelse(is.na(SNP), 0, 1)) %>% 
+		group_by(Chromosome,Interval) %>%
+		summarize(MeanCoverage = mean(Coverage), GCContent = sum(ifelse(grepl("g|c|G|C",Base), T, F))/length(Base), windowK = windowK, SNP = sum(SNP)) %>% distinct() %>%
+		mutate(`Position` = Interval * windowK)
+
+	tmp <- depthtmpV3 %>% ungroup() %>% select(MeanCoverage, GCContent)
+	colnames(tmp)[1] <- "Mean"
+	GCCorrected <- CorrectingGC(tmp)
+	depthtmpV3 <- depthtmpV3 %>% ungroup() %>% mutate(MeanCoverage = GCCorrected$UpdatedDepths$GCCorrected)
+	#depthtmpV2 <- depthtmpV2 %>% mutate(Interval = floor(`Position`/windowK)) %>% group_by(Chromosome, Interval) %>%
+	#	summarize(MeanCoverage = mean(Coverage), GCContent = sum(ifelse(grepl("g|c|G|C",Base), T, F))/length(Base)) %>%
+	#	mutate(`Position` = Interval * windowK)
+
+	# Getting the mean Coverage
+	tmp <- depthtmpV3 %>% ungroup() %>% summarize(meanCoverage = mean(MeanCoverage), sdCoverage = sd(MeanCoverage), Error = qnorm(0.975) * sdCoverage/sqrt(length(MeanCoverage)), low = meanCoverage - Error, hi = meanCoverage + Error)
+	confIntCov <- c(tmp$meanCoverage, tmp$low, tmp$hi)
+	## Getting GC ConfInt
+	#tmp <- depthtmpV2 %>% summarize(meanGC = mean(GCContent), sdGC = sd(GCContent), Error = qnorm(0.975) * sdGC/sqrt(length(GC)), low = meanGC - Error, hi = meanGC + Error)
+	#confIntGC <- c(tmp$low, tmp$hi)
+
+	# Running
+	circos.par(cell.padding = c(0.00, 0, 0.00, 0), gap.after = 15, start.degree = -278)
+	circos.initialize(sectors = depthtmpV3$Chromosome,x = depthtmpV3$Position)
+	 # Making the Track
+	circos.track(depthtmpV3$Chromosome, y = depthtmpV3$MeanCoverage,
+		panel.fun = function(x,y){
+			circos.text(max(depthtmpV3$Position)*1.02,
+	            CELL_META$cell.ylim[2] + mm_y(4),
+	            CELL_META$sector.index)
+	        circos.genomicAxis(h = "top", major.by = majorTicks)
+	})
+
+	####### The Genome Coverage ######
+	# Colouring in Zones
+#	circos.rect(xleft = 0, xright = max(depthtmpV3$Position), ybottom =0, ytop = 10,
+#		 border = NULL, col = "red")
+	# Axis
+	circos.yaxis(side = "left", labels.cex = 0.5)
+	# Lines
+	circos.trackLines(sectors = depthtmpV3$Chromosome, x = depthtmpV3$Position, y = depthtmpV3$MeanCoverage, area = T, col = "#808080")
+	circos.rect(xleft = 0, ybottom = confIntCov[2], xright = max(depthtmpV3$Position), ytop = confIntCov[3], col = "#F8333C80")
+	circos.segments(x0 = 0, y0 = confIntCov[1],
+			x1 = max(depthtmpV3$Position), y1 =confIntCov[1], col = "#f8333c", lty = 2)
+	####### SNP ########
+	circos.track(depthtmpV3$Chromosome, y = depthtmpV3$SNP)
+	circos.yaxis(side = "left", labels.cex = 0.5)
+	circos.trackLines(sectors = depthtmpV3$Chromosome, x = depthtmpV3$Position,,y = depthtmpV3$SNP, col = "#8279b9", area = T)
+
+	####### The GC Content ######
+	circos.track(depthtmpV3$Chromosome, y = depthtmpV3$GCContent, ylim = c(0,1))
+	circos.yaxis(side = "left", labels.cex = 0.5)
+#	circos.rect(xleft = 0, xright = max(depthtmpV3$Position), ybottom =confIntGC[1] , ytop = confIntGC[2],
+#		 border = NA, col = c("grey90")) # Making the confidence interval
+	circos.trackLines(sectors = depthtmpV3$Chromosome, x = depthtmpV3$Position, y = depthtmpV3$GCContent, col = "orange")
+	circos.clear()
+
+	return(list("CoverageData" = depthtmpV3, "GCPlot" = GCCorrected$Plot))
+}
 GenomeMapping <- function(depthtmp, snpstmp,windowKProp = 0.1, Chromo, fasta){
 	fasta <- read.fasta(fasta)
 	depthtmpV2 <- depthtmp %>% filter(Chromosome == Chromo) %>% mutate(Base = as.character(fasta[[Chromo]]))
@@ -157,7 +249,8 @@ GenomeMappingAll <- function(depthtmp, snpstmp, windowKProp = 0.1, fasta){
 	fasta <- read.fasta(fasta)
 	depthtmpV2 <- split(depthtmp,f = depthtmp$Chromosome) %>%
 	       	lapply(function(x){x %>% mutate(Base = as.character(fasta[[x$Chromosome[1]]]))}) %>% bind_rows()
-	snpstmpV2 <- snpstmp %>% select(CHROM, POS) %>% mutate(SNP = 1) colnames(snpstmpV2) <- c("Chromosome", "Position", "SNP") #majorTicks <- nrow(depthtmpV2)/10
+	snpstmpV2 <- snpstmp %>% select(CHROM, POS) %>% mutate(SNP = 1)
+       	colnames(snpstmpV2) <- c("Chromosome", "Position", "SNP") #majorTicks <- nrow(depthtmpV2)/10
 	depthtmpV3 <- depthtmpV2 %>% full_join(snpstmpV2) %>% group_by(Chromosome) %>%
 	       	mutate(windowK = floor(windowKProp * length(Chromosome)), Interval = floor(`Position`/windowK), SNP = ifelse(is.na(SNP), 0, 1)) %>% 
 		group_by(Chromosome,Interval) %>%
@@ -299,45 +392,13 @@ T6SSKaeroPlot <- function(depthtmp, windowK = 1000, Chromo, fasta, gff){
 
 
 # Figure 2 of LID
-pdf("BmelCoverage.pdf", width = 12, height = 6)
+pdf("KayCoverage.pdf", width = 12, height = 6)
 par(mfrow = c(1,2))
 
-# K12
-depthOrig <- as_tibble(read.table("BmelDepths.tab.gz", header = F))
-snpsOrig <- as_tibble(read.table("snps.filt.vcf", comment.char = "#", header = T))
+depthOrig <- as_tibble(read.table("KayDepths.tab.gz", header = F))
+snpsOrig <- as_tibble(read.table("KaySNPs.vcf", comment.char = "#", header = T))
 colnames(depthOrig) <- c("Chromosome", "Position", "Coverage")
-GenomeMapping(depthOrig, snpsOrig,Chromo = "NC_003317.1", fasta = "BmelReference.fasta",windowKProp = 0.001)
-GenomeMapping(depthOrig, snpsOrig,Chromo = "NC_003318.1", fasta = "BmelReference.fasta",windowKProp = 0.001)
+Chrom1 <- GenomeMappingGCCorrected(depthOrig, snpsOrig,Chromo = "NC_003317.1", fasta = "BmelReference.fasta",windowKProp = 0.001)
+Chrom2 <- GenomeMappingGCCorrected(depthOrig, snpsOrig,Chromo = "NC_003318.1", fasta = "BmelReference.fasta",windowKProp = 0.001)
 
-dev.off()
-depthOrig %>% group_by(Chromosome) %>% summarize(Mean = mean(Coverage), SD = sd(Coverage),PercentCoverage1 = sum(Coverage >= 1)/length(Coverage), Error = qnorm(0.975) * sd(Coverage)/sqrt(length(Chromosome)))
-
-# ESC_VA4573AA
-depthOrig <- as_tibble(read.table("Genomes/ESC_VA4Depth.tab.gz", header =F))
-snpsOrig <- as_tibble(read.table("SNPS/ESC_VA4Snps.vcf", comment.char = "#", header = T))
-colnames(depthOrig) <- c("Chromosome", "Position", "Coverage")
-pdf(file = "~/Documents/University/EcoliPaperV2/AdditionalFiles/ESCMapping.pdf", width = 6, height = 6)
-allPlot <- GenomeMappingAll(depthOrig,snpsOrig, windowKProp = 0.01, fasta = "FastaFiles/ESC_VA4573AA_AS.fasta")
-dev.off()
-
-depthOrig %>% group_by(Chromosome) %>% summarize(Mean = mean(Coverage), SD = sd(Coverage),PercentCoverage1 = sum(Coverage >= 1)/length(Coverage)) %>% filter(Mean < 1)
-
-tmp2 <- depthOrig %>% group_by(Chromosome) %>% summarize(Mean = mean(Coverage), SD = sd(Coverage),PercentCoverage1 = sum(Coverage >= 1)/length(Coverage)) %>% filter(Mean >= 1)
-
-tmp2 %>% summarize(meanFinal = mean(Mean), sdFinal = sd(Mean)) %>% as.data.frame()
-
-
-depthOrig %>% filter(Chromosome %in% tmp) %>% summarize(Mean = mean(Coverage), SD = sd(Coverage),PercentCoverage1 = sum(Coverage >= 1)/length(Coverage)) %>% as.data.frame()
-
-# Non contaminant Plasmid
-depthOrig <- as_tibble(read.table("Genomes/CompPlasmids.tab.gz", header = F))
-colnames(depthOrig) <- c("Chromosome", "Position", "Coverage")
-depthCP012732 <- depthOrig %>% filter(Chromosome == "CP012732.1")
-depthCP019906 <- depthOrig %>% filter(Chromosome == "CP019906.1")
-snpsOrig <- as_tibble(read.table("SNPS/PlasmidCompSnps.vcf", comment.char = "#", header = T))
-snpsCP019906 <- snpsOrig %>% filter(CHROM == "CP019906.1")
-snpsCP012732 <- snpsOrig %>% filter(CHROM == "CP012732.1")
-PlasmidMapping(depthCP019906, snpsCP019906,Chromo = "CP019906.1", fasta = "FastaFiles/CP019906.fasta", windowKProp = 0.001, gff = "GeneFeatures/CP019906.gff3")
-PlasmidMapping(depthCP012732, snpsCP012732,Chromo = "CP012732.1", fasta = "FastaFiles/CP012732.fasta", windowKProp = 0.001, gff = "GeneFeatures/CP012732.gff3")
-legend(x = -0.25, y = 0.1, legend = c("Protein-Coding", "Pseudo"), fill = c("#1ab2ff","#22c3b0"))
 dev.off()
