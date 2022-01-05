@@ -1,0 +1,1 @@
+../PanGenomeAnalysis/MLSTResults.txt
