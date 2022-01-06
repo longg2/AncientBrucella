@@ -9,6 +9,7 @@ library(ggnewscale)
 library(phytools)
 library(ape)
 library(gtools)
+library(lubridate)
 
 # For the colours
 colour <- c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6',
@@ -36,19 +37,24 @@ ann_colors$ST <- ann_colors$ST[unique(STData$ST)]
 
 # Going to try replacing the labels with the Phylogroups
 p1 <- ggtree(tree, right = T, mrsd = "2017-01-01") %<+% STData +
-	geom_tippoint(mapping = aes(colour = ST), size = 1.5) +
-	geom_range("height_0.95_HPD", color = "#f8333c", size = 2, alpha = 0.5) +
-	#geom_text(aes(label=node))+
-	geom_text(aes(label=round(as.numeric(posterior), 2), x = branch), vjust=0, size = 2.5) +
-#	geom_treescale(linesize = 1, offset = 2) +
-        theme_tree2() + geom_rootedge(rootedge = 10) +
-	scale_color_manual(values = ann_colors$ST, name = "ST") +
-	scale_x_continuous(breaks = scales:::pretty_breaks(n = 5), minor_breaks = scales:::pretty_breaks(n = 15)) +
-	theme(legend.position = "bottom", panel.grid.major = element_line(color = "black", size = .2),
-	      panel.grid.minor = element_line(color = "grey", size = .2),
-	      panel.grid.major.y = element_blank(),
-              panel.grid.minor.y = element_blank()) +
-	guides(colour = guide_legend(nrow = 1)) 
+	theme_tree2() +
+	geom_rootedge(rootedge = 50) +
+	geom_range("height_0.95_HPD", colour = "red", size = 0.75, alpha = 0.75) +
+	geom_tippoint(aes(colour = ST)) +
+	scale_color_manual(values = ann_colors$ST, name = "Sequence Type") +
+	new_scale_color() +
+       	geom_nodepoint(aes(color = ifelse(posterior < 0.5, NA,
+						 ifelse(posterior >= 0.5 & posterior < 0.9, "Fifty", "Ninety"))),
+			      shape = "square", show.legend = F) +
+	scale_color_manual(values = c("NA" = NA, "Fifty" = "grey", "Ninety" = "black")) +
+       	geom_nodelab(size = 2.5,mapping = aes(label = round(2017.0014 - height_median)),
+			    geom = "label", nudge_y = 0.4, nudge_x = -50) +
+	xlab("Year") +
+	scale_x_continuous(breaks = scales:::pretty_breaks()) +
+	theme(panel.grid.major.x = element_line(color = "grey10", size = 0.2),
+	      panel.grid.minor.x = element_line(color = "grey80", size = 0.2),
+	      legend.position = "bottom")# + guides(colour = guide_legend(nrow = 1))
 
-p1
-ggsave(plot = p1, "", width = 8, height = 6)
+ggsave(plot = p1, "FirstBeastST11Trimmed.pdf", width = 12, height = 9)
+
+decimal_date(ymd("1394-08-14"))
