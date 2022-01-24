@@ -15,11 +15,11 @@ colour <- c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#
 '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3',
 '#808000', '#ffd8b1', '#000075', '#808080', '#f0f0ff', '#000000')
 
-ann_colors <- list(ST = c("5" = colour[10], "7" = colour[15], "8" = colour[3], "9" = colour[9], "10" = colour[6], "11" = colour[17], "12" = colour[8], "39" = colour[13], "40" = colour[2], "41" = colour[16], "42" = colour[7], "43" = colour[4], "71" = colour[5], "88" = colour[12], "102" = colour[19], "Ancient" = colour[1], "NF" = colour[20], "Reference" = colour[22]))
+ann_colors <- list(ST = c("5" = colour[10], "7" = colour[15], "8" = colour[3], "9" = colour[9], "10" = colour[6], "11" = colour[17], "12" = colour[8], "39" = colour[13], "40" = colour[2], "41" = colour[16], "42" = colour[7], "43" = colour[4], "71" = colour[11], "88" = colour[12], "102" = colour[19], "Ancient" = colour[1], "NF" = colour[20], "Reference" = colour[22], "Kay" = colour[5]))
 ##############
 
 # Basic Tree
-tree <- read.newick(file = "PhylogenyNoContigs.nwk")
+tree <- read.newick(file = "ST11KayIncluded.nwk")
 tree <- phytools::reroot(tree, interactive = T)
 Tiplabels <- tree$tip.label
 
@@ -30,8 +30,10 @@ STData <- read.delim("MLSTResults.txt")[,1:2]
 rownames(STData) <- STData$Sample
 STData["JessSample",] <- list(Sample = "JessSample", ST = "Ancient")
 STData["Reference",] <- list(Sample = "Reference", ST = "Reference")
+STData["KayBMel",] <- list(Sample = "KayBMel", ST = "Kay")
 
-STData<- STData[tree$tip.label,]
+STData <- STData[tree$tip.label,]
+STData <- STData %>% mutate(ST = gsub("[^[:alnum:] ]","", ST))
 
 # Let's filter the ann_colors list so that only the STs present in the phylogeny are used
 ann_colors$ST <- ann_colors$ST[unique(STData$ST)]
@@ -45,32 +47,9 @@ p1 <- ggtree(tree, right = T) %<+% STData +
 	geom_treescale(linesize = 1, offset = 2) + theme_tree() + geom_rootedge(rootedge = 0.00005) +
 	scale_color_manual(values = ann_colors$ST, name = "Sequence Type") +
 	theme(legend.position = "bottom")# + guides(colour = guide_legend(nrow = 1))
-#p2 <-  ggtree(tree, right = T) %<+% phylogroupFrame +
-#	geom_tippoint(mapping = aes(colour = Source), size = 1.5) + geom_nodelab(size = 1.5) +
-#	geom_tiplab(align = T) + 
-#	geom_treescale(linesize = 1, offset = 2) + theme_tree() + geom_rootedge(rootedge = 0.01) +
-#	scale_color_manual(values = colour, name = "Source") +
-#	theme(legend.position = "bottom") + guides(colour = guide_legend(nrow = 1))
-#p2
-	
-#ggsave("~/Workshop/VacationFiles/Labmeetings/May25/Figures/PhyloTree.pdf", width = 8, height = 6)
+p1
+ggsave(p1, file = "BMelCoreST11SNPPhyloKay.pdf", width = 8, height = 6)
 
-#p2 <- ggtree(tree, right = T) %<+% FinalcoreGene +
-#       	geom_nodepoint(size = 1.5, colour = ifelse(as.numeric(tree$node.label) >= 90, "black", ifelse(as.numeric(tree$node.label) >= 50, "grey",NA)),
-#		     shape = "square") +
-#	geom_tippoint(mapping = aes(colour = Pathovar), size = 1.5) +
-#	#geom_tiplab(align = T) + 
-#	geom_treescale(linesize = 1, offset = 2) + theme_tree() + geom_rootedge(rootedge = 0.01) +
-#	scale_color_manual(values = ann_colors$Pathovar, name = "Pathovar") +
-#	theme(legend.position = "bottom") + guides(colour = guide_legend(nrow = 2))
-#p3 <- ggtree(tree, right = T) %<+% FinalcoreGene +
-#	theme_tree() + geom_rootedge(rootedge = 0.01) +
-#       	geom_nodepoint(size = 1.5, colour = ifelse(as.numeric(tree$node.label) >= 90, "black", ifelse(as.numeric(tree$node.label) >= 50, "grey",NA)),
-#		     shape = "square") +
-#	geom_tippoint(mapping = aes(colour = Frac)) + 
-#	scale_color_continuous(name = "Core Genome Presence",oob=scales::squish, low = "#f8333c", high = "#007dba") +
-#	theme(legend.position = "bottom")
-ggsave(p1, file = "BMelCoreSNPNOCONTIGS.pdf", width = 8, height = 6)
 #ggsave(p2, file = "~/Documents/University/EcoliPaperV2/AdditionalFiles/PartsofFigures/PathPhylo.pdf", width = 12, height = 9)
 load("FullPhylo.RData")
 load("ST4995Only.RData")
