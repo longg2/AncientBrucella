@@ -56,7 +56,8 @@ MLSTResults <- read.delim("MLSTResults.txt") %>% as_tibble()
 MLSTResults <- MLSTResults %>% select(Sample, ST) %>% mutate(ST = gsub("\\*","", ST))
 colnames(MLSTResults)[1] <- "Genome"
 
-ann_colors <- list(ST = c("5" = colour[10], "7" = colour[15], "8" = colour[3], "9" = colour[9], "10" = colour[6], "11" = colour[17], "12" = colour[8], "39" = colour[13], "40" = colour[2], "41" = colour[16], "42" = colour[7], "43" = colour[4], "71" = colour[5], "88" = colour[12], "102" = colour[19], "Ancient" = colour[1], "NF" = colour[20], "Reference" = colour[22]))
+ann_colors <- list(ST = c("9" = colour[9], "11" = colour[17], "43" = colour[4], "88" = colour[12], "Geridu" = colour[5],"Corsini" = colour[1], "NF" = colour[20], "Reference" = colour[22]))
+#ann_colors <- list(ST = c("5" = colour[10], "7" = colour[15], "8" = colour[3], "9" = colour[9], "10" = colour[6], "11" = colour[17], "12" = colour[8], "39" = colour[13], "40" = colour[2], "41" = colour[16], "42" = colour[7], "43" = colour[4], "71" = colour[11], "88" = colour[12], "102" = colour[19], "Geridu" = colour[5],"Corsini" = colour[1], "NF" = colour[20], "Reference" = colour[22]))
 #ann_colors = list(Pathovar = c("Ancient" = colour[1], "Commensal" = "#ffffff","EAEC" = colour[2], "EIEC" = "#22662A", "ETEC" = colour[16], "ExPEC" = colour[4],
 #			       "Hybrid ExPEC/InPEC" = colour[3], "STEC" = colour[9],"Unknown" = colour[20]),
 #		  #Host = c("Environment" = colour[10], "Food" = colour[11], "Human" = colour[12], "Livestock" = colour[13], "Porc" = colour[14], "Wild animal" = colour[15],"?" = colour[3]),
@@ -99,7 +100,7 @@ ann_colors <- list(ST = c("5" = colour[10], "7" = colour[15], "8" = colour[3], "
 ############ Let's get the Depths ###########
 op <- pboptions(type = "timer")
 ncores = 8
-depthDf <- do.call(bind_rows, pblapply("JessSampleTrimmed.tab.gz", cl = ncores,function(f){
+depthDf <- do.call(bind_rows, pblapply(c("Depths/JessSampleTrimmed.tab.gz", "Depths/TrimmedKaySample.tab.gz"), cl = ncores,function(f){
 		tmp <- as_tibble(read.delim(f, header = F, col.names = c("Gene", "Pos", "Coverage")))
 		tmp$Genome <- gsub(".*/", "", gsub("\\..*|_genomic","",f)) 	
 		tmp <- tmp %>% group_by(Genome, Gene) %>%
@@ -113,11 +114,11 @@ gcContent <- read.table("TrimmedPanGenomeGC.tab", header = F, col.names = c("Gen
 depthDf <- depthDf %>% left_join(gcContent)
 
 # Now to correct for GC Bias
-GCBiased <- depthDf %>% filter(MeanCoverage > 0) %>% select(Gene,MeanCoverage, GC)
-colnames(GCBiased) <- c("Gene","Mean", "GCContent")
-GCCorrected <- CorrectingGC(GCBiased)
-depthDf <- depthDf %>% full_join(GCCorrected[[2]] %>% select(Gene, GCCorrected)) %>% mutate(GCCorrected = replace(GCCorrected, is.na(GCCorrected), 0))
-depthDf$Genome <- "JessSample"
+GCBiased <- depthDf %>% filter(MeanCoverage > 0) %>% select(Genome,Gene,MeanCoverage, GC)
+colnames(GCBiased) <- c("Genome","Gene","Mean", "GCContent")
+GCCorrected <- lapply(split(GCBiased, GCBiased$Genome), function(x)CorrectingGC(x)$UpdatedDepths) %>% bind_rows()
+depthDf <- depthDf %>% full_join(GCCorrected %>% select(Genome,Gene, GCCorrected)) %>% mutate(GCCorrected = replace(GCCorrected, is.na(GCCorrected), 0))
+depthDf <- depthDf %>% mutate(Genome = gsub("Trimmed","",Genome))
 
 ############# Core Gene Presence #####
 roaryOutput <- as_tibble(read.delim("TrimmmedPresenceAbsence.tab"))
@@ -129,93 +130,66 @@ coreGenes <- rowSums(roaryOutput[,-1]) >= floor(0.95 * ncol(roaryOutput))
 coreGenes <- roaryOutput$Gene[coreGenes]
 
 ########### Some basic Coverage Data  ###############
-ancientData <- depthDf %>% filter(GCCorrected >= 10, CV <=1) %>%
+Corsini <- depthDf %>% filter(Genome == "JessSample", CV <=1) %>%
 	pivot_wider(names_from = c(Genome), values_from=GCCorrected) %>% select(-c(MeanCoverage,GC,sdCoverage, PercentCoverage, CV)) #%>%
 	#mutate(Genome = "10x - CV Filter")
+CorsiniRect <- Corsini %>% summarize(Mean = mean(JessSample), SD2 = 2*sd(JessSample))
+Geridu <- depthDf %>% filter(Genome != "JessSample", CV <=1) %>%
+	pivot_wider(names_from = c(Genome), values_from=GCCorrected) %>% select(-c(MeanCoverage,GC,sdCoverage, PercentCoverage, CV))
 
-ancientData %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% ggplot(aes(x = JessSample, fill = Status)) + 
+GeriduRect <- Geridu %>% summarize(Mean = mean(KaySample), SD2 = 2*sd(KaySample))
+
+corsiniPlot <- Corsini %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% ggplot(aes(x = JessSample, fill = Status)) + 
+	geom_rect(data = CorsiniRect, inherit.aes = F, aes(xmin = Mean - SD2, xmax = Mean + SD2, ymin = -Inf, ymax = Inf), colour = "purple", alpha = 0.5) +
 	geom_histogram(position = "identity", alpha = 0.75, colour = "black", binwidth = 1) +
+	geom_vline(xintercept = 10, colour = "black", lty = 2) +
+	geom_vline(xintercept = mean(Corsini$JessSample), colour = "purple", lty = 2) +
 	scale_fill_manual(values = c(Accessory = "#007dba",Core = "#f8333c")) + theme_bw() +
-	xlab("Mean Read Depth") + ylab("Genes") + theme(legend.position = "bottom") + 
-	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0, 750))
-ggsave("GenePresenceHistogramTrimmed.pdf", width = 6, height = 4)
+	xlab("Mean Read Depth") + ylab("Genes") + theme(legend.position = "bottom", axis.title.x = element_blank(), axis.text.x = element_blank()) + 
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0,50)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0, 1250))
 
+geriduPlot <- Geridu %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% ggplot(aes(x = KaySample, fill = Status)) + 
+	geom_rect(data = GeriduRect, inherit.aes = F, aes(xmin = Mean - SD2, xmax = Mean + SD2, ymin = -Inf, ymax = Inf), colour = "purple", alpha = 0.5) +
+	geom_histogram(position = "identity", alpha = 0.75, colour = "black", binwidth = 1) +
+	geom_vline(xintercept = 1, colour = "black", lty = 2) +
+	geom_vline(xintercept = GeriduRect$Mean, colour = "purple", lty = 2) +
+	scale_fill_manual(values = c(Core = "#f8333c",Accessory = "#007dba")) + theme_bw() +
+	xlab("Mean Read Depth") + ylab("Genes") + theme(legend.position = "bottom") + 
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0,50)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0, 1250))
+
+ggarrange(corsiniPlot, geriduPlot, nrow = 2, labels= "AUTO", common.legend = T, align = "hv", legend = "bottom")
+
+ggsave("GenePresenceHistogramTrimmed.pdf", width = 9, height = 6)
+
+# Genes which were > +2SD from distribution
 #####################################################################
 # Gene Presence table
-AllPA <- roaryOutput %>% left_join(ancientData) %>% mutate(JessSample = ifelse(is.na(JessSample)|JessSample == 0, 0,1))
+Corsini <- Corsini %>% filter(JessSample >= 10)
+Geridu <- Geridu %>% filter(KaySample >= 1)
+AllPA <- roaryOutput %>% left_join(full_join(Corsini, Geridu)) %>%
+       	mutate(JessSample = ifelse(is.na(JessSample)|JessSample == 0, 0,1),
+	KaySample = ifelse(is.na(KaySample)|KaySample == 0, 0,1)) 
+colnames(AllPA)[(ncol(AllPA)-1):ncol(AllPA)] <- c("Corsini", "Geridu")
 
 # Now to make a boxplot to compare our gene to everyone else
 tmp <- AllPA %>% select(-Gene) %>% summarize_all(sum) %>% t() %>% as.data.frame()
 tmp$Genome <- rownames(tmp)
 geneCounts <- tmp %>% as_tibble() 
+geneCounts <- geneCounts %>% left_join(MLSTResults)
 colnames(geneCounts)[1] <- "Genes"
-geneCounts %>% filter(Genome != "JessSample") %>% ggplot(aes(y = Genes)) + geom_boxplot() + theme_bw() +
-	geom_point(data = geneCounts %>% filter(Genome == "JessSample"), aes(colour = Genome, x = 0)) +
-	scale_colour_manual(values = colour) + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), axis.title.x = element_blank(), legend.position = "bottom")
+geneCounts %>% filter(!grepl("Corsini|Geridu", Genome)) %>% ggplot(aes(y = Genes, x ="", color = ST)) +
+       	geom_boxplot(outlier.shape = NA, colour = "black") + theme_bw() +
+	geom_jitter(height = 0) +
+	geom_point(data = geneCounts %>% filter(grepl("Corsini|Geridu", Genome)), aes(colour = Genome, x = "")) +
+	scale_colour_manual(values = ann_colors$ST) + 
+	theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), axis.title.x = element_blank(), legend.position = "right")
 ggsave("GeneCountsBmelTrimmed.pdf", width = 6, height = 9)
-
-perCovMean <- depthDf %>%
-       	filter(MeanCoverage > 0) %>% ggplot(aes(x= PercentCoverage,y = MeanCoverage)) + geom_point() + theme_bw() + scale_x_continuous(breaks = pretty_breaks(n = 10)) +
-	scale_y_continuous(breaks = pretty_breaks(n = 10)) + ggtitle("Percent Coverage vs Mean Gene Coverage")
-perCovMean <- ggMarginal(perCovMean, type = "densigram")
-CVMean <- depthDf %>% filter(MeanCoverage > 0) %>% ggplot(aes(x= CV,y = MeanCoverage)) + geom_point() + theme_bw()+ scale_x_continuous(breaks = pretty_breaks(n = 10)) +
-       	scale_y_continuous(breaks = pretty_breaks(n = 10))+ ggtitle("Coefficient of Variation vs Mean Gene Coverage")
-CVMean <- ggMarginal(CVMean, type = "densigram")
-
-pdf("~/CoverageMetricsTrimmed.pdf", width = 9, height = 9)
-perCovMean
-plot.new()
-CVMean
-dev.off()
 #####################################################################
-
 # Going to do this in a more sane way
-coreDf <- roaryOutput %>% filter(Gene %in% coreGenes)
-tmp <- colnames(coreDf)
-tmp <- sapply(tmp, function(x){
-	       ifelse(x %in% etecTranslations$GenomeID, etecList[x], x)
-		  }) %>% unlist() %>% gsub(pattern = "\\.result.*|_genomic|\\.scaffold", replacement = "") %>%
-	gsub(pattern = "\\.",replacement = "-")
-colnames(coreDf) <- tmp
-
-ancientData <- depthDf %>% filter(Genome %in%  c("JessSample"), GCCorrected >= 10, PercentCoverage >= 0.9) %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% filter(Status == "Core") %>%
-	pivot_wider(names_from = c(Genome), values_from=GCCorrected) %>% select(-c(MeanCoverage, GC,sdCoverage, PercentCoverage, CV, Status))
-
-#KosticData <- depthDf %>% filter(Genome %in% c("Lib4_3_bin","Lib4_7_bin","Lib4_8_bin"), MeanCoverage >= 1, PercentCoverage >= 0.9) %>%
-#       	mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>%
-#       	filter(Status == "Core") %>%
-#	pivot_wider(names_from = c(Genome), values_from=MeanCoverage) %>%
-#       	select(-c(sdCoverage, PercentCoverage, CV, Status))
-#
-#KosticData <- KosticData %>% group_by(Gene) %>% summarize_all(list(~ sum(., na.rm = T))) %>% arrange(Gene)
-#
-#KosticData %>% select(-Gene) %>% summarize_all(list(~ ifelse(. > 0, 1,.))) %>% summarize_all(sum)
-#
-#ancientData <- ancientData %>% full_join(KosticData) %>%
-#	group_by(Gene) %>% summarize_all(list(~ sum(., na.rm = T))) %>%
-#	ungroup() %>%
-#       	mutate(KaeroEcoli = ifelse(is.na(KaeroEcoli) | KaeroEcoli == 0, 0, 1),
-#		Lib4_3_bin = ifelse(is.na(Lib4_3_bin)| Lib4_3_bin == 0, 0, 1),
-#		Lib4_7_bin = ifelse(is.na(Lib4_7_bin)| Lib4_7_bin == 0, 0, 1),
-#		Lib4_8_bin = ifelse(is.na(Lib4_8_bin)| Lib4_8_bin == 0, 0, 1))# %>%
-##	select(-Gene) %>% summarize_all(list(~ ifelse(. > 0, 1,.))) %>% summarize_all(sum)
-
-coreData <- coreDf %>% left_join(ancientData) %>%
-       	mutate(JessSample = ifelse(is.na(JessSample) | JessSample == 0, 0, 1))
-
-# Here, we're trying to plot the core P/A data as a heatmap and/or a hierachical cluster
-#coreData <- depthDf %>% filter(Genome %in% strainListOlivier, MeanCoverage >= 1, PercentCoverage >= 0.9) %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% filter(Status == "Core") %>%
-#	pivot_wider(names_from = c(Genome), values_from=MeanCoverage) %>% select(-c(sdCoverage, PercentCoverage, CV, Status))
-
-#ancientData <- depthDf %>% filter(Genome %in% strainListFragmented, MeanCoverage >= 10, PercentCoverage >= 0.9) %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% filter(Status == "Core") %>%
-#	pivot_wider(names_from = c(Genome), values_from=MeanCoverage) %>% select(-c(sdCoverage, PercentCoverage, CV, Status))
-#coreData <- coreData %>% full_join(ancientData)
-#
-#coreData[,-1] <- sapply(coreData[,-1], function(x){ifelse(is.na(x), 0, x)})
-#coreData <- coreData %>% group_by(Gene) %>% summarize_all(sum) %>% group_by(Gene) %>% mutate_all(as.logical)
+coreDf <- AllPA %>% filter(Gene %in% coreGenes)
 
 # Preparing the data
-coreData <- as.data.frame(coreData)
+coreData <- as.data.frame(coreDf)
 rownames(coreData) <- coreData[,1]
 coreData <- coreData[,-1]
 genomes <- colnames(coreData)
@@ -229,65 +203,43 @@ coreDataSub <- coreDataSub[,!ind]
 
 # Getting the heatmap sorted
 #rownames(coreDataSub)[which(rownames(coreDataSub) %in% c("KaeroEcoli","Lib4_3_bin","Lib4_7_bin","Lib4_8_bin"))] <- c("AncientEcoli", "Zape2.1", "Zape2.2", "Zape3")
-rownamesHeatmap <- ifelse(rownames(coreDataSub) == "AncientEcoli", "AncientEcoli","")
-olivierTableHeatmap <- phylogroup[,c(4,2)] %>% as.data.frame()
-olivierTableHeatmap$Pathovar <- sapply(olivierTableHeatmap$Pathovar, function(x){ifelse(x == "?", "Unknown",x)})
-rownames(olivierTableHeatmap) <- phylogroup$Genome
-olivierTableHeatmap <- olivierTableHeatmap[rownames(coreDataSub),]
+rownamesHeatmap <- sapply(rownames(coreDataSub), function(x){ifelse(grepl("Corsini|Geridu", x), x,"")})
+MLSTHeatmap <- MLSTResults[match(MLSTResults$Genome,rownames(coreDataSub)),] %>% filter(complete.cases(Genome))%>% bind_rows( data.frame(Genome =c("Corsini", "Geridu"), ST = c("Corsini", "Geridu"))) %>% as.data.frame()
+tmpRows <- MLSTHeatmap$Genome
+MLSTHeatmap <- as.data.frame(MLSTHeatmap[,-1])
+rownames(MLSTHeatmap) <- tmpRows
+rm(tmpRows)
 #olivierTableHeatmap <- olivierTableHeatmap[complete.cases(olivierTableHeatmap),] %>%
 #       	bind_rows(data.frame(row.names = c("Zape2.1","Zape2.2","Zape3"),ST = c("Kostic", "Kostic", "Kostic"), Pathovar = "Kostic"))
-olivierTableHeatmap["AncientEcoli","ST"] <- "Ancient"
 
-rownamesHeatmap <- ifelse(rownames(coreDataSub) == "AncientEcoli", "AncientEcoli","")
-#rownames(olivierTableHeatmap) <- phylogroup$Genome
-#rownames(olivierTableHeatmap) <- olivierTable$Genome
 
 # Dendrogram and order
 specDist <- dist(coreDataSub, method = "binary")
 clusteredSpec <- hclust(specDist, method = "ward.D2") # 
 rownameOrder <- clusteredSpec$order
 
-treeColours <- as.list(ann_colors[[2]])[olivierTableHeatmap[rownameOrder,]$ST] %>% unlist()
+treeColours <- as.list(ann_colors$ST)[MLSTHeatmap$ST] %>% unlist()
 treeColours <- gsub("#ffffff", "#000000", treeColours)
 dend <- as.dendrogram(clusteredSpec)
-labels_colors(dend) <- treeColours
+labels_colors(dend) <- treeColours[rownameOrder]
 
 pdf("~/CVFigures/TMPCoreTree.pdf", width = 24, height = 9)
 #pdf("~/Documents/University/EcoliPaperV2/AdditionalFiles/PartsofFigures/SpeciesCoreTree.pdf", width = 6, height = 8)
 plot(dend, horiz = F)
-legend("topright", legend = names(ann_colors[[2]]), fill = unlist(ann_colors[[2]]), title = "ST")
+legend("topright", legend = names(ann_colors$ST), fill = unlist(ann_colors$ST), title = "ST")
 dev.off()
 
-# Now to cluster the trees
-geneDist <- dist(coreDataSub)
-geneClust <- hclust(geneDist, method = "ward.D2")
+gapsRows <- c(which(grepl("Corsini|Geridu",rownames(coreDataSub)[rownameOrder])),which(grepl("Corsini|Geridu",rownames(coreDataSub)[rownameOrder])) - 1)
+gapsRows <- gapsRows[gapsRows > 0]
+pheatmap(coreDataSub, annotation_row = MLSTHeatmap)
 
-sil <- sapply(2:15, function(x){
-	       tmp <- cutree(geneClust, k = x)
-   	       summary(silhouette(tmp, geneDist))$avg.width
-	 })
 
-plot(y = sil, x = 2:15, type = "b")
-
-small <- cutree(geneClust, k = 5)
-clusterBorder <- colour[small] %>% unique()
-
-pdf("~/KosticHierCoreClust.pdf", width = 12, height = 9)
-plot(geneClust, hang = -1)
-#rect.hclust(geneClust, k = 4, border = clusterBorder)
-dev.off()
-
-pheatmap(coreDataSub[rownameOrder,], annotation_row = olivierTableHeatmap,
+pheatmap(coreDataSub[rownameOrder,], annotation_row = MLSTHeatmap,
+	 annotation_names_row = F,
 	 color = c("#007dba", "#f8333c"), clustering_method = "ward.D2", legend = F, show_colnames = F,
-	 gaps_row = c(which(rownames(coreDataSub)[rownameOrder] == "AncientEcoli"),which(rownames(coreDataSub)[rownameOrder] == "AncientEcoli") - 1),cluster_rows = F,
+	 gaps_row = gapsRows, cluster_rows = F,
 	 labels_row = rownamesHeatmap[rownameOrder], fontsize_row = 5, 
-	 width = 12, height = 8, border_color = NA, annotation_colors = ann_colors, filename = "~/CVFigures/CorePACV.png")#, main = "Core Presence/Absence")
-	 #filename = "~/Documents/University/EcoliPaperV2/AdditionalFiles/PartsofFigures/TestCore.png", width = 12, height = 8, border_color = NA, annotation_colors = ann_colors)#, main = "Core Presence/Absence")
-#pheatmap(coreDataSub[rownameOrder,], annotation_row = olivierTableHeatmap,
-#	 color = c("#007dba", "#f8333c"), clustering_method = "ward.D2", legend = F, show_colnames = F,
-#	 gaps_row = c(which(rownames(coreDataSub)[rownameOrder] == "AncientEcoli"),which(rownames(coreDataSub)[rownameOrder] == "AncientEcoli") - 1),cluster_rows = F,
-#	 cutree_cols = 4, labels_row = rownamesHeatmap[rownameOrder], fontsize_row = 5, 
-#	 filename = "~/TestCore.png", width = 12, height = 8, border_color = NA, annotation_colors = ann_colors)#, main = "Core Presence/Absence")
+	 width = 12, height = 8, border_color = NA, annotation_colors = ann_colors)#, filename = "~/CVFigures/CorePACV.png")#, main = "Core Presence/Absence")
 
 # Core data counts for phylogeny
 counts <- coreData %>% rowSums()
