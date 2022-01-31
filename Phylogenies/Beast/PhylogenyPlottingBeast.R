@@ -19,17 +19,17 @@ colour <- c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#
 
 ann_colors <- list(ST = c("5" = colour[10], "7" = colour[15], "8" = colour[3], "9" = colour[9], "10" = colour[6], "11" = colour[17], "12" = colour[8], "39" = colour[13], "40" = colour[2], "41" = colour[16], "42" = colour[7], "43" = colour[4], "71" = colour[11], "88" = colour[12], "102" = colour[19], "Corsini" = colour[1], "NF" = colour[20], "Reference" = colour[22], "Geridu" = colour[5]))
 
-LocationID <- function(Sample){
-	ifelse(grepl("\\dTE\\d|\\dCB\\d|\\dIS\\d|Kay|JessSample", Sample), "Italy",
-	       ifelse(grepl("BwIM-MAR-25", Sample), "Morocco",
-		      ifelse(grepl("CT-US", Sample), "US",
-			     ifelse(grepl("UK", Sample), "UK",
-				    ifelse(grepl("BRUC101", Sample), "Egypt",
-					   ifelse(grepl("00-2529-3", Sample),"France", "Unknown"))))))
-}
+#LocationID <- function(Sample){
+#	ifelse(grepl("\\dTE\\d|\\dCB\\d|\\dIS\\d|Kay|JessSample", Sample), "Italy",
+#	       ifelse(grepl("BwIM-MAR-25", Sample), "Morocco",
+#		      ifelse(grepl("CT-US", Sample), "US",
+#			     ifelse(grepl("UK", Sample), "UK",
+#				    ifelse(grepl("BRUC101", Sample), "Egypt",
+#					   ifelse(grepl("00-2529-3", Sample),"France", "Unknown"))))))
+#}
 
 # Basic Tree
-tree <- read.beast(file = "BeastResults/ExponentialST11/ST11KayIncludedExponential.nexus")
+tree <- read.beast(file = "BeastResults/InvariantST11/ST11KayIncludedInvariant.nexus")
 Tiplabels <- tree@phylo$tip.label
 
 ####################################################
@@ -50,8 +50,8 @@ ann_colors$ST <- ann_colors$ST[mixedsort(unique(STData$ST))]
 # Let's see if we can include some geographic information
 STData <- STData %>% mutate(Country = LocationID(Sample))
 
-#p1 <- ggtree(tree, right = T, mrsd = "2018-05-01") %<+% STData +
-p1 <- ggtree(tree, right = T, mrsd = "2017-01-01") %<+% STData + #This is for the ST11 Phylo
+p1 <- ggtree(tree, right = T, mrsd = "2018-05-01") %<+% STData +
+#p1 <- ggtree(tree, right = T, mrsd = "2017-01-01") %<+% STData + #This is for the ST11 Phylo
 	theme_tree2() +
 	geom_rootedge(rootedge = 50) +
 	geom_range("height_0.95_HPD", colour = "red", size = 0.75, alpha = 0.75) +
@@ -63,8 +63,8 @@ p1 <- ggtree(tree, right = T, mrsd = "2017-01-01") %<+% STData + #This is for th
 						 ifelse(posterior >= 0.5 & posterior < 0.9, "Fifty", "Ninety"))),
 			      shape = "square", show.legend = F) +
 	scale_color_manual(values = c("NA" = NA, "Fifty" = "grey", "Ninety" = "black")) +
-       	#geom_nodelab(size = 2.5,mapping = aes(label = round(2018.3287671232877 - height_median)),
-       	geom_nodelab(size = 2.5,mapping = aes(label = round(2017.0014 - height_median)), # This is for the ST11 Phylo
+       	geom_nodelab(size = 2.5,mapping = aes(label = round(2018.3287671232877 - height_median)),
+       	#geom_nodelab(size = 2.5,mapping = aes(label = round(2017.0014 - height_median)), # This is for the ST11 Phylo
 			    geom = "label", nudge_y = 0.4, nudge_x = -50) +
 	xlab("Year") +
 	scale_x_continuous(breaks = scales:::pretty_breaks()) +
@@ -74,6 +74,34 @@ p1 <- ggtree(tree, right = T, mrsd = "2017-01-01") %<+% STData + #This is for th
 
 	p1
 
-ggsave(plot = p1, "ST11GenomeExponential.pdf", width = 12, height = 9)
+ggsave(plot = p1, "WholeGenomeInvariant.pdf", width = 12, height = 9)
+
+#######################
+### Now for Tempest ###
+#######################
+
+# Now to get the Tempest Plot
+tempest <- as_tibble(read.delim("BeastResults/InvariantST11/ST11KayIncludedInvariantTempestSNPS.tab"))# %>% filter(date > 0)
+# Getting the Phylogroups plotted
+
+STData <- STData[match(tempest$tip, STData$Sample),] # Getting them in the Right Order
+tempest$ST <- STData$ST
+
+tempestPlot <- tempest %>% ggplot(aes(x = date, y  = distance)) + geom_smooth(method = "lm", show.legend = F, colour = "black") +
+	geom_point(alpha = 0.75, aes(colour = ST), show.legend = T) + theme_bw() + ylab("Root to Tip Divergence") + xlab("Year") +
+	scale_color_manual(values = ann_colors$ST, name = "Sequence Type")
+tempestPlot
+
+model <- lm(distance ~date, data = tempest)
+summary(model)
+r2 <- round(summary(model)$adj.r.squared,3)
+tmp <- summary(model)$fstatistic
+pval <- round(pf(tmp[1],tmp[2],tmp[3], lower.tail = F),3)
+
+tempestPlot <- tempestPlot + annotate(geom = "text", x = 1700, y = 0.0026,label = bquote(R[adj]^2 == .(r2))) +
+	annotate(geom = "text", x = 1700, y = 0.00255, label = bquote(P == .(pval))) +
+	scale_y_continuous(breaks = scales:::pretty_breaks(n = 10)) + theme(legend.position = "bottom") + ggtitle("ST11 Clade")
+
+ggsave(tempestPlot,file = "ST11InvariantTempestSNPs.pdf", width = 6, height = 4)
 
 decimal_date(ymd("1394-08-14"))
