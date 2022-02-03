@@ -148,6 +148,22 @@ geneCounts %>% filter(!grepl("Corsini|Geridu", Genome)) %>% ggplot(aes(y = Genes
 	theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), axis.title.x = element_blank(), legend.position = "right")
 ggsave("GeneCountsBmel.pdf", width = 6, height = 9)
 #####################################################################
+# We want to compare the genes in the two samples
+SamplePA <- Corsini %>% full_join(Geridu) %>% mutate(CorsiniPresent = ifelse(JessSamples >= 10, T, F), GeriduPresent = ifelse(KayBMel >= 1, T,F)) %>%
+	mutate(CorsiniPresent = replace(CorsiniPresent, is.na(CorsiniPresent), F), GeriduPresent = replace(GeriduPresent, is.na(GeriduPresent), F)) %>%
+	mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory"))
+
+
+tmp <- coreGenes[!(coreGenes %in% SamplePA$Gene)]
+tmp <- c(tmp,SamplePA %>% filter(Status == "Core", !CorsiniPresent, !GeriduPresent) %>% pull(Gene))
+write.table(tmp,"CoreGenesMissingAll.list", col.names =F, row.names = F, quote =F)
+
+SamplePA %>% filter(Status == "Accessory", CorsiniPresent, GeriduPresent == F) %>% pull(Gene) %>% write.table("AccessoryGenesMissingGeridu.list", col.names =F, row.names = F, quote =F)
+SamplePA %>% filter(Status == "Accessory", CorsiniPresent == F, GeriduPresent) %>% pull(Gene) %>% write.table("AccessoryGenesMissingCorsini.list", col.names =F, row.names = F, quote =F)
+
+table(SamplePA$CorsiniPresent, SamplePA$GeriduPresent)
+
+#####################################################################
 # Going to do this in a more sane way
 coreDf <- AllPA %>% filter(Gene %in% coreGenes)
 
