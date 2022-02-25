@@ -57,7 +57,7 @@ MLSTResults <- MLSTResults %>% select(Sample, ST) %>% mutate(ST = gsub("\\*| ","
 colnames(MLSTResults)[1] <- "Genome"
 
 #ann_colors <- list(ST = c("9" = colour[9], "11" = colour[17], "43" = colour[4], "88" = colour[12], "Geridu" = colour[5],"Corsini" = colour[1], "NF" = colour[20], "Reference" = colour[22]))
-ann_colors <- list(ST = c("5" = colour[10], "7" = colour[15], "8" = colour[3], "9" = colour[9], "10" = colour[6], "11" = colour[17], "12" = colour[8], "39" = colour[13], "40" = colour[2], "41" = colour[16], "42" = colour[7], "43" = colour[4], "71" = colour[11], "88" = colour[12], "102" = colour[19], "Geridu" = colour[5],"Corsini" = colour[1], "NF" = colour[20], "Reference" = colour[22]))
+ann_colors <- list(ST = c("5" = colour[10], "7" = colour[15], "8" = colour[3], "9" = colour[9], "10" = colour[6], "11" = colour[17], "12" = colour[8], "39" = colour[13], "40" = colour[2], "41" = colour[16], "42" = colour[7], "43" = colour[4], "71" = colour[11], "88" = colour[12], "102" = colour[19], "Geridu" = colour[5],"Brancorsini" = colour[1], "NF" = colour[20], "Reference" = colour[22]))
 
 ############ Let's get the Depths ###########
 op <- pboptions(type = "timer")
@@ -131,7 +131,7 @@ Geridu <- Geridu %>% filter(KayBMel >= 1)
 AllPA <- roaryOutput %>% left_join(full_join(Corsini, Geridu)) %>%
        	mutate(JessSamples = ifelse(is.na(JessSamples)|JessSamples == 0, 0,1),
 	KayBMel = ifelse(is.na(KayBMel)|KayBMel == 0, 0,1)) 
-colnames(AllPA)[(ncol(AllPA)-1):ncol(AllPA)] <- c("Corsini", "Geridu")
+colnames(AllPA)[(ncol(AllPA)-1):ncol(AllPA)] <- c("Brancorsini", "Geridu")
 colnames(AllPA) <- gsub("--","-XXX-", colnames(AllPA))
 
 # Now to make a boxplot to compare our gene to everyone else
@@ -140,10 +140,10 @@ tmp$Genome <- rownames(tmp)
 geneCounts <- tmp %>% as_tibble() 
 geneCounts <- geneCounts %>% left_join(MLSTResults)
 colnames(geneCounts)[1] <- "Genes"
-geneCounts %>% filter(!grepl("Corsini|Geridu", Genome)) %>% ggplot(aes(y = Genes, x ="", color = ST)) +
+geneCounts %>% filter(!grepl("Brancorsini|Geridu", Genome)) %>% ggplot(aes(y = Genes, x ="", color = ST)) +
        	geom_boxplot(outlier.shape = NA, colour = "black") + theme_bw() +
 	geom_jitter(height = 0) +
-	geom_point(data = geneCounts %>% filter(grepl("Corsini|Geridu", Genome)), aes(colour = Genome, x = "")) +
+	geom_point(data = geneCounts %>% filter(grepl("Brancorsini|Geridu", Genome)), aes(colour = Genome, x = "")) +
 	scale_colour_manual(values = ann_colors$ST) + 
 	theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), axis.title.x = element_blank(), legend.position = "right")
 ggsave("GeneCountsBmel.pdf", width = 6, height = 9)
@@ -180,45 +180,32 @@ maxCount <- coreDataSub %>% colSums() %>% max()
 ind <- coreDataSub %>% colSums() == maxCount
 coreDataSub <- coreDataSub[,!ind]
 
-# Getting the heatmap sorted
-#rownames(coreDataSub)[which(rownames(coreDataSub) %in% c("KaeroEcoli","Lib4_3_bin","Lib4_7_bin","Lib4_8_bin"))] <- c("AncientEcoli", "Zape2.1", "Zape2.2", "Zape3")
-rownamesHeatmap <- sapply(rownames(coreDataSub), function(x){ifelse(grepl("Corsini|Geridu", x), x,"")})
-MLSTHeatmap <- MLSTResults %>% filter(MLSTResults$Genome %in% colnames(AllPA)) %>% bind_rows( data.frame(Genome =c("Corsini", "Geridu"), ST = c("Corsini", "Geridu")))
-MLSTHeatmap <- MLSTHeatmap[match(rownames(coreDataSub), MLSTHeatmap$Genome),] %>% distinct()
+######################################
+# If I want to use a MDS plot
+geneDist <- dist(coreDataSub, method = "euclidean")
 
-tmpRows <- MLSTHeatmap$Genome
-MLSTHeatmap <- as.data.frame(MLSTHeatmap[,-1])
-colnames(MLSTHeatmap) <- "ST"
-rownames(MLSTHeatmap) <- tmpRows
-rm(tmpRows)
-#olivierTableHeatmap <- olivierTableHeatmap[complete.cases(olivierTableHeatmap),] %>%
-#       	bind_rows(data.frame(row.names = c("Zape2.1","Zape2.2","Zape3"),ST = c("Kostic", "Kostic", "Kostic"), Pathovar = "Kostic"))
+fit <- cmdscale(geneDist, eig = T, k = 4, add =T)
+coord <- fit$points %>% as_tibble()
+coord$Genome <- rownames(fit$points)
+contrib <- fit$eig/sum(fit$eig) * 100
+coord <- coord %>% left_join(MLSTResults)
+coord$ST[(ncol(coord)-1):ncol(coord)] <- c("Brancorsini", "Geridu")
 
-
-# Dendrogram and order
-specDist <- dist(coreDataSub, method = "binary")
-clusteredSpec <- hclust(specDist, method = "ward.D2") # 
-rownameOrder <- clusteredSpec$order
-
-treeColours <- as.list(ann_colors$ST)[MLSTHeatmap$ST] %>% unlist()
-dend <- as.dendrogram(clusteredSpec)
-labels_colors(dend) <- treeColours[rownameOrder]
-
-pdf("CoreTreeWhole.pdf", width = 24, height = 9)
-#pdf("~/Documents/University/EcoliPaperV2/AdditionalFiles/PartsofFigures/SpeciesCoreTree.pdf", width = 6, height = 8)
-plot(dend, horiz = F)
-legend("topright", legend = names(ann_colors$ST), fill = unlist(ann_colors$ST), title = "ST")
-dev.off()
-
-gapsRows <- c(which(grepl("Corsini|Geridu",rownames(coreDataSub)[rownameOrder])),which(grepl("Corsini|Geridu",rownames(coreDataSub)[rownameOrder])) - 1)
-gapsRows <- gapsRows[gapsRows > 0]
-
-pheatmap(coreDataSub[rownameOrder,], annotation_row = MLSTHeatmap,
-	 annotation_names_row = F,
-	 color = c("#007dba", "#f8333c"), clustering_method = "ward.D2", legend = F, show_colnames = F,
-	 gaps_row = gapsRows, cluster_rows = F,
-	 labels_row = rownamesHeatmap[rownameOrder], fontsize_row = 5, 
-	 width = 12, height = 8, border_color = NA, annotation_colors = ann_colors, filename = "CorePAHeatmapWhole.png")#, main = "Core Presence/Absence")
+# Quickly filtering the list so that only the STs present are used
+pCore <- coord %>%
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST)) +
+	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
+	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
+	geom_point() +
+	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
+	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
+	scale_colour_manual(values = ann_colors$ST) +
+	guides(colour = guide_legend(nrow = 2)) +
+	#geom_text_repel(show.legend = F) +
+	theme_classic() +
+	theme(legend.position = "bottom") 
+pCore
+ggsave(pCore, file = "PCoACore.pdf", width = 6, height = 4)
 
 ########## Accessory Genome Analysis ########
 accessDf <- AllPA %>% filter(!(Gene %in% coreGenes))
@@ -237,70 +224,16 @@ maxCount <- accessDataSub %>% colSums() %>% max()
 ind <- accessDataSub %>% colSums() < 5
 accessDataSub <- accessDataSub[,!ind]
 
-# Dendrogram and order
-specDist <- dist(accessDataSub, method = "binary")
-clusteredSpec <- hclust(specDist, method = "ward.D2") # 
-rownameOrder <- clusteredSpec$order
-
-treeColours <- as.list(ann_colors$ST)[MLSTHeatmap$ST] %>% unlist()
-dend <- as.dendrogram(clusteredSpec)
-labels_colors(dend) <- treeColours[rownameOrder]
-
-pdf("AccessTreeWhole.pdf", width = 24, height = 9)
-#pdf("~/Documents/University/EcoliPaperV2/AdditionalFiles/PartsofFigures/SpeciesAccessTree.pdf", width = 6, height = 8)
-plot(dend, horiz = F)
-legend("topright", legend = names(ann_colors$ST), fill = unlist(ann_colors$ST), title = "ST")
-dev.off()
-
-gapsRows <- c(which(grepl("Corsini|Geridu",rownames(accessDataSub)[rownameOrder])),which(grepl("Corsini|Geridu",rownames(accessDataSub)[rownameOrder])) - 1)
-gapsRows <- unique(gapsRows[gapsRows > 0])
-
-pheatmap(accessDataSub[rownameOrder,], annotation_row = MLSTHeatmap,
-	 annotation_names_row = F,
-	 color = c("#007dba", "#f8333c"), clustering_method = "ward.D2", legend = F, show_colnames = F,
-	 gaps_row = gapsRows, cluster_rows = F,
-	 labels_row = rownamesHeatmap[rownameOrder], fontsize_row = 5, 
-	 width = 12, height = 8, border_color = NA, annotation_colors = ann_colors, filename = "AccessPAHeatmapWhole.png")#, main = "Access Presence/Absence")
-
 ######################################
 # If I want to use a MDS plot
 geneDist <- dist(accessDataSub, method = "euclidean")
-geneClust <- hclust(geneDist, method = "ward.D2")
 
 fit <- cmdscale(geneDist, eig = T, k = 4, add =T)
 coord <- fit$points %>% as_tibble()
 coord$Genome <- rownames(fit$points)
 contrib <- fit$eig/sum(fit$eig) * 100
 coord <- coord %>% left_join(MLSTResults)
-coord$ST[(ncol(coord)-1):ncol(coord)] <- c("Corsini", "Geridu")
-
-# Quickly filtering the list so that only the STs present are used
-p1 <- coord %>%
-       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST)) +
-	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
-	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
-	geom_point() +
-	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
-	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
-	scale_colour_manual(values = ann_colors$ST) +
-	#geom_text_repel(show.legend = F) +
-	theme_classic()
-p1
-
-p2 <- coord %>%
-       	ggplot(aes(x = V3, y = V4, label = Genome, colour = ST)) +
-	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
-	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
-	geom_point() +
-	xlab(bquote("PCoA 3 ("~.(round(contrib[3],2))~"%)")) +
-	ylab(bquote("PCoA 4 ("~.(round(contrib[4],2))~"%)")) +
-	scale_colour_manual(values = ann_colors$ST) +
-	#geom_text_repel(show.legend = F) +
-	theme_classic()
-p2
-
-ggarrange(p1,p2, legend = "bottom", align = "hv", ncol = 1, common.legend = T)
-ggsave("PCoA_AccessoryWhole.pdf", width = 9, height = 6)
+coord$ST[(ncol(coord)-1):ncol(coord)] <- c("Brancorsini", "Geridu")
 
 # Clustering based on PCoA Coordinates
 sil <- sapply(2:6, function(i){clara(coord[,-c(5,6)], i)$silinfo$avg.width})
@@ -311,31 +244,51 @@ clustered <- clara(coord[,-c(5,6)], 4)
 coord$clusters <- factor(clustered$clustering)
 
 p1 <- coord %>%
-       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, shape = clusters, group = clusters)) +
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, group = clusters)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
-	stat_ellipse() +
+	stat_ellipse(lty = 2,show.legend = F) +
 	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
 	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
 	scale_colour_manual(values = ann_colors$ST) +
+	guides(colour = guide_legend(nrow = 2)) +
 	#geom_text_repel(show.legend = F) +
 	theme_classic()
 p1
 
-p2 <- coord %>%
-       	ggplot(aes(x = V3, y = V4, label = Genome, colour = ST, shape = clusters, group = clusters)) +
+# Pulling out the Genomes in cluster 1 and doing the same thing
+italy <- coord %>% filter(clusters == 1) %>% pull(Genome)
+geneDist <- dist(accessDataSub[rownames(accessDataSub) %in% italy,], method = "euclidean")
+
+fit <- cmdscale(geneDist, eig = T, k = 4, add =T)
+coord <- fit$points %>% as_tibble()
+coord$Genome <- rownames(fit$points)
+contrib <- fit$eig/sum(fit$eig) * 100
+coord <- coord %>% left_join(MLSTResults)
+coord$ST[(ncol(coord)-1):ncol(coord)] <- c("Brancorsini", "Geridu")
+
+# Getting the clusters ready (if we want them)
+sil <- sapply(2:6, function(i){clara(coord[,-c(5,6)], i)$silinfo$avg.width})
+plot(2:6, sil, type = "b")
+
+clustered <- clara(coord[,-c(5,6)], 4)
+coord$clusters <- factor(clustered$clustering)
+
+p1Clust <- coord %>%
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
-	stat_ellipse() +
-	xlab(bquote("PCoA 3 ("~.(round(contrib[3],2))~"%)")) +
-	ylab(bquote("PCoA 4 ("~.(round(contrib[4],2))~"%)")) +
+	#stat_ellipse(show.legend = F) +
+	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
+	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
 	scale_colour_manual(values = ann_colors$ST) +
+	#guide(shape = )
 	#geom_text_repel(show.legend = F) +
 	theme_classic()
-p2
+p1Clust
 
-ggarrange(p1,p2, legend = "bottom", align = "hv", ncol = 1, common.legend = T)
-ggsave(p1,file = "PCoA_Accessory_ClusterWhole.pdf", width = 9, height = 6)
+ggarrange(p1,p1Clust, legend = "bottom", align = "hv", nrow = 1, common.legend = T, labels = "AUTO")
+ggsave(file = "PCoA_Accessory_ClusterWhole.pdf", width = 9, height = 6)
 #####################################
