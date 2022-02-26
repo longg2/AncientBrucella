@@ -1,0 +1,36 @@
+category	term	description	Sample
+Process	GO:1901135	Carbohydrate derivative metabolic process	Brancorsini
+Process	GO:0009064	Glutamine family amino acid metabolic process	Brancorsini
+Process	GO:0018130	Heterocycle biosynthetic process	Brancorsini
+Process	GO:0055086	Nucleobase-containing small molecule metabolic process	Brancorsini
+Keyword	KW-0028	Amino-acid biosynthesis	Brancorsini
+Keyword	KW-0963	Cytoplasm	Brancorsini
+KEGG	bmel01230	Biosynthesis of amino acids	Brancorsini
+NetworkNeighborAL	CL:1173	Glycolysis, and glucose metabolic process	Brancorsini
+NetworkNeighborAL	CL:876	Cellular amino acid biosynthetic process, and nucleoside monophosphate biosynthetic process	Brancorsini
+Process	GO:0009058	Biosynthetic process	Geridu
+Process	GO:0010467	Gene expression	Geridu
+Process	GO:0043603	Cellular amide metabolic process	Geridu
+Process	GO:0043604	Amide biosynthetic process	Geridu
+Process	GO:0034645	Cellular macromolecule biosynthetic process	Geridu
+Process	GO:0044267	Cellular protein metabolic process	Geridu
+Process	GO:0044260	Cellular macromolecule metabolic process	Geridu
+Process	GO:0019538	Protein metabolic process	Geridu
+Component	GO:0005829	Cytosol	Geridu
+Function	GO:0003735	Structural constituent of ribosome	Geridu
+Function	GO:0005198	Structural molecule activity	Geridu
+Keyword	KW-0694	RNA-binding	Geridu
+Keyword	KW-0699	rRNA-binding	Geridu
+Keyword	KW-0234	DNA repair	Geridu
+Keyword	KW-0479	Metal-binding	Geridu
+Keyword	KW-0540	Nuclease	Geridu
+NetworkNeighborAL	CL:77	Gene expression, and protein export	Geridu
+NetworkNeighborAL	CL:83	Translation, and protein export	Geridu
+NetworkNeighborAL	CL:86	Ribonucleoprotein, and translation regulator activity	Geridu
+NetworkNeighborAL	CL:90	Ribosomal protein	Geridu
+NetworkNeighborAL	CL:99	Ribosome	Geridu
+NetworkNeighborAL	CL:94	Ribosomal protein	Geridu
+NetworkNeighborAL	CL:1431	Respiratory chain, and Cytochrome c oxidase subunit III domain	Geridu
+NetworkNeighborAL	CL:1170	Pentose phosphate pathway, and Glycolysis	Geridu
+NetworkNeighborAL	CL:103	rRNA-binding	Geridu
+NetworkNeighborAL	CL:104	rRNA-binding, and Ribosomal L29 protein	Geridu

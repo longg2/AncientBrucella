@@ -18,6 +18,29 @@ library(factoextra)
 library(gtools)
 
 ## Functions
+VCFParsing <- function(vcf){
+		# Preparing for the final part
+		FinalName <- gsub(".*\\/|\\.vcf", "",vcf)
+	# Getting the file Ready
+	vcfFile <- read.delim(file = vcf,comment.char = "#", header = F,
+			      			      col.names = c("CHROM", "POS", "ID", "REF", "ALT", "QUAL", "FILTER", "INFO", "FORMAT", "unknown")) %>%
+				filter(FILTER == "PASS") %>% as <- tibble()
+					#filter(REF != "C" & ALT != "T") %>% filter(REF != "G" & ALT != "A") %>% as <- tibble() # Filtered out the G -> A and C -> T Transitions
+			
+				if(nrow(vcfFile) == 0){
+							cat("No SNPs found in",FinalName, "\n")
+		return(NA)
+			}
+					
+					tmp <- unlist(strsplit(vcfFile$FORMAT[1], ":"))
+						tmp2 <- unlist(strsplit(gsub("=.*?(?=;)|=.*$","",vcfFile$INFO[1], perl = T), ";"))
+			vcfFile <- vcfFile %>% select(-FORMAT) %>% separate(unknown, into = tmp, sep = ":") %>%
+						mutate(INFO = gsub("(?<=;).*?=|^.*?=", "", INFO, perl = T)) %>% separate(INFO, into= tmp2, sep = ";")
+						vcfFile[,c(6,8:11,14)]<- sapply(vcfFile[,c(6,8:11,14)], as.numeric)
+							return(vcfFile)
+}
+
+
 CorrectingGC <- function(depthData){ # From the iREP Paper
 	GCModel <- lm(Mean ~ GCContent, data = depthData)
 	resids <- abs(summary(GCModel)$residuals) # Trying to find the top 1% largest residuals. Don't care about location
@@ -46,7 +69,6 @@ CorrectingGC <- function(depthData){ # From the iREP Paper
 
 }
 ############
-
 colour <- c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6',
 '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3',
 '#808000', '#ffd8b1', '#000075', '#808080', '#f0f0f0', '#000000')
