@@ -24,7 +24,7 @@ VCFParsing <- function(vcf){
 	# Getting the file Ready
 	vcfFile <- read.delim(file = vcf,comment.char = "#", header = F,
 			      			      col.names = c("CHROM", "POS", "ID", "REF", "ALT", "QUAL", "FILTER", "INFO", "FORMAT", "unknown")) %>%
-				filter(FILTER == "PASS") %>% as <- tibble()
+				filter(FILTER == "PASS") %>% as_tibble()
 					#filter(REF != "C" & ALT != "T") %>% filter(REF != "G" & ALT != "A") %>% as <- tibble() # Filtered out the G -> A and C -> T Transitions
 			
 				if(nrow(vcfFile) == 0){
@@ -94,7 +94,7 @@ depthDf <- do.call(bind_rows, pblapply(c("Depths/JessSamples.tab.gz", "Depths/Ka
 	}))
 
 # Getting the GC Content of the Genes
-gcContent <- read.table("PanGenomeGC.tab", header = F, col.names = c("Gene", "GC"), sep = "\t") %>% as_tibble() %>% mutate(GC = GC/100)
+gcContent <- read.table("PanGenomeGC.tab", header = F, col.names = c("Gene", "Length","GC"), sep = "\t") %>% as_tibble() %>% mutate(GC = GC/100)
 depthDf <- depthDf %>% left_join(gcContent)
 
 # Now to correct for GC Bias
@@ -155,6 +155,10 @@ AllPA <- roaryOutput %>% left_join(full_join(Corsini, Geridu)) %>%
 	KayBMel = ifelse(is.na(KayBMel)|KayBMel == 0, 0,1)) 
 colnames(AllPA)[(ncol(AllPA)-1):ncol(AllPA)] <- c("Brancorsini", "Geridu")
 colnames(AllPA) <- gsub("--","-XXX-", colnames(AllPA))
+
+# Merging the Corsini and Geridu Data
+ancientOnly <- Corsini %>% full_join(Geridu) %>% pivot_longer(cols = JessSamples:KayBMel, names_to = "Sample", values_to = "MeanCoverage", values_drop_na = T) %>%
+	mutate(Sample = ifelse(Sample == "KayBMel", "Geridu", "Brancorsini"), Status = ifelse(Gene %in% coreGenes, "Core", "Accessory"))
 
 # Now to make a boxplot to compare our gene to everyone else
 tmp <- AllPA %>% select(-Gene) %>% summarize_all(sum) %>% t() %>% as.data.frame()
@@ -313,4 +317,82 @@ p1Clust
 
 ggarrange(p1,p1Clust, legend = "bottom", align = "hv", nrow = 1, common.legend = T, labels = "AUTO")
 ggsave(file = "PCoA_Accessory_ClusterWhole.pdf", width = 9, height = 6)
-#####################################
+
+################################################
+# Now to do to the SNP heterozygosity analysis #
+################################################
+ancientOnly %>% group_by(Sample) %>% summarize(sum(Length)) # What's our estimated genome lengths?
+ancientOnly <- ancientOnly %>% group_by(Sample) %>% mutate(CopyNumber = MeanCoverage/mean(MeanCoverage))
+geneLengths <- gcContent %>% select(-GC)
+
+vcf <- VCFParsing("HetData/CorsiniHet.vcf") %>% select(CHROM,FILTER, QUAL, GT)
+
+# Getting the total gene set
+vcfHet <- vcf %>% mutate(Hetero = ifelse(grepl("0/1|1/0", GT), T, F))
+
+corsiniGenes <- geneLengths %>% filter(Gene %in% Corsini$Gene) # Gets the relevant Genes
+vcfCorsini <- vcfHet %>% filter(!is.na(FILTER),QUAL >= 30) %>% # does all of the heavy lifting
+       	group_by(CHROM) %>% summarize(Hetero = sum(Hetero)) %>% right_join(corsiniGenes, by = c("CHROM" = "Gene")) %>%
+	mutate(Hetero = replace(Hetero, is.na(Hetero),0)) %>% group_by(CHROM) %>% summarize(HeteroFrac = Hetero/Length) %>%
+	mutate(HeteroFrac = replace(HeteroFrac, is.infinite(HeteroFrac), 0), Status = ifelse(CHROM %in% coreGenes, "Core", "Accessory")) %>%
+	mutate(Status = factor(Status, levels = c("Core", "Accessory")))%>% mutate(Sample = "Brancorsini")
+
+coreHet <-vcfCorsini %>% filter(Status == "Core") %>% pull(HeteroFrac)
+accessHet <-vcfCorsini %>% filter(Status == "Accessory") %>% pull(HeteroFrac)
+t.test(coreHet, accessHet)
+
+# Now for Geridu
+vcf <- VCFParsing("HetData/KayHet.vcf") %>% select(CHROM,FILTER, QUAL, GT)
+
+vcfHet <- vcf %>% mutate(Hetero = ifelse(grepl("0/1|1/0", GT), T, F))
+
+geriduGenes <- geneLengths %>% filter(Gene %in% Geridu$Gene)
+vcfGeridu <- vcfHet %>% filter(!is.na(FILTER),QUAL >= 30) %>%
+       	group_by(CHROM) %>% summarize(Hetero = sum(Hetero)) %>% right_join(corsiniGenes, by = c("CHROM" = "Gene")) %>%
+	mutate(Hetero = replace(Hetero, is.na(Hetero),0)) %>% group_by(CHROM) %>% summarize(HeteroFrac = Hetero/Length) %>%
+	mutate(HeteroFrac = replace(HeteroFrac, is.infinite(HeteroFrac), 0), Status = ifelse(CHROM %in% coreGenes, "Core", "Accessory")) %>%
+	mutate(Status = factor(Status, levels = c("Core", "Accessory"))) %>% mutate(Sample = "Geridu")
+
+coreHet <-vcfGeridu %>% filter(Status == "Core") %>% pull(HeteroFrac)
+accessHet <-vcfGeridu %>% filter(Status == "Accessory") %>% pull(HeteroFrac)
+t.test(coreHet, accessHet)
+
+# Summary Statistics of both
+vcfPlot <- vcfCorsini %>% bind_rows(vcfGeridu)
+vcfPlot %>% group_by(Sample,Status) %>%
+       	summarize(Mean = mean(HeteroFrac), SD = sd(HeteroFrac), confInt = qnorm(0.975)*SD/sqrt(length(HeteroFrac)), 
+			 high = Mean + confInt, low = Mean - confInt) %>% as.data.frame()
+
+coreHetNo <- vcfPlot %>% group_by(Sample) %>% filter(HeteroFrac == 0, Status == "Core") %>%
+	summarize(Genes = paste0("Core Genes without Heterozygous Variants: ",length(CHROM)))
+accessHetNo <- vcfPlot %>% group_by(Sample) %>% filter(HeteroFrac == 0, Status == "Accessory") %>%
+	summarize(Genes = paste0("Accessory Genes without Heterozygous Variants: ",length(CHROM)))
+
+hetHist <- vcfPlot %>% ggplot(aes(x = HeteroFrac, fill = Status)) +
+       	geom_histogram(position = "identity", alpha = 0.75, colour = "black") +
+       #	geom_vline(xintercept = vcfPlot %>% filter(HeteroFrac < 0) %>% summarize(mean(HeteroFrac)) %>% pull(), colour = "red", lty = 2) +
+       	theme_bw() +
+	scale_x_log10() + annotation_logticks(sides = "b") + scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+	ylab("Genes") + xlab("P(Heterozygous)") +
+	scale_fill_manual(values = c(Core = "#f8333c", Accessory = "#007dba")) +
+	theme(legend.position = "bottom") +
+	facet_wrap("Sample",ncol = 1) +
+	geom_text(inherit.aes = F, data = coreHetNo, x = 3e-3, aes(label = Genes), y = 16)
+
+# Now let's get the copy numbers involved
+ancientOnly <- ancientOnly %>% left_join(vcfPlot %>% select(-Status), by = c("Sample", "Gene" = "CHROM"))
+
+copyHet <- ancientOnly %>% ggplot(aes(x = CopyNumber, y = HeteroFrac, colour = Status)) +
+	geom_point() +
+	theme_bw() +
+	geom_smooth(method = "lm") +
+	scale_y_log10() + annotation_logticks(sides = "l") + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+	xlab("Copy Number") + ylab("P(Heterozygous)") +
+	scale_colour_manual(values = c(Core = "#f8333c", Accessory = "#007dba")) +
+	theme(legend.position = "bottom") +
+	facet_wrap("Sample",ncol = 1, scales = "free")
+       	
+model <- lm(data = ancientOnly %>% filter(HeteroFrac > 0), log10(HeteroFrac) ~ CopyNumber+Status+Sample)
+
+ggarrange(hetHist, copyHet, ncol = 1, common.legend = T, legend = "bottom", align = "hv", labels = "AUTO")
+
