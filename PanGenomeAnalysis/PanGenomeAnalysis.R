@@ -3,7 +3,7 @@ library(tidyr)
 library(ggplot2)
 library(ggrepel)
 library(ggpubr)
-library(ggvenn)
+#library(ggvenn)
 library(scales)
 library(ggExtra)
 #library(reshape2)
@@ -11,10 +11,10 @@ library(cluster)
 library(parallel)
 library(pbapply)
 library(purrr)
-library(pheatmap)
-library(dendextend)
-library(FactoMineR)
-library(factoextra)
+#library(pheatmap)
+#library(dendextend)
+#library(FactoMineR)
+#library(factoextra)
 library(gtools)
 
 ## Functions
@@ -150,7 +150,7 @@ ggsave(tmp, file = "GenePresenceHistogram.pdf", width = 9, height = 6)
 # Gene Presence table
 Corsini <- Corsini %>% filter(JessSamples >= 10)
 Geridu <- Geridu %>% filter(KayBMel >= 1)
-AllPA <- roaryOutput %>% left_join(full_join(Corsini, Geridu)) %>%
+AllPA <- roaryOutput %>% left_join(full_join(Corsini, Geridu) %>% select(-Length)) %>%
        	mutate(JessSamples = ifelse(is.na(JessSamples)|JessSamples == 0, 0,1),
 	KayBMel = ifelse(is.na(KayBMel)|KayBMel == 0, 0,1)) 
 colnames(AllPA)[(ncol(AllPA)-1):ncol(AllPA)] <- c("Brancorsini", "Geridu")
@@ -168,7 +168,7 @@ geneCounts <- geneCounts %>% left_join(MLSTResults)
 colnames(geneCounts)[1] <- "Genes"
 geneCounts %>% filter(!grepl("Brancorsini|Geridu", Genome)) %>% ggplot(aes(y = Genes, x ="", color = ST)) +
        	geom_boxplot(outlier.shape = NA, colour = "black") + theme_bw() +
-	geom_jitter(height = 0) +
+	#geom_jitter(height = 0) +
 	geom_point(data = geneCounts %>% filter(grepl("Brancorsini|Geridu", Genome)), aes(colour = Genome, x = "")) +
 	scale_colour_manual(values = ann_colors$ST) + 
 	theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), axis.title.x = element_blank(), legend.position = "right")
@@ -178,7 +178,6 @@ ggsave("GeneCountsBmel.pdf", width = 6, height = 9)
 SamplePA <- Corsini %>% full_join(Geridu) %>% mutate(CorsiniPresent = ifelse(JessSamples >= 10, T, F), GeriduPresent = ifelse(KayBMel >= 1, T,F)) %>%
 	mutate(CorsiniPresent = replace(CorsiniPresent, is.na(CorsiniPresent), F), GeriduPresent = replace(GeriduPresent, is.na(GeriduPresent), F)) %>%
 	mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory"))
-
 
 tmp <- coreGenes[!(coreGenes %in% SamplePA$Gene)]
 tmp <- c(tmp,SamplePA %>% filter(Status == "Core", !CorsiniPresent, !GeriduPresent) %>% pull(Gene))
@@ -208,7 +207,7 @@ coreDataSub <- coreDataSub[,!ind]
 
 ######################################
 # If I want to use a MDS plot
-geneDist <- dist(coreDataSub, method = "euclidean")
+geneDist <- dist(coreDataSub, method = "binary")
 
 fit <- cmdscale(geneDist, eig = T, k = 4, add =T)
 coord <- fit$points %>% as_tibble()
@@ -252,7 +251,7 @@ accessDataSub <- accessDataSub[,!ind]
 
 ######################################
 # If I want to use a MDS plot
-geneDist <- dist(accessDataSub, method = "euclidean")
+geneDist <- dist(accessDataSub, method = "binary")
 
 fit <- cmdscale(geneDist, eig = T, k = 4, add =T)
 coord <- fit$points %>% as_tibble()
@@ -269,23 +268,27 @@ clustered <- clara(coord[,-c(5,6)], 4)
 
 coord$clusters <- factor(clustered$clustering)
 
+ann_colors$ST <- ann_colors$ST[mixedsort(unique(coord$ST))]
 p1 <- coord %>%
        	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, group = clusters)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
-	stat_ellipse(lty = 2,show.legend = F) +
+	#stat_ellipse(lty = 2,show.legend = F) +
 	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
 	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
 	scale_colour_manual(values = ann_colors$ST) +
 	guides(colour = guide_legend(nrow = 2)) +
 	#geom_text_repel(show.legend = F) +
-	theme_classic()
+	theme_classic() +
+	theme(legend.position = "bottom")
+
 p1
+ggsave(p1, file = "AccessoryPCoA.pdf", width = 9, height = 6)
 
 # Pulling out the Genomes in cluster 1 and doing the same thing
 italy <- coord %>% filter(clusters == 1) %>% pull(Genome)
-geneDist <- dist(accessDataSub[rownames(accessDataSub) %in% italy,], method = "euclidean")
+geneDist <- dist(accessDataSub[rownames(accessDataSub) %in% italy,], method = "binary")
 
 fit <- cmdscale(geneDist, eig = T, k = 4, add =T)
 coord <- fit$points %>% as_tibble()
@@ -298,11 +301,12 @@ coord$ST[(ncol(coord)-1):ncol(coord)] <- c("Brancorsini", "Geridu")
 sil <- sapply(2:6, function(i){clara(coord[,-c(5,6)], i)$silinfo$avg.width})
 plot(2:6, sil, type = "b")
 
-clustered <- clara(coord[,-c(5,6)], 4)
+clustered <- clara(coord[,-c(5,6)], 3)
 coord$clusters <- factor(clustered$clustering)
 
+ann_colors$ST <- ann_colors$ST[mixedsort(unique(coord$ST))]
 p1Clust <- coord %>%
-       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST)) +
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, group = clusters)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
@@ -312,8 +316,10 @@ p1Clust <- coord %>%
 	scale_colour_manual(values = ann_colors$ST) +
 	#guide(shape = )
 	#geom_text_repel(show.legend = F) +
-	theme_classic()
+	theme_classic() +
+	theme(legend.position = "bottom")
 p1Clust
+ggsave(p1Clust, file = "AccessoryItalyPCoA.pdf", width = 9, height = 6)
 
 ggarrange(p1,p1Clust, legend = "bottom", align = "hv", nrow = 1, common.legend = T, labels = "AUTO")
 ggsave(file = "PCoA_Accessory_ClusterWhole.pdf", width = 9, height = 6)
@@ -363,12 +369,12 @@ vcfPlot %>% group_by(Sample,Status) %>%
        	summarize(Mean = mean(HeteroFrac), SD = sd(HeteroFrac), confInt = qnorm(0.975)*SD/sqrt(length(HeteroFrac)), 
 			 high = Mean + confInt, low = Mean - confInt) %>% as.data.frame()
 
-coreHetNo <- vcfPlot %>% group_by(Sample) %>% filter(HeteroFrac == 0, Status == "Core") %>%
-	summarize(Genes = paste0("Core Genes without Heterozygous Variants: ",length(CHROM)))
-accessHetNo <- vcfPlot %>% group_by(Sample) %>% filter(HeteroFrac == 0, Status == "Accessory") %>%
-	summarize(Genes = paste0("Accessory Genes without Heterozygous Variants: ",length(CHROM)))
+coreHetNo <- vcfPlot %>% filter(Sample == "Brancorsini") %>% filter(HeteroFrac == 0, Status == "Core") %>%
+	summarize(Genes =length(CHROM))
+accessHetNo <- vcfPlot  %>% filter(Sample == "Brancorsini") %>% filter(HeteroFrac == 0, Status == "Accessory") %>%
+	summarize(Genes =length(CHROM))
 
-hetHist <- vcfPlot %>% ggplot(aes(x = HeteroFrac, fill = Status)) +
+hetHist <- vcfPlot %>% filter(Sample == "Brancorsini") %>% ggplot(aes(x = HeteroFrac, fill = Status)) +
        	geom_histogram(position = "identity", alpha = 0.75, colour = "black") +
        #	geom_vline(xintercept = vcfPlot %>% filter(HeteroFrac < 0) %>% summarize(mean(HeteroFrac)) %>% pull(), colour = "red", lty = 2) +
        	theme_bw() +
@@ -376,23 +382,28 @@ hetHist <- vcfPlot %>% ggplot(aes(x = HeteroFrac, fill = Status)) +
 	ylab("Genes") + xlab("P(Heterozygous)") +
 	scale_fill_manual(values = c(Core = "#f8333c", Accessory = "#007dba")) +
 	theme(legend.position = "bottom") +
-	facet_wrap("Sample",ncol = 1) +
-	geom_text(inherit.aes = F, data = coreHetNo, x = 3e-3, aes(label = Genes), y = 16)
+	annotate(geom = "text", label = paste0("Core Genes with No Heterozygous SNPs: ",coreHetNo$Genes), x = 3e-3, y = 14, colour = "#f8333c") +
+	annotate(geom = "text", label = paste0("Accessory Genes with No Heterozygous SNPs: ",accessHetNo$Genes), x = 3e-3, y = 12, colour = "#007dba")
 
 # Now let's get the copy numbers involved
 ancientOnly <- ancientOnly %>% left_join(vcfPlot %>% select(-Status), by = c("Sample", "Gene" = "CHROM"))
+       	
+model <- lm(data = ancientOnly %>% filter(HeteroFrac > 0, Sample == "Brancorsini"), log10(HeteroFrac) ~ CopyNumber*Status)
+r2 <- round(summary(model)$adj.r.squared,2)
+tmp <- summary(model)$fstatistic
+pval <- round(pf(tmp[1],tmp[2],tmp[3], lower.tail = F),3)
 
-copyHet <- ancientOnly %>% ggplot(aes(x = CopyNumber, y = HeteroFrac, colour = Status)) +
+copyHet <- ancientOnly %>% filter(Sample == "Brancorsini") %>% ggplot(aes(x = CopyNumber, y = HeteroFrac, colour = Status)) +
 	geom_point() +
 	theme_bw() +
 	geom_smooth(method = "lm") +
 	scale_y_log10() + annotation_logticks(sides = "l") + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
 	xlab("Copy Number") + ylab("P(Heterozygous)") +
 	scale_colour_manual(values = c(Core = "#f8333c", Accessory = "#007dba")) +
-	theme(legend.position = "bottom") +
-	facet_wrap("Sample",ncol = 1, scales = "free")
-       	
-model <- lm(data = ancientOnly %>% filter(HeteroFrac > 0), log10(HeteroFrac) ~ CopyNumber+Status+Sample)
+	annotate(geom = "text", x = 1.6, y = 3e-3, label = bquote(R[adj]^2 == .(r2))) +
+	annotate(geom = "text", x = 1.6, y = 2e-3, label = bquote(P %~~% .(pval))) +
+	theme(legend.position = "bottom") 
 
 ggarrange(hetHist, copyHet, ncol = 1, common.legend = T, legend = "bottom", align = "hv", labels = "AUTO")
+ggsave(file = "Heterozygosity.pdf", height = 12, width = 9)
 
