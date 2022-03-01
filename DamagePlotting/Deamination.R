@@ -207,54 +207,17 @@ sampleTrans <- function(sampleName){
 colour <- c("#2e294e", "#f8333c", "#007dba", "#1b998b", "#34d1bf")
 
 #colourList <- c(`Homo sapiens` = "#2e294e", `Brucella melitensis` = "#f8333c")
-colourList <- c(`Homo sapiens` = "#2e294e", `Corsini` = "#f8333c", `Geridu` = "#34d1bf")
+colourList <- c(`Homo sapiens` = "#2e294e", `Brancorsini` = "#f8333c", `Geridu` = "#34d1bf")
 
 # Where are the files/folders that I need?
 deamFolderLocation <- "NoUnmap/Ecoli/MapDamagePanGenomeV2"
 depurFolderLocation <- "NoUnmap/Ecoli/Depurination"
 mismatchFolderLocation <- "NoUnmap/Ecoli/MismatchesPanGenomeV2"
 
-############# Deamination ##########
-ecoli <- deaminationParsing(deamFolderLocation,435)
-ecoli$Organism <- "Escherichia coli"
-kaero <- deaminationParsing("NoUnmap/Kaero/MapDamageKaero", 435)
-kaero$Organism <- "Klebsiella aerogenes"
-human <- deaminationParsing("NoUnmap/Hsapiens/MapDamageHsapiens", 435)
-human$Organism <- "Homo sapiens"
-
-deam <- bind_rows(ecoli,human) %>% mutate(Organism =factor(Organism, levels = c("Homo sapiens","Escherichia coli","Klebsiella aerogenes"))) %>%
-	ggplot(aes(x = Sample, y = Rate, ymin = Rate - ErrorRate, ymax = Rate + ErrorRate, fill = Organism)) +
-	theme_bw() +scale_y_continuous(breaks = pretty_breaks(10)) +
-	geom_col(position = "dodge") + geom_errorbar(colour = "black", width = 0.5, position = position_dodge(width = 0.9)) +
-	scale_fill_manual(values = colour) + labs(y = "Deamination Rate") +
-	theme(legend.text = element_text(face = "italic"), axis.title.x = element_blank(), axis.text.x = element_blank())
-deam
-
-ggsave(figure, file = "DeaminationPlot.png", width = 12, height = 8)
-
-############# Depurination ##########
-ecoli <- depurinationParsing(depurFolderLocation)
-ecoli$Organism <- "Escherichia coli"
-kaero <- depurinationParsing("NoUnmap/Kaero/Depurination")
-kaero$Organism <- "Klebsiella aerogenes"
-human <- depurinationParsing("NoUnmap/Hsapiens/Depurination")
-human$Organism <- "Homo sapiens"
-
-bind_rows(ecoli, kaero, human) %>% mutate(ConfIntHigh = 1/ConfIntHigh, Mean = 1/Mean, ConfIntLow = 1/ConfIntLow) %>% data.frame() 
-
-depur <- bind_rows(ecoli, human) %>% mutate(Organism =factor(Organism, levels = c("Homo sapiens","Escherichia coli","Klebsiella aerogenes")))  %>%
-	ggplot(aes(y = Mean, x = Sample, ymin = ConfIntLow, ymax = ConfIntHigh, fill = Organism)) +
-	geom_col(position = "dodge") + geom_errorbar(colour = "black", width = 0.5, position = position_dodge(width = 0.9)) +
-	theme_bw() + scale_fill_manual(values = colour) + scale_y_continuous(breaks = pretty_breaks(10)) +
-	ylab("Depurination Rate") + theme(legend.position = "bottom")
-
-figure <- ggarrange(ncol = 1, deam, depur, common.legend = T, legend = "bottom", align = "hv", labels = "AUTO")
-ggsave(figure, file = "~/Documents/University/EcoliPaperV2/Figures/DepurandDeamPlot.png", width = 8, height = 6)
-
 ############# Readcounts ##########
 files <- list.files(path = "FLD", full.names = T)
 fld <- as_tibble(reduce(lapply(files, function(f){FLDParsing(f)}), bind_rows)) %>% filter(Sample != "PoinarScriptKay")
-fld <- fld %>% mutate(Sample = replace(Sample, Sample == "BmelMapped", "Corsini"), Sample = replace(Sample, Sample == "KayBMel", "Geridu"), Sample = replace(Sample, Sample == "Human", "Homo sapiens"))
+fld <- fld %>% mutate(Sample = replace(Sample, Sample == "BmelMapped", "Brancorsini"), Sample = replace(Sample, Sample == "KayBMel", "Geridu"), Sample = replace(Sample, Sample == "Human", "Homo sapiens"))
 fld %>% group_by(Sample,Length) %>% summarize(Reads = sum(Reads)) %>% summarize(MeanLength = mean(rep(Length, Reads)), SD = sd(rep(Length,Reads)))
 
 MedianLength <- fld %>% group_by(Sample,Length) %>% summarize(Reads = sum(Reads)) %>% summarize(Length = median(rep(Length, Reads)))
@@ -263,7 +226,7 @@ segmentPlot <- MedianLength %>% left_join(fld)
 
 
 # Quick test to see if I can get a significant difference
-fldModel <- fld %>% filter(Sample != "Geridu") %>% lm(formula = log10(Reads) ~ Length + Sample)
+fldModel <- fld %>% filter(Sample != "Geridu") %>% lm(formula = log10(Reads) ~ Length * Sample)
 fldModel %>% summary()
 
 #reduce(list(ecoli,kaero, human),bind_rows) %>% mutate(Sample = NameEdits(Sample)) %>% group_by(Organism, Sample) %>%
@@ -298,7 +261,7 @@ ggsave(FLDfigure, file = "FLDLog.png", width = 6, height = 4)
 ############# Mismatches ##########
 files <- list.files("Mismatches", full.names = T)
 mismatches <- as_tibble(reduce(lapply(files, function(f){MismatchParsing(f)}), bind_rows))
-mismatches <- mismatches %>% mutate(Sample = replace(Sample, Sample == "BmelMapped", "Corsini"), Sample = replace(Sample, Sample == "KayBMel", "Geridu"), Sample = replace(Sample, Sample == "Human", "Homo sapiens"))
+mismatches <- mismatches %>% mutate(Sample = replace(Sample, Sample == "BmelMapped", "Brancorsini"), Sample = replace(Sample, Sample == "KayBMel", "Geridu"), Sample = replace(Sample, Sample == "Human", "Homo sapiens"))
 #mismatches <- mismatches %>% mutate(Sample = replace(Sample, Sample == "BmelMapped", "Brucella melitensis"), Sample = replace(Sample, Sample == "Human", "Homo sapiens"))
 
 figure <- mismatches %>% group_by(Sample) %>% 
@@ -327,21 +290,12 @@ ggsave("BmelMismatches.png", width = 6, height = 4)
 #ecoli <- mapDamagePlottingV2(deamFolderLocation,leg = F)
 mapDamage <- mapDamageParsing("MapDamage")
 #mapDamage <- mapDamage %>% mutate(Sample = replace(Sample, Sample == "BrucellaMelitensis", "Brucella melitensis"), Sample = replace(Sample, Sample == "HomoSapiens", "Homo sapiens"))
-mapDamage <- mapDamage %>% mutate(Sample = replace(Sample, Sample == "JessSample", "Corsini"), Sample = replace(Sample, Sample == "Kay", "Geridu"), Sample = replace(Sample, Sample == "HomoSapiens", "Homo sapiens"))
+mapDamage <- mapDamage %>% mutate(Sample = replace(Sample, Sample == "JessSample", "Brancorsini"), Sample = replace(Sample, Sample == "Kay", "Geridu"), Sample = replace(Sample, Sample == "HomoSapiens", "Homo sapiens"))
 
 annotationDF <- mapDamage %>% group_by(Sample) %>% filter(Pos == -25 | Pos == 25)
 annotationDF$Pos <- rep(c(0.125,0.15,0.175),2)
 #annotationDF$Pos <- c(0.1,0.125,0.15,0.175)
 #annotationDF <- annotationDF %>% mutate(Sample =factor(Sample, levels = c("Homo sapiens","Brucella melitensis")))
-
-
-mapDamagefigureSupp <- reduce(list(kaero, human),bind_rows) %>% filter(Sample != "Digest 1") %>%
-	mutate(Organism =factor(Organism, levels = c("Escherichia coli","Homo sapiens","Klebsiella aerogenes"))) %>%
-	ggplot(aes(x = Pos, y = DamageFrac, col = Sample)) + geom_line() + theme_bw()+
-	scale_colour_manual(values = colourList) + facet_grid(Organism ~.) +
-	xlab("Distance from Center") + ylab("Fraction Damaged") +
-	coord_cartesian(ylim = c(0,0.25)) + geom_vline(xintercept = 0, lty = 2, size = 1) +
-	theme(strip.text.y = element_text(face = "italic"))
 
 mapDamagefigure <- mapDamage  %>%
 	#mutate(Sample =factor(Sample, levels = c("Homo sapiens","Brucella melitensis"))) %>%
