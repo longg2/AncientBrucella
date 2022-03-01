@@ -198,7 +198,6 @@ mapDamagePlotting <- function(folder, leg = F){
 colour <- c("#2e294e", "#f8333c", "#007dba", "#1b998b", "#34d1bf")
 
 colourList <- c(`Homo sapiens` = "#2e294e", `Brancorsini` = "#f8333c", `Geridu` = "#34d1bf")
-
 ############# Readcounts ##########
 files <- list.files(path = "FLD", full.names = T)
 fld <- as_tibble(reduce(lapply(files, function(f){FLDParsing(f)}), bind_rows)) %>% filter(Sample != "PoinarScriptKay")
@@ -211,7 +210,7 @@ segmentPlot <- MedianLength %>% left_join(fld)
 
 
 # Quick test to see if I can get a significant difference
-fldModel <- fld %>% filter(Sample != "Geridu") %>% lm(formula = log10(Reads) ~ Length + Sample)
+fldModel <- fld %>% filter(Sample != "Geridu") %>% lm(formula = log10(Reads) ~ Length * Sample)
 fldModel %>% summary()
 
 #reduce(list(ecoli,kaero, human),bind_rows) %>% mutate(Sample = NameEdits(Sample)) %>% group_by(Organism, Sample) %>%
