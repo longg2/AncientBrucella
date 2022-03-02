@@ -124,19 +124,19 @@ Geridu <- depthDf %>% filter(Genome != "JessSamples", CV <=1) %>%
 GeriduRect <- Geridu %>% summarize(Mean = mean(KayBMel), SD2 = 2*sd(KayBMel))
 
 corsiniPlot <- Corsini %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% ggplot(aes(x = JessSamples, fill = Status)) + 
-	geom_rect(data = CorsiniRect, inherit.aes = F, aes(xmin = Mean - SD2, xmax = Mean + SD2, ymin = -Inf, ymax = Inf), colour = "purple", alpha = 0.5) +
+	geom_rect(data = CorsiniRect, inherit.aes = F, aes(xmin = Mean + SD2, xmax = Inf, ymin = -Inf, ymax = Inf), colour = "black", lty = 2, alpha = 0.5) +
 	geom_histogram(position = "identity", alpha = 0.75, colour = "black", binwidth = 1) +
 	geom_vline(xintercept = 10, colour = "black", lty = 2) +
-	geom_vline(xintercept = CorsiniRect$Mean, colour = "purple", lty = 2) +
+	#geom_vline(xintercept = CorsiniRect$Mean, colour = "purple", lty = 2) +
 	scale_fill_manual(values = c(Accessory = "#007dba",Core = "#f8333c")) + theme_bw() +
 	xlab("Mean Read Depth") + ylab("Genes") + theme(legend.position = "bottom", axis.title.x = element_blank(), axis.text.x = element_blank()) + 
 	scale_x_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0,50)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0, 1250))
 
 geriduPlot <- Geridu %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% ggplot(aes(x = KayBMel, fill = Status)) + 
-	geom_rect(data = GeriduRect, inherit.aes = F, aes(xmin = Mean - SD2, xmax = Mean + SD2, ymin = -Inf, ymax = Inf), colour = "purple", alpha = 0.5) +
+	geom_rect(data = GeriduRect, inherit.aes = F, aes(xmin = Mean + SD2, xmax = Inf, ymin = -Inf, ymax = Inf), colour = "black", lty = 2, alpha = 0.5) +
 	geom_histogram(position = "identity", alpha = 0.75, colour = "black", binwidth = 1) +
 	geom_vline(xintercept = 1, colour = "black", lty = 2) +
-	geom_vline(xintercept = GeriduRect$Mean, colour = "purple", lty = 2) +
+	#geom_vline(xintercept = GeriduRect$Mean, colour = "purple", lty = 2) +
 	scale_fill_manual(values = c(Core = "#f8333c",Accessory = "#007dba")) + theme_bw() +
 	xlab("Mean Read Depth") + ylab("Genes") + theme(legend.position = "bottom") + 
 	scale_x_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0,50)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0, 1250))
@@ -404,6 +404,7 @@ copyHet <- ancientOnly %>% filter(Sample == "Brancorsini") %>% ggplot(aes(x = Co
 	annotate(geom = "text", x = 1.6, y = 2e-3, label = bquote(P %~~% .(pval))) +
 	theme(legend.position = "bottom") 
 
-ggarrange(hetHist, copyHet, ncol = 1, common.legend = T, legend = "bottom", align = "hv", labels = "AUTO")
-ggsave(file = "Heterozygosity.pdf", height = 12, width = 9)
+hetPlots <- ggarrange(hetHist, copyHet, ncol = 1, common.legend = T, legend = "bottom", align = "hv", labels = c("C","D"))
+ggarrange(tmp, hetPlots, common.legend = T)
+ggsave(file = "Heterozygosity.png", height = 6, width = 9)
 

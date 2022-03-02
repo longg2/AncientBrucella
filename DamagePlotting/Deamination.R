@@ -285,14 +285,16 @@ mapDamagefigure <- mapDamage  %>%
 	geom_text(data = annotationDF, aes(x = c(rep(-10,3), rep(10,3)), y = Pos, label = signif(DamageFrac, 3), colour = Sample),show.legend = F) +# + ylab(bquote(log[10]("Reads")))
 	coord_cartesian(ylim = c(0,0.25)) + geom_vline(xintercept = 0, lty = 2, size = 1) +
 	theme(legend.text = element_text(face = "italic"), legend.position = "none") +
-	annotate(geom = "text", x = -10, y = 0.20, label = "Maximum CT Deamination") +
-	annotate(geom = "text", x = 10, y = 0.20, label = "Maximum GA Deamination") 
+	annotate(geom = "text", x = -10, y = 0.20, label = "CT Deamination") +
+	annotate(geom = "text", x = 10, y = 0.20, label = "GA Deamination") 
 	#annotate(geom = "text", x = -10, y = annotationDF$Pos, label = signif(annotationDF$DamageFrac,3), colour = colourList[c(2,1)])
 
 mapDamagefigure
 ggsave("MapDamageFigure.pdf", width = 6, height = 4)
 	#annotate(geom = "text", x = 10, y = , label = c("5`", "3`"), fontface = "bold")
 
-bottom <- ggarrange(FLDfigure, figure, common.legend =T, legend = "bottom")
-ggarrange(mapDamagefigure, bottom, ncol = 1)
-ggsave("DamagePlots.pdf", width = 12, height = 8)
+right <- ggarrange(FLDfigure, mapDamagefigure, common.legend = T, legend = "bottom", ncol = 1, labels = c("B", "C"))
+ggarrange(plot.new(), right, nrow = 1, labels = "A")
+#bottom <- ggarrange(FLDfigure, figure, common.legend =T, legend = "bottom")
+#ggarrange(mapDamagefigure, bottom, ncol = 1)
+ggsave("Figure1.png", width = 9, height = 6)
