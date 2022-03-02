@@ -1,0 +1,15 @@
+Query	Match	COG	COGMembershipClass	FunctionalCategory	Name	Gene	FunctionalPathway	PMID	PDBID
+group_2615	WP_012093257	COG2721	1	G	Altronate dehydratase	UxaA			6U7L
+group_2660	WP_002964065	COG2608	0	P	Copper chaperone CopZ	CopZ			1AFI
+group_2898	WP_002967140	COG0161	0	H	Adenosylmethionine-8-amino-7-oxononanoate aminotransferase	BioA	Biotin biosynthesis		1MLY
+group_2981	WP_002967639	COG0564	0	J	Pseudouridine synthase RluA, 23S rRNA- or tRNA-specific	RluA	23S rRNA modification		2I82
+group_3018	WP_002965082	COG0789	0	K	DNA-binding transcriptional regulator, MerR family	SoxR			2VZ4
+group_3117	WP_002969148	COG0110	0	R	Acetyltransferase, isoleucine patch superfamily	WbbJ			
+group_3267	WP_004683973	COG1253	1	R	Hemolysin-related protein, contains CBS domains, UPF0053 family	TlyC			2NQW
+group_3273	WP_004683686	COG0368	0	H	Cobalamin synthase CobS (adenosylcobinamide-GDP ribazoletransferase)	CobS	Cobalamine/B12 biosynthesis	31481610	
+group_3348	WP_002963470	COG0717	1	F	dCTP deaminase	Dcd	Thymidylate biosynthesis		1XS1
+group_3352	WP_002967731	COG1785	0	PR	Alkaline phosphatase	PhoA	Folate biosynthesis		1AJA
+group_3382	WP_004684210	COG4784	0	R	Putative Zn-dependent protease				
+group_3388	WP_002966100	COG3191	0	E	L-aminopeptidase/D-esterase	DmpA			1B65
+group_3413	WP_002967832	COG0193	1	J	Peptidyl-tRNA hydrolase	Pth	Translation factors	11835511	1RYB
+group_3574	WP_004682925	COG3938	0	E	Proline racemase/hydroxyproline epimerase	PrdF		17849014	1TM0

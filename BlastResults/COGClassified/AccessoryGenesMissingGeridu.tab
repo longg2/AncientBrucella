@@ -1,0 +1,17 @@
+Query	Match	COG	COGMembershipClass	FunctionalCategory	Name	Gene	FunctionalPathway	PMID	PDBID
+group_2143	WP_012092477	COG2303	0	IR	Choline dehydrogenase or related flavoprotein	BetA	Non-phosphorylated Entner-Doudoroff pathway		1B4V
+group_2244	WP_004683910	COG4799	0	I	Acetyl-CoA carboxylase, carboxyltransferase component	MmdA			1OD2
+group_2299	WP_004681841	COG1252	0	C	NADH dehydrogenase, FAD-containing subunit	Ndh			5NA4
+group_2596	AQS41639	COG0621	0	J	tRNA A37 methylthiotransferase MiaB	MiaB	tRNA modification	17407324;20472640;20584901	4JC0
+group_2604	WP_005970024	COG1961	0	L	Site-specific DNA recombinase SpoIVCA/DNA invertase PinE	SpoIVCA			1GDT
+group_2647	WP_004686401	COG5510	0	S	Predicted small secreted protein				
+group_2649	WP_004686734	COG1024	0	I	Enoyl-CoA hydratase/carnithine racemase	CaiD	Fatty acid biosynthesis		1DCI
+group_2757	WP_004683953	COG1903	0	H	Cobalamin biosynthesis protein CbiD (cobalt-precorrin-5B C-methyltransferase)	CbiD	Cobalamine/B12 biosynthesis		1SR8
+group_2810	WP_004686885	COG3573	0	R	Predicted oxidoreductase				
+group_3042	WP_012093125	COG0471	1	G	Di- and tricarboxylate antiporter	CitT			4F35
+group_3258	WP_005971540	COG0628	0	R	Predicted PurR-regulated permease PerM	PerM			
+group_3278	WP_004684712	COG0404	1	E	Glycine cleavage system protein T (aminomethyltransferase)	GcvT	Glycine cleavage	25433025;25505271	2GAH
+group_3278	WP_004684712	COG0446	1	I	NADPH-dependent 2,4-dienoyl-CoA reductase, sulfur reductase, or a related oxidoreductase	FadH2			1VRQ
+group_3402	WP_004681752	COG0438	0	M	Glycosyltransferase involved in cell wall bisynthesis	RfaB			2IV7
+group_3564	WP_004682563	COG0444	0	EP	ABC-type dipeptide/oligopeptide/nickel transport system, ATPase component	DppD			4FWI
+group_3573	WP_004687586	COG1028	0	I	NAD(P)-dependent dehydrogenase, short-chain alcohol dehydrogenase family	FabG	Fatty acid biosynthesis		6L1H

@@ -1,0 +1,7 @@
+BlastResults/cog-*
+BlastResults/BlastOut/
+BlastResults/BlastTop/
+BlastResults/ProteinFiguredOut/
+Phylogenies/Beast/BeastSetup/
+Phylogenies/Beast/BeastResults/*.treefile
+Phylogenies/Beast/XMLfiles/

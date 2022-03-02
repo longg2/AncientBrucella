@@ -141,9 +141,11 @@ geriduPlot <- Geridu %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Ac
 	xlab("Mean Read Depth") + ylab("Genes") + theme(legend.position = "bottom") + 
 	scale_x_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0,50)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0, 1250))
 
-tmp <- ggarrange(corsiniPlot, geriduPlot, nrow = 2, labels= "AUTO", common.legend = T, align = "hv", legend = "bottom")
-
-ggsave(tmp, file = "GenePresenceHistogram.pdf", width = 9, height = 6)
+histPlot <- ggarrange(corsiniPlot, geriduPlot, nrow = 2, labels= c("A","C"), common.legend = T, align = "hv", legend = "bottom")
+tmp <- ggplot() + theme_void()
+tmp <- ggarrange(tmp,tmp, nrow = 2, labels = c("B", "D"))
+ggarrange(histPlot,tmp)
+ggsave(file = "GenePresenceHistogram.pdf", width = 9, height = 6)
 
 # Genes which were > +2SD from distribution
 #####################################################################

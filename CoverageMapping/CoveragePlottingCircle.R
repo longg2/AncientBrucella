@@ -395,10 +395,11 @@ T6SSKaeroPlot <- function(depthtmp, windowK = 1000, Chromo, fasta, gff){
 pdf("KayCoverage.pdf", width = 12, height = 6)
 par(mfrow = c(1,2))
 
-depthOrig <- as_tibble(read.table("KayDepths.tab.gz", header = F))
-snpsOrig <- as_tibble(read.table("KaySNPs.vcf", comment.char = "#", header = T))
+depthOrig <- as_tibble(read.table("Data/JessSample.tab.gz", header = F))
+snpsOrig <- as_tibble(read.table("Data/JessSample.vcf", comment.char = "#", header = T))
 colnames(depthOrig) <- c("Chromosome", "Position", "Coverage")
 Chrom1 <- GenomeMappingGCCorrected(depthOrig, snpsOrig,Chromo = "NC_003317.1", fasta = "BmelReference.fasta",windowKProp = 0.001)
+Chrom1$CoverageData %>% summarize(mean = mean(MeanCoverage), CV = sd(MeanCoverage)/mean(MeanCoverage))
 Chrom2 <- GenomeMappingGCCorrected(depthOrig, snpsOrig,Chromo = "NC_003318.1", fasta = "BmelReference.fasta",windowKProp = 0.001)
 
 dev.off()
