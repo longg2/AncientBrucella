@@ -19,7 +19,7 @@ cog2fun <-  read.delim("cog-20.def.tab", header =F,
 op <- pboptions(type = "timer")
 ncores <- 10
 	
-for (file in list.files("COGTEST", full.names = T)){
+for (file in list.files("COGIn", full.names = T)){
 	#FileName
 	filename <- gsub(".tab", "",basename(file))
 	tmp <- read.delim(file, header = F,

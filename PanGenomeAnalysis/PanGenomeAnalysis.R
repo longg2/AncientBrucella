@@ -113,6 +113,13 @@ coreGenes <- rowSums(roaryOutput[,-1]) >= floor(0.95 * ncol(roaryOutput))
 #coreGenes <- rowSums(ecoliOnly[,-1]) >= floor(0.99 * ncol(ecoliOnly))
 coreGenes <- roaryOutput$Gene[coreGenes]
 
+########### Saving the genes that failed slightly...###########
+slightFail <- depthDf %>% filter(CV > 1 & CV <= 2)
+corsiniSlight <- slightFail %>% filter(Genome == "JessSamples", GCCorrected >= 10)
+geriduSlight <- slightFail %>% filter(Genome != "JessSamples", GCCorrected >= 1)
+
+corsiniSlight %>% bind_rows(geriduSlight) %>% mutate(Genome = ifelse(grepl("JessSamples",Genome), "Brancorsini", "Geridu")) %>%
+	write.table("SlightFail.tab", sep = "\t", row.names =F, quote = F)
 ########### Some basic Coverage Data  ###############
 Corsini <- depthDf %>% filter(Genome == "JessSamples", CV <=1) %>%
 	pivot_wider(names_from = c(Genome), values_from=GCCorrected) %>% select(-c(MeanCoverage,GC,sdCoverage, PercentCoverage, CV)) #%>%
@@ -147,7 +154,6 @@ tmp <- ggarrange(tmp,tmp, nrow = 2, labels = c("B", "D"))
 ggarrange(histPlot,tmp)
 ggsave(file = "GenePresenceHistogram.pdf", width = 9, height = 6)
 
-# Genes which were > +2SD from distribution
 #####################################################################
 # Gene Presence table
 Corsini <- Corsini %>% filter(JessSamples >= 10)
@@ -410,3 +416,8 @@ hetPlots <- ggarrange(hetHist, copyHet, ncol = 1, common.legend = T, legend = "b
 ggarrange(tmp, hetPlots, common.legend = T)
 ggsave(file = "Heterozygosity.png", height = 6, width = 9)
 
+# Saving the high copy number genes
+highCopyCor <- ancientOnly %>% filter(Sample == "Brancorsini", MeanCoverage > (mean(MeanCoverage) + 2*sd(MeanCoverage)))
+highCopyGer <- ancientOnly %>% filter(Sample != "Brancorsini", MeanCoverage > (mean(MeanCoverage) + 2*sd(MeanCoverage)))
+highCopyCor %>% bind_rows(highCopyGer) %>% write.table(file = "HighCopyNumberGenes.tab", sep = "\t", row.names =F, quote = F)
+highCopyCor %>% bind_rows(highCopyGer) %>% pull(Gene) %>% unique() %>% write.table(file = "HighCopyNumberGenes.list", sep = "\t", row.names =F, quote = F)
