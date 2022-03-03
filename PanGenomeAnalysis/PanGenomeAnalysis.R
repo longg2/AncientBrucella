@@ -154,6 +154,24 @@ tmp <- ggarrange(tmp,tmp, nrow = 2, labels = c("B", "D"))
 ggarrange(histPlot,tmp)
 ggsave(file = "GenePresenceHistogram.pdf", width = 9, height = 6)
 
+##########################################
+### Seeing the Number of Rescued Genes ###
+##########################################
+GCRescue <- depthDf %>% filter(Genome == "JessSamples", CV <=1) %>% select(Gene, MeanCoverage, GCCorrected, GC) %>%
+	pivot_longer(-c(Gene, GC), names_to = "Status", values_to = "MeanDepth") %>%
+       	mutate(Status = ifelse("MeanCoverage" == Status, "Before GC Correction", "After GC Correction"))
+
+GCRescue %>% ggplot(aes(x = GC, y = MeanDepth)) + 
+	geom_line(aes(group = Gene)) + geom_point(aes(colour = Status)) +
+	scale_colour_manual(values = c("#f8333c","#007dba")) + theme_bw() +
+	geom_hline(yintercept = 10, lty = 2, colour = "grey60") +
+	coord_cartesian(ylim = c(5,15)) +
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+	theme(legend.position = "bottom")
+
+ggsave("GCCorrectionCorsiniAroundThreshold.pdf", width = 6, height = 4)
+
+
 #####################################################################
 # Gene Presence table
 Corsini <- Corsini %>% filter(JessSamples >= 10)
