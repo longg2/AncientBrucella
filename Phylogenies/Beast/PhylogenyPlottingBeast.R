@@ -28,7 +28,7 @@ LocationID <- function(Sample){
 }
 
 # Basic Tree
-tree <- read.beast(file = "BeastResults/InvariantST11/ST11KayIncludedInvariant.nexus")
+tree <- read.beast(file = "BeastResults/InvariantWhole/WholeInvariant.nexus")
 Tiplabels <- tree@phylo$tip.label
 
 ####################################################
@@ -54,9 +54,10 @@ p1 <- ggtree(tree, right = T, mrsd = "2018-05-01") %<+% STData +
 	theme_tree2() +
 	geom_rootedge(rootedge = 50) +
 	geom_range("height_0.95_HPD", colour = "red", size = 0.75, alpha = 0.75) +
-	geom_tippoint(aes(colour = ST, shape = Country), size = 2) +
-	scale_color_manual(values = ann_colors$ST, name = "Sequence Type") +
-	scale_shape_manual(values = c(16,15,17,18,10,14,8)) +
+	geom_tippoint(aes(colour = ST), size = 2) +
+	#geom_tippoint(aes(colour = ST, shape = Country), size = 2) + #only for ST11
+	scale_color_manual(values = ann_colors$ST) + guides(colour = guide_legend(nrow = 2, title ="Sequence Type")) +
+	#scale_shape_manual(values = c(16,15,17,18,10,14,8)) + # only for ST11
 	#scale_shape_manual(values = c(16:18,6:10)) +
 	new_scale_color() +
        	geom_nodepoint(aes(color = ifelse(posterior < 0.5, NA,
@@ -64,31 +65,32 @@ p1 <- ggtree(tree, right = T, mrsd = "2018-05-01") %<+% STData +
 			      shape = "square", show.legend = F) +
 	scale_color_manual(values = c("NA" = NA, "Fifty" = "grey", "Ninety" = "black")) +
        	geom_nodelab(size = 2.5,mapping = aes(label = round(2018.3287671232877 - height_median)),
-       	#geom_nodelab(size = 2.5,mapping = aes(label = round(2017.0014 - height_median)), # This is for the ST11 Phylo
+       	#geom_nodelab(size = 2.5,mapping = aes(label = round(decimal_date(ymd("2017-01-01")) - height_median)), # This is for the ST11 Phylo
 			    geom = "label", nudge_y = 0.4, nudge_x = -50) +
 	xlab("Year") +
 	scale_x_continuous(breaks = scales:::pretty_breaks()) +
 	theme(panel.grid.major.x = element_line(color = "grey10", size = 0.2),
 	      panel.grid.minor.x = element_line(color = "grey80", size = 0.2),
-	      legend.position = "bottom")# + guides(colour = guide_legend(nrow = 1))
+	      legend.position = "bottom")
 
-	p1
+p1 
 
-ggsave(plot = p1, "WholeGenomeInvariant.pdf", width = 12, height = 9)
-
+#ggsave(plot = p1, "ST11Invariant.pdf", width = 9, height = 6)
 #######################
 ### Now for Tempest ###
 #######################
 
 # Now to get the Tempest Plot
-tempest <- as_tibble(read.delim("BeastResults/InvariantST11/ST11KayIncludedInvariantTempestSNPS.tab"))# %>% filter(date > 0)
+tempest <- as_tibble(read.delim("BeastResults/InvariantWhole/WholeInvariantTempestSNPS.tab"))# %>% filter(date > 0)
 # Getting the Phylogroups plotted
 
 STData <- STData[match(tempest$tip, STData$Sample),] # Getting them in the Right Order
 tempest$ST <- STData$ST
+#tempest$Country <- STData$Country
 
 tempestPlot <- tempest %>% ggplot(aes(x = date, y  = distance)) + geom_smooth(method = "lm", show.legend = F, colour = "black") +
 	geom_point(alpha = 0.75, aes(colour = ST), show.legend = T) + theme_bw() + ylab("Root to Tip Divergence") + xlab("Year") +
+	#scale_shape_manual(values = c(16,15,17,18,10,14,8)) +
 	scale_color_manual(values = ann_colors$ST, name = "Sequence Type")
 tempestPlot
 
@@ -98,10 +100,11 @@ r2 <- round(summary(model)$adj.r.squared,3)
 tmp <- summary(model)$fstatistic
 pval <- round(pf(tmp[1],tmp[2],tmp[3], lower.tail = F),3)
 
-tempestPlot <- tempestPlot + annotate(geom = "text", x = 1700, y = 0.0026,label = bquote(R[adj]^2 == .(r2))) +
-	annotate(geom = "text", x = 1700, y = 0.00255, label = bquote(P == .(pval))) +
-	scale_y_continuous(breaks = scales:::pretty_breaks(n = 10)) + theme(legend.position = "bottom") + ggtitle("ST11 Clade")
+tempestPlot <- tempestPlot + annotate(geom = "text", x = 1700, y = 0.0016,label = bquote(R[adj]^2 == .(r2))) +
+	annotate(geom = "text", x = 1700, y = 0.00155, label = bquote(P == .(pval))) +
+	scale_y_continuous(breaks = scales:::pretty_breaks(n = 10)) + theme(legend.position = "bottom") + #ggtitle("ST11 Clade") +
+	guides(colour = guide_legend(nrow = 1))
 
-ggsave(tempestPlot,file = "ST11InvariantTempestSNPs.pdf", width = 6, height = 4)
+ggarrange(p1,tempestPlot, ncol = 1, common.legend = T, legend = "bottom", labels = "AUTO", heights = c(2,1))
+ggsave(file = "WholePhylogeneticsSNPs.pdf", width = 9, height = 12)
 
-decimal_date(ymd("1394-08-14"))

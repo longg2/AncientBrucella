@@ -8,6 +8,7 @@ group_1689	WP_004683956	COG4103	0	P	Tellurite resistance protein TerB	TerB2		230
 group_1803	WP_004684678	COG1092	3	J	23S rRNA G2069 N7-methylase RlmK or C1962 C5-methylase RlmI	RlmK	23S rRNA modification		2B78
 group_1884	WP_004683486	COG0150	0	F	Phosphoribosylaminoimidazole (AIR) synthetase	PurM	Purine biosynthesis		1CLI
 group_2188	WP_002964666	COG3047	0	M	Outer membrane protein OmpW	OmpW			2F1T
+group_2579	WP_012093625	COG1477	0	HO	FAD:protein FMN transferase ApbE	ApbE		23558683;30154099	1VRM
 group_3698	WP_002963714	COG1376	0	M	Lipoprotein-anchoring transpeptidase ErfK/SrfK	ErfK			4LZH
 group_3738	WP_004682487	COG3568	0	R	Metal-dependent hydrolase, endonuclease/exonuclease/phosphatase family	ElsH		15178340	
 hutH	WP_012091500	COG2986	0	E	Histidine ammonia-lyase	HutH			1B8F

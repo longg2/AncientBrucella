@@ -1,10 +1,12 @@
 Query	Match	COG	COGMembershipClass	FunctionalCategory	Name	Gene	FunctionalPathway	PMID	PDBID
+group_2606	WP_012092115	COG1763	0	H	Molybdopterin-guanine dinucleotide biosynthesis protein	MobB	Molybdopterin biosynthesis	32239579	1NP6
 group_2615	WP_012093257	COG2721	1	G	Altronate dehydratase	UxaA			6U7L
 group_2660	WP_002964065	COG2608	0	P	Copper chaperone CopZ	CopZ			1AFI
 group_2898	WP_002967140	COG0161	0	H	Adenosylmethionine-8-amino-7-oxononanoate aminotransferase	BioA	Biotin biosynthesis		1MLY
 group_2981	WP_002967639	COG0564	0	J	Pseudouridine synthase RluA, 23S rRNA- or tRNA-specific	RluA	23S rRNA modification		2I82
 group_3018	WP_002965082	COG0789	0	K	DNA-binding transcriptional regulator, MerR family	SoxR			2VZ4
 group_3117	WP_002969148	COG0110	0	R	Acetyltransferase, isoleucine patch superfamily	WbbJ			
+group_3157	WP_064121790	COG2801	2	X	Transposase InsO and inactivated derivatives	Tra5			
 group_3267	WP_004683973	COG1253	1	R	Hemolysin-related protein, contains CBS domains, UPF0053 family	TlyC			2NQW
 group_3273	WP_004683686	COG0368	0	H	Cobalamin synthase CobS (adenosylcobinamide-GDP ribazoletransferase)	CobS	Cobalamine/B12 biosynthesis	31481610	
 group_3348	WP_002963470	COG0717	1	F	dCTP deaminase	Dcd	Thymidylate biosynthesis		1XS1

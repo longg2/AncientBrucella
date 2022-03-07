@@ -14,7 +14,7 @@ library(purrr)
 #library(pheatmap)
 #library(dendextend)
 #library(FactoMineR)
-#library(factoextra)
+library(factoextra)
 library(gtools)
 
 ## Functions
@@ -157,21 +157,37 @@ ggsave(file = "GenePresenceHistogram.pdf", width = 9, height = 6)
 ##########################################
 ### Seeing the Number of Rescued Genes ###
 ##########################################
+GCPlots <- lapply(split(GCBiased, GCBiased$Genome), function(x)CorrectingGC(x))
+
 GCRescue <- depthDf %>% filter(Genome == "JessSamples", CV <=1) %>% select(Gene, MeanCoverage, GCCorrected, GC) %>%
 	pivot_longer(-c(Gene, GC), names_to = "Status", values_to = "MeanDepth") %>%
-       	mutate(Status = ifelse("MeanCoverage" == Status, "Before GC Correction", "After GC Correction"))
+       	mutate(Status = factor(ifelse("MeanCoverage" == Status, "Before GC Correction", "After GC Correction"), levels = c("Before GC Correction", "After GC Correction")))
 
-GCRescue %>% ggplot(aes(x = GC, y = MeanDepth)) + 
+dumbbellCor <- GCRescue %>% ggplot(aes(x = GC, y = MeanDepth)) + 
 	geom_line(aes(group = Gene)) + geom_point(aes(colour = Status)) +
 	scale_colour_manual(values = c("#f8333c","#007dba")) + theme_bw() +
 	geom_hline(yintercept = 10, lty = 2, colour = "grey60") +
 	coord_cartesian(ylim = c(5,15)) +
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 5)) +
+	theme(legend.position = "bottom") + xlab("GC Content") + ylab("Mean Coverage")
+ggarrange(GCPlots$JessSamples$Plot, dumbbellCor, ncol = 1, labels = "AUTO")
+ggsave("GCCorrectionCorsiniAroundThreshold.png", width = 9, height = 6)
+
+GCRescue <- depthDf %>% filter(Genome != "JessSamples", CV <=1) %>% select(Gene, MeanCoverage, GCCorrected, GC) %>%
+	pivot_longer(-c(Gene, GC), names_to = "Status", values_to = "MeanDepth") %>%
+       	mutate(Status = factor(ifelse("MeanCoverage" == Status, "Before GC Correction", "After GC Correction"), levels = c("Before GC Correction", "After GC Correction")))
+
+dumbbellCor <- GCRescue %>% ggplot(aes(x = GC, y = MeanDepth)) + 
+	geom_line(aes(group = Gene)) + geom_point(aes(colour = Status)) +
+	scale_colour_manual(values = c("#f8333c","#007dba")) + theme_bw() +
+	geom_hline(yintercept = 1, lty = 2, colour = "grey60") +
+	coord_cartesian(ylim = c(0,2)) +
 	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
-	theme(legend.position = "bottom")
+	theme(legend.position = "bottom") +
+	theme(legend.position = "bottom") + xlab("GC Content") + ylab("Mean Coverage")
 
-ggsave("GCCorrectionCorsiniAroundThreshold.pdf", width = 6, height = 4)
-
-
+ggarrange(GCPlots$KayBMel$Plot, dumbbellCor, ncol = 1, labels = "AUTO")
+ggsave("GCCorrectionGeriduAroundThreshold.pdf", width = 9, height = 6)
 #####################################################################
 # Gene Presence table
 Corsini <- Corsini %>% filter(JessSamples >= 10)
@@ -192,6 +208,7 @@ tmp$Genome <- rownames(tmp)
 geneCounts <- tmp %>% as_tibble() 
 geneCounts <- geneCounts %>% left_join(MLSTResults)
 colnames(geneCounts)[1] <- "Genes"
+geneCounts %>% filter(grepl("Brancorsini|Geridu", Genome))
 geneCounts %>% filter(!grepl("Brancorsini|Geridu", Genome)) %>% ggplot(aes(y = Genes, x ="", color = ST)) +
        	geom_boxplot(outlier.shape = NA, colour = "black") + theme_bw() +
 	#geom_jitter(height = 0) +
@@ -214,6 +231,22 @@ SamplePA %>% filter(Status == "Accessory", CorsiniPresent == F, GeriduPresent) %
 
 table(SamplePA$CorsiniPresent, SamplePA$GeriduPresent)
 
+##############################
+### Core Gene Scatter Plot ###
+##############################
+depthDf %>% filter(Genome == "JessSamples", Gene %in% coreGenes) %>%
+	ggplot(aes(y = CV, x = GCCorrected)) + geom_point() +
+	geom_vline(xintercept = 10, lty =2 , colour = "red") +
+	geom_hline(yintercept = 1, lty = 2, colour = "red") +
+	theme_bw()
+
+depthDf %>% filter(Genome == "JessSamples", Gene %in% coreGenes) %>%
+	mutate(Present = ifelse(CV <= 1 & GCCorrected >= 10, T, F )) %>%
+	ggplot(aes(y = GC, x = Present)) +
+	geom_boxplot() +
+	theme_bw()
+
+summary(lm(Present ~ GC + GCCorrected + CV, tmp))
 #####################################################################
 # Going to do this in a more sane way
 coreDf <- AllPA %>% filter(Gene %in% coreGenes)
@@ -258,7 +291,9 @@ pCore <- coord %>%
 pCore
 ggsave(pCore, file = "PCoACore.pdf", width = 6, height = 4)
 
-########## Accessory Genome Analysis ########
+#################################
+### Accessory Genome Analysis ###
+#################################
 accessDf <- AllPA %>% filter(!(Gene %in% coreGenes))
 
 # Preparing the data
@@ -287,20 +322,19 @@ coord <- coord %>% left_join(MLSTResults)
 coord$ST[(ncol(coord)-1):ncol(coord)] <- c("Brancorsini", "Geridu")
 
 # Clustering based on PCoA Coordinates
-sil <- sapply(2:6, function(i){clara(coord[,-c(5,6)], i)$silinfo$avg.width})
-plot(2:6, sil, type = "b")
+fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "silhouette")
 
-clustered <- clara(coord[,-c(5,6)], 4)
+clustered <- clara(coord[,-c(5,6)], 5)
 
 coord$clusters <- factor(clustered$clustering)
 
 ann_colors$ST <- ann_colors$ST[mixedsort(unique(coord$ST))]
 p1 <- coord %>%
-       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, group = clusters)) +
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, linetype = clusters, group = clusters)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
-	#stat_ellipse(lty = 2,show.legend = F) +
+	stat_ellipse(show.legend = F, colour = "black") +
 	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
 	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
 	scale_colour_manual(values = ann_colors$ST) +
@@ -324,19 +358,19 @@ coord <- coord %>% left_join(MLSTResults)
 coord$ST[(ncol(coord)-1):ncol(coord)] <- c("Brancorsini", "Geridu")
 
 # Getting the clusters ready (if we want them)
-sil <- sapply(2:6, function(i){clara(coord[,-c(5,6)], i)$silinfo$avg.width})
-plot(2:6, sil, type = "b")
+fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "wss") + ggtitle("WSS Plot")
+fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "silhouette") + ggtitle("Silhouette Plot")
 
-clustered <- clara(coord[,-c(5,6)], 3)
+clustered <- clara(coord[,-c(5,6)], 4)
 coord$clusters <- factor(clustered$clustering)
 
 ann_colors$ST <- ann_colors$ST[mixedsort(unique(coord$ST))]
 p1Clust <- coord %>%
-       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, group = clusters)) +
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, linetype = clusters, group = clusters)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
+	stat_ellipse(show.legend = T, colour = "black") +
 	geom_point() +
-	#stat_ellipse(show.legend = F) +
 	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
 	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
 	scale_colour_manual(values = ann_colors$ST) +
@@ -372,6 +406,7 @@ vcfCorsini <- vcfHet %>% filter(!is.na(FILTER),QUAL >= 30) %>% # does all of the
 coreHet <-vcfCorsini %>% filter(Status == "Core") %>% pull(HeteroFrac)
 accessHet <-vcfCorsini %>% filter(Status == "Accessory") %>% pull(HeteroFrac)
 t.test(coreHet, accessHet)
+car:::Anova(type = 3, lm(HeteroFrac ~ Status, vcfCorsini))
 
 # Now for Geridu
 vcf <- VCFParsing("HetData/KayHet.vcf") %>% select(CHROM,FILTER, QUAL, GT)

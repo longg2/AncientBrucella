@@ -1,5 +1,7 @@
 Query	Match	COG	COGMembershipClass	FunctionalCategory	Name	Gene	FunctionalPathway	PMID	PDBID
+aaeA	WP_019403453	COG1566	0	V	Multidrug resistance efflux pump EmrA	EmrA			4TKO
 alkB	WP_004681863	COG3145	0	L	Alkylated DNA repair dioxygenase AlkB	AlkB			3KHC
+ansB	WP_011179012	COG0252	0	JE	L-asparaginase/archaeal Glu-tRNAGln amidotransferase subunit D	AnsA			1ZQ1
 aqpZ	WP_004684491	COG0580	0	G	Glycerol uptake facilitator or related aquaporin (Major Intrinsic protein Family)	GlpF			1FQY
 betI	WP_004683258	COG1309	0	K	DNA-binding protein, AcrR family, includes nucleoid occlusion protein SlmA	AcrR			2QOP
 ccoN	WP_002963527	COG3278	1	C	Cbb3-type cytochrome oxidase, subunit 1	CcoN			3MK7
@@ -49,6 +51,8 @@ group_1326	WP_002963957	COG1136	0	M	ABC-type lipoprotein export system, ATPase c
 group_1359	WP_002963808	COG5350	0	R	Predicted protein tyrosine phosphatase				
 group_1372	WP_002971034	COG1752	0	R	Predicted acylesterase/phospholipase RssA, containd patatin domain	RssA			5FQU
 group_1374	WP_002967668	COG4976	0	R	Predicted methyltransferase, contains TPR repeat				
+group_1399	WP_117412743	COG2801	3	X	Transposase InsO and inactivated derivatives	Tra5			
+group_1399	WP_117412743	COG3415	1	V	CRISPR-associated protein Csa3, CARF domain	Csa3	CRISPR-Cas system	21093452	2WTE
 group_1429	WP_005969939	COG4564	0	T	Signal transduction histidine kinase				2QHK
 group_144	WP_004681086	COG3119	0	P	Arylsulfatase A or related enzyme, AlkP superfamily	AslA			1E1Z
 group_1473	WP_002965827	COG1802	0	K	DNA-binding transcriptional regulator, GntR family	GntR			3FMS
@@ -59,6 +63,7 @@ group_1522	WP_002969497	COG3703	0	P	Gamma-glutamylcyclotransferase ChaC2 (glutat
 group_1525	WP_002965066	COG0708	0	L	Exonuclease III	XthA			1AKO
 group_1528	WP_002968005	COG0271	0	KT	DNA-binding global transcriptional regulator BolA, affects cell shape, cell division and biofilm formation	BolA		19111750;2569159	2DHM
 group_1532	WP_004684535	COG0424	0	Q	7-methyl-GTP pyrophosphatase and related NTP pyrophosphatases, Maf/HAM1 superfamily	Maf		24210219	2P5X
+group_157	WP_088872516	COG3190	3	N	Flagellar biogenesis protein FliO	FliO			
 group_1620	WP_004684277	COG1289	2	S	Uncharacterized membrane protein YccC	YccC			
 group_1627	WP_004684210	COG4784	0	R	Putative Zn-dependent protease				
 group_1634	WP_002964806	COG1802	0	K	DNA-binding transcriptional regulator, GntR family	GntR			3FMS
@@ -67,18 +72,24 @@ group_1654	WP_002967852	COG0673	0	R	Predicted dehydrogenase	MviM			3UUW
 group_1740	WP_004682090	COG1570	0	L	Exonuclease VII, large subunit	XseA			
 group_1745	WP_002965282	COG0537	0	FR	Purine nucleoside phosphoramidase/Ap4A hydrolase, histidine triade (HIT) family	HinT		20934431	1AV5
 group_1787	WP_002965533	COG5328	0	S	Uncharacterized conserved protein, UPF0262 family				
+group_1798	WP_010658016	COG2514	2	Q	Catechol-2,3-dioxygenase	CatE			
 group_1801	WP_004684679	COG0776	0	L	Bacterial nucleoid DNA-binding protein IHF-alpha	HimA			1B8Z
 group_1825	WP_004683729	COG0746	0	H	Molybdopterin-guanine dinucleotide biosynthesis protein A	MobA	Molybdopterin biosynthesis	32239579	1E5K
+group_1830	WP_012092140	COG0739	1	M	Murein DD-endopeptidase MepM and murein hydrolase activator NlpD, contains LysM domain	NlpD			2GU1
 group_1832	WP_002964036	COG0511	0	I	Biotin carboxyl carrier protein	AccB	Fatty acid biosynthesis		1A6X
 group_1850	WP_010657981	COG1937	0	K	DNA-binding transcriptional regulator, FrmR family	FrmR			2HH7
 group_1853	WP_002965914	COG5457	0	S	Uncharacterized conserved protein YjiS, DUF1127 family	YjiS			
 group_1861	WP_002965972	COG5457	2	S	Uncharacterized conserved protein YjiS, DUF1127 family	YjiS			
+group_1877	WP_099999473	COG0760	0	O	Peptidyl-prolyl isomerase, parvulin family	SurA			2ZR5
+group_1925	WP_117412743	COG2801	3	X	Transposase InsO and inactivated derivatives	Tra5			
+group_1925	WP_117412743	COG3415	1	V	CRISPR-associated protein Csa3, CARF domain	Csa3	CRISPR-Cas system	21093452	2WTE
 group_1929	WP_004683169	COG5389	0	S	Uncharacterized conserved protein, DUF721 domain				
 group_1934	WP_002963616	COG0236	0	I	Acyl carrier protein	AcpP	Fatty acid biosynthesis		1ACP
 group_1951	WP_002963480	COG2197	0	TK	DNA-binding response regulator, NarL/FixJ family, contains REC and HTH domains	CitB			1A04
 group_1957	WP_002965665	COG1402	0	H	Creatinine amidohydrolase/Fe(II)-dependent FAPy formamide hydrolase (riboflavin and F420 biosynthesis)	ArfB	Riboflavin/FAD biosynthesis		1J2T
 group_1986	WP_002966125	COG1320	0	P	Multisubunit Na+/H+ antiporter, MnhG subunit	MnhG			6CFW
 group_1995	WP_002966169	COG2391	0	R	Uncharacterized membrane protein YedE/YeeE, contains two sulfur transport domains	YedE			
+group_2022	WP_019403718	COG0730	0	P	Sulfite exporter TauE/SafE/YfcA and related permeases, UPF0721 family	TauE		21183667;22797525	
 group_2023	WP_004685219	COG0640	1	K	DNA-binding transcriptional regulator, ArsR family	ArsR			3F6V
 group_2039	WP_002965069	COG3786	0	M	L,D-peptidoglycan transpeptidase YkuD, ErfK/YbiS/YcfS/YnhG family			16647082	
 group_2052	WP_002965221	COG1396	0	K	Transcriptional regulator, contains XRE-family HTH domain	HipB			1ADR
@@ -97,12 +108,17 @@ group_2166	WP_002964825	COG5509	0	S	Uncharacterized small protein, DUF1192 famil
 group_2189	WP_002967840	COG3153	0	R	Predicted N-acetyltransferase YhbS	yhbS			4ZBG
 group_2190	WP_002967836	COG3153	0	R	Predicted N-acetyltransferase YhbS	yhbS			4ZBG
 group_2219	WP_002964470	COG0832	1	E	Urease beta subunit	UreB			
+group_2386	WP_049778405	COG2856	3	O	Zn-dependent peptidase ImmA, M78 family	ImmA			3DTE
+group_2387	WP_077292066	COG3103	3	R	Uncharacterized conserved protein YgiM, contains N-terminal SH3 domain, DUF1202 family	YgiM			2KQ8
 group_2432	WP_004683475	COG5511	2	X	Phage capsid protein				
 group_2462	WP_002966695	COG0443	2	O	Molecular chaperone DnaK (HSP70)	DnaK			3I33
 group_2502	WP_012091053	COG1866	0	C	Phosphoenolpyruvate carboxykinase, ATP-dependent	PckA	Gluconeogenesis		1AQ2
 group_2513	WP_002969380	COG2827	0	L	Predicted endonuclease, GIY-YIG superfamily	YhbQ			1YWL
+group_2527	WP_010660718	COG1536	0	N	Flagellar motor switch protein FliG	FliG			4FHR
+group_2528	WP_012093531	COG0673	0	R	Predicted dehydrogenase	MviM			3UUW
 group_2544	WP_012093398	COG1028	0	I	NAD(P)-dependent dehydrogenase, short-chain alcohol dehydrogenase family	FabG	Fatty acid biosynthesis		6L1H
 group_2545	WP_002971377	COG1396	2	K	Transcriptional regulator, contains XRE-family HTH domain	HipB			1ADR
+group_3	WP_010660618	COG4309	0	R	SirA-like two-layered alpha/beta sandwich domain, DUF2249 family				
 group_317	WP_004683138	COG3346	0	O	Cytochrome oxidase assembly protein ShyY1	Shy1			
 group_348	WP_004684526	COG2984	0	R	ABC-type uncharacterized transport system, periplasmic component				3LFT
 group_3590	WP_002963630	COG1845	1	C	Heme/copper-type cytochrome/quinol oxidase, subunit 3	CyoC			1QLE
@@ -112,6 +128,7 @@ group_36	WP_004686886	COG0146	1	EQ	N-methylhydantoinase B/oxoprolinase/acetone c
 group_3616	WP_004683653	COG5467	0	S	Uncharacterized conserved protein, DUF1476 domain			16468998	
 group_3624	WP_002963803	COG0736	0	I	Phosphopantetheinyl transferase (holo-ACP synthase)	AcpS			1F7L
 group_3644	WP_002964913	COG2261	0	R	Uncharacterized membrane protein YeaQ/YmgE, transglycosylase-associated protein family	YeaQ			
+group_3647	WP_084244838	COG4123	1	J	tRNA1(Val) A37 N6-methylase TrmN6	TrmN6	tRNA modification		
 group_3657	WP_004684639	COG3339	0	S	Uncharacterized membrane protein YkvA, DUF1232 family	YkvA			
 group_367	WP_004684256	COG0665	0	E	Glycine/D-amino acid oxidase (deaminating)	DadA			3AWI
 group_3672	WP_002963968	COG0271	0	KT	DNA-binding global transcriptional regulator BolA, affects cell shape, cell division and biofilm formation	BolA		19111750;2569159	2DHM
@@ -123,15 +140,20 @@ group_3922	WP_002967489	COG0782	0	K	Transcription elongation factor, GreA/GreB f
 group_3929	WP_004682832	COG0494	0	V	8-oxo-dGTP pyrophosphatase MutT and related house-cleaning NTP pyrophosphohydrolases, NUDIX family	MutT			4V14
 group_396	WP_004681885	COG1079	0	F	ABC-type guanosine uptake system NupNOPQ, permease subunit NupQ	NupQ		21926227	
 group_3972	WP_002964125	COG0546	0	C	Phosphoglycolate phosphatase, HAD superfamily	Gph			2NYV
+group_4012	WP_012091090	COG3791	0	S	Uncharacterized conserved protein				1X6M
 group_4072	WP_002964234	COG0776	0	L	Bacterial nucleoid DNA-binding protein IHF-alpha	HimA			1B8Z
+group_4073	WP_067962917	COG0438	0	M	Glycosyltransferase involved in cell wall bisynthesis	RfaB			2IV7
 group_4074	WP_004684532	COG0486	0	J	tRNA U34 5-carboxymethylaminomethyl modifying GTPase MnmE/TrmE	MnmE	tRNA modification		
 group_4087	WP_002964516	COG4321	0	R	Predicted DNA-binding protein, contains ribbon-helix-helix (RHH) domain				3KK4
 group_4096	WP_002965766	COG5515	0	S	Uncharacterized conserved protein, DUF1737 domain				2NNR
 group_4103	WP_002965045	COG1671	0	S	Uncharacterized conserved protein YaiI, UPF0178 family	YaiI			
+group_4120	WP_010658016	COG2514	2	Q	Catechol-2,3-dioxygenase	CatE			
+group_4130	WP_062628109	COG5545	3	X	Predicted P-loop ATPase and inactivated derivatives				
 group_4132	WP_002963525	COG4736	0	C	Cbb3-type cytochrome oxidase, subunit 3	CcoQ			
 group_4139	WP_002971893	COG5567	0	S	Small periplasmic lipoprotein YifL (function unknown)	YifL			
 group_4148	WP_002965944	COG3453	0	R	Predicted phosphohydrolase, protein tyrosine phosphatase (PTP) superfamily, DUF442 family				2F46
 group_419	WP_025198992	COG2217	2	P	Cation-transporting P-type ATPase	ZntA			4BBJ
+group_425	WP_002967127	COG1959	0	K	DNA-binding transcriptional regulator, IscR family	IscR			1XD7
 group_432	WP_004683706	COG1562	0	I	Phytoene/squalene synthetase	ERG9			3WEK
 group_434	WP_004683686	COG0368	0	H	Cobalamin synthase CobS (adenosylcobinamide-GDP ribazoletransferase)	CobS	Cobalamine/B12 biosynthesis	31481610	
 group_443	WP_002963765	COG0642	1	T	Signal transduction histidine kinase	BaeS			1JOY
@@ -167,6 +189,7 @@ group_94	WP_004681048	COG0160	0	E	Acetylornithine aminotransferase/4-aminobutyra
 group_946	WP_004683728	COG0834	2	ET	ABC-type amino acid transport/signal transduction system, periplasmic component/domain	HisJ			1GGG
 group_954	WP_004683707	COG4872	0	S	Uncharacterized membrane protein				
 group_958	WP_002971009	COG0790	2	R	TPR repeat	TPR			1KLX
+group_96	WP_012092137	COG2982	1	M	Uncharacterized conserved protein AsmA involved in outer membrane biogenesis	AsmA			
 group_965	WP_004684662	COG0513	1	L	Superfamily II DNA and RNA helicase	SrmB			3RRM
 group_974	WP_002963758	COG1138	0	CO	Cytochrome c biogenesis protein CcmF	CcmF			
 group_982	WP_004683498	COG2019	0	F	Archaeal adenylate kinase	AdkA			1KI9
@@ -185,6 +208,7 @@ polA	WP_004686744	COG0749	1	L	DNA polymerase I, 3'-5' exonuclease and polymerase
 prfB	WP_075589488	COG1186	1	J	Protein chain release factor PrfB	PrfB	Translation factors		1GQE
 purH	WP_004684287	COG0138	0	F	AICAR transformylase/IMP cyclohydrolase PurH	PurH	Purine biosynthesis		1G8M
 queF	WP_002964310	COG0780	0	J	NADPH-dependent 7-cyano-7-deazaguanine reductase QueF, C-terminal domain, T-fold superfamily	QueFC	tRNA modification	14660578;17384645	3BP1
+rnk	WP_012093058	COG0782	0	K	Transcription elongation factor, GreA/GreB family	GreA			1GRJ
 rpiA	WP_002964126	COG0120	0	G	Ribose 5-phosphate isomerase	RpiA	Pentose phosphate pathway		1KS2
 rplN	WP_004683923	COG0093	0	J	Ribosomal protein L14	RplN	Ribosome 50S subunit		4V4H
 rpmC	WP_002964354	COG0255	0	J	Ribosomal protein L29	RpmC	Ribosome 50S subunit		1VS6
@@ -216,3 +240,4 @@ xylF_1	WP_010659493	COG4213	0	G	ABC-type xylose transport system, periplasmic co
 yajC	WP_002964021	COG1862	0	U	Protein translocase subunit YajC	YajC			
 ybgF	WP_004684148	COG1729	1	D	Cell division protein CpoB, coordinates peptidoglycan biosynthesis and outer membrane constriction	CpoB		25951518	2WZ7
 yhgF	WP_040130079	COG2183	0	K	Transcriptional accessory protein Tex/SPT6	Tex			2OCE
+ynfM_1	WP_012092831	COG2814	0	G	Predicted arabinose efflux permease AraJ, MFS family	AraJ			4LDS

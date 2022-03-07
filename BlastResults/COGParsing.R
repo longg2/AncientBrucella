@@ -40,7 +40,7 @@ for (file in list.files("COGIn", full.names = T)){
 						}
 				}
 			return(filtResults[1,])
-	 }) %>% bind_rows() %>% filter(PIdent >= 90) %>% mutate(Match = gsub("_[0-9]$","",Match))
+	 }) %>% bind_rows() %>% mutate(Match = gsub("_[0-9]$","",Match))
 
 	FilteredAmbiguousGenes <- FilteredAmbiguousGenes %>% select(Query,Match) %>% left_join(prot2cog %>% select(Protein,COG,COGMembershipClass), by = c("Match" = "Protein")) %>% left_join(cog2fun) %>% distinct()
 
