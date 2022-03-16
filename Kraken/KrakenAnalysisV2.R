@@ -1,0 +1,210 @@
+######################################################################
+# Getting the functions and Loading the libraries
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(reshape2)
+library(ggplot2)
+library(ggpubr)
+library(ggforce)
+library(ggrepel)
+
+colour <- c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6',
+'#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3',
+'#808000', '#ffd8b1', '#000075', '#808080', '#f0f0f0', '#000000')
+
+KrakenParsingProp <- function(fileName, Rank){
+	out <- tryCatch(read.delim(fileName, header = F, comment.char = "#"), error = function(e) e)
+	if(any(class(out) == "error")){
+		return(data.frame("Taxon" = "Filtered", "Reads" = 0))
+	}
+	colnames(out) <- c("Percentage", "Reads Assigned to Clade", "Reads Assigned Directly", "Taxon Unit", "NCBI Taxon", "Taxon")
+
+	# Filtering for requested level ID only
+	profile_Species <- out[grepl(x = out$`Taxon Unit`,Rank),]
+
+	# Fixing the names
+	profile_Species$Taxon <- gsub(pattern = "\\s{2,}|-", replacement =  "", x = profile_Species$Taxon)
+
+	# Creating the overall dataframe
+	return(profile_Species[,c(6,1)])
+}
+
+KrakenParsingCount <- function(fileName, Rank){
+	out <- tryCatch(read.delim(fileName, header = F, comment.char = "#"), error = function(e) e)
+	if(any(class(out) == "error")){
+		return(data.frame("Taxon" = "Filtered", "Reads" = 0))
+	}
+	colnames(out) <- c("Percentage", "Reads Assigned to Clade", "Reads Assigned Directly", "Taxon Unit", "NCBI Taxon", "Taxon")
+
+	# Filtering for requested level ID only
+	profile_Species <- out[grepl(x = out$`Taxon Unit`,Rank),]
+
+	# Fixing the names
+	profile_Species$Taxon <- gsub(pattern = "\\s{2,}|-", replacement =  "", x = profile_Species$Taxon)
+
+	# Creating the overall dataframe
+	return(profile_Species[,c(6,2)])
+}
+
+KrakenAnalysis <- function(profile_grouped, noise = 0.01){
+	# If NA, set to 0
+	profile_grouped[,-1] <- as.data.frame(sapply(profile_grouped[,-1], function(x){ifelse(is.na(x), 0, x)}))
+	profileZeroes <-  profile_grouped
+	
+	# Now to remove those taxa which account for 1% of the reads in each column
+	unknown = list("Other")
+	for(i in 2:ncol(profile_grouped)){
+		index <- profile_grouped[,i] < noise
+		unknown[i] <- sum(profile_grouped[index,i], na.rm = T)
+		profile_grouped[index,i] <- 0
+	}
+
+	profile_grouped <- profile_grouped[rowSums(profile_grouped[,-1]) > 0,]
+	profile_grouped[nrow(profile_grouped) + 1,] <- unknown
+	digestFreq <- profile_grouped %>% group_by(Taxon) %>% pivot_longer(c(everything(), -Taxon), names_to = "Sample", values_to = "Reads") %>%
+		ungroup()
+#	finalRaw <- profile_grouped %>% group_by(Taxon) %>% pivot_longer(c(everything(), -Taxon), names_to = "Sample", values_to = "Reads") %>%
+#		ungroup()
+	
+	return(digestFreq)
+	#return(list("Proportional" = digestFreq, "Reads" = finalRaw, "OrigTable" = profileZeroes))
+	
+}
+sampleTrans <- function(sampleName){
+	ifelse(grepl("Digest1", sampleName), "Digest 1",
+		ifelse(grepl("Digest2", sampleName), "Digest 2",
+		       ifelse(grepl("Digest3", sampleName), "Digest 3-4",
+			      ifelse(grepl("Digest5", sampleName), "Digest 5-6",
+				     ifelse(grepl("Lib",sampleName), "Library Blank",
+					    ifelse(grepl("Blank3", sampleName), "Blank 3-4", "Blank 5-6"))))))}
+
+############
+###Kraken###
+############
+# Getting the files of interest
+report_files <- list.files(path ="CombinedReports", full.names = T)
+ranked = "^F$"
+
+# Getting the ID numbers - Used to ease IDing the files of interest
+num <- gsub(".tab","", basename(report_files))
+
+tmp <- lapply(report_files, function(x){KrakenParsingProp(x,ranked)})
+krakentable <- as_tibble(reduce(tmp, by = "Taxon",full_join))
+tmp <- lapply(report_files, function(x){KrakenParsingCount(x,ranked)})
+krakentableCount <- as_tibble(reduce(tmp, by = "Taxon",full_join))
+colnames(krakentable)[-1] <- colnames(krakentableCount)[-1] <-  num
+
+krakentable <- krakentable %>% pivot_longer(c(everything(), -Taxon)) %>% group_by(name) %>% mutate(value = value/sum(value, na.rm = T)) %>% 
+	pivot_wider(Taxon)
+krakenProp <- KrakenAnalysis(krakentable, 0.01)
+
+########################################
+### Preparing the Proportional Data ####
+########################################
+#Sample Translations
+krakenProp <- krakenProp %>% mutate(Sample = ifelse(Sample == "JessSamples", "Brancorsini", "Geridu"))
+
+krakenabund <- krakentableCount %>% filter(Taxon %in% unique(krakenProp$Taxon)) %>% pivot_longer(c(everything(), -Taxon), names_to = "Sample") %>% group_by(Sample) %>%
+	summarize(Abundance = sum(value, na.rm = T)) %>% mutate(Sample = ifelse(Sample == "JessSamples", "Brancorsini", "Geridu"))
+
+
+# What are we looking at specifically
+tmp <- krakenProp %>% pull(Taxon) %>% unique() %>% sort()
+ind <- c(which(tmp == "Hominidae"), which(tmp == "Other"))
+ind2 <- which(tmp == "Brucellaceae")
+ind3 <- c(ind, ind2)
+plotDf <- krakenProp %>% mutate(Taxon = factor(Taxon, levels = c(tmp[ind2],tmp[-ind3],tmp[ind])))# %>% mutate(Type = unlist(GroupList[Sample]))
+
+fam <- plotDf %>% 
+	ggplot(aes(x = Sample, y = Reads, fill = Taxon)) +
+	geom_col() + scale_fill_manual(values = colour) +
+	theme_bw() +
+	theme(axis.text.x = element_blank(),axis.title.x = element_blank(),legend.text = element_text(face = "italic")) +
+	scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+	geom_text(data = krakenabund, inherit.aes = F, aes(x = Sample, label = Abundance, y = 1.02), size = 2.5) +
+	guides(fill = guide_legend(title = "Family", ncol = 2)) + ylab("Abundance")
+#ggsave(figure,file = "../MaxiKraken235Genus0.01.pdf", width = 12, height = 9)
+fam
+
+#############
+### Genus ###
+#############
+ranked = "^G$"
+tmp <- lapply(report_files, function(x){KrakenParsingProp(x,ranked)})
+krakentable <- as_tibble(reduce(tmp, by = "Taxon",full_join))
+tmp <- lapply(report_files, function(x){KrakenParsingCount(x,ranked)})
+krakentableCount <- as_tibble(reduce(tmp, by = "Taxon",full_join))
+colnames(krakentable)[-1] <- colnames(krakentableCount)[-1] <-  num
+
+krakentable <- krakentable %>% pivot_longer(c(everything(), -Taxon)) %>% group_by(name) %>% mutate(value = value/sum(value, na.rm = T)) %>% 
+	pivot_wider(Taxon)
+krakenProp <- KrakenAnalysis(krakentable, 0.01)
+
+########################################
+### Preparing the Proportional Data ####
+########################################
+krakenProp <- krakenProp %>% mutate(Sample = ifelse(Sample == "JessSamples", "Brancorsini", "Geridu"))
+
+krakenabund <- krakentableCount %>% filter(Taxon %in% unique(krakenProp$Taxon)) %>% pivot_longer(c(everything(), -Taxon), names_to = "Sample") %>% group_by(Sample) %>%
+	summarize(Abundance = sum(value, na.rm = T)) %>% mutate(Sample = ifelse(Sample == "JessSamples", "Brancorsini", "Geridu"))
+
+# What are we looking at specifically
+tmp <- krakenProp %>% pull(Taxon) %>% unique() %>% sort()
+ind <- c(which(tmp == "Homo"), which(tmp == "Other"))
+ind2 <- which(tmp == "Brucella")
+ind3 <- c(ind, ind2)
+plotDf <- krakenProp %>% mutate(Taxon = factor(Taxon, levels = c(tmp[ind2],tmp[-ind3],tmp[ind])))
+
+gen <- plotDf %>%
+	ggplot(aes(x = Sample, y = Reads, fill = Taxon)) +
+	geom_col() + scale_fill_manual(values = colour) +
+	theme_bw() +
+	theme(axis.text.x = element_blank(),axis.title.x = element_blank(),legend.text = element_text(face = "italic")) +
+	scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+	geom_text(data = krakenabund, inherit.aes = F, aes(x = Sample, label = Abundance, y = 1.02), size = 2.5) +
+	guides(fill = guide_legend(title = "Genus", ncol = 1)) + ylab("Abundance")
+gen
+###############
+### Species ###
+###############
+ranked = "^S$"
+tmp <- lapply(report_files, function(x){KrakenParsingProp(x,ranked)})
+krakentable <- as_tibble(reduce(tmp, by = "Taxon",full_join))
+tmp <- lapply(report_files, function(x){KrakenParsingCount(x,ranked)})
+krakentableCount <- as_tibble(reduce(tmp, by = "Taxon",full_join))
+colnames(krakentable)[-1] <- colnames(krakentableCount)[-1] <-  num
+
+krakentable <- krakentable %>% pivot_longer(c(everything(), -Taxon)) %>% group_by(name) %>% mutate(value = value/sum(value, na.rm = T)) %>% 
+	pivot_wider(Taxon)
+krakenProp <- KrakenAnalysis(krakentable, 0.01)
+
+########################################
+### Preparing the Proportional Data ####
+########################################
+krakenProp <- krakenProp %>% mutate(Sample = ifelse(Sample == "JessSamples", "Brancorsini", "Geridu"))
+
+krakenabund <- krakentableCount %>% filter(Taxon %in% unique(krakenProp$Taxon)) %>% pivot_longer(c(everything(), -Taxon), names_to = "Sample") %>% group_by(Sample) %>%
+	summarize(Abundance = sum(value, na.rm = T)) %>% mutate(Sample = ifelse(Sample == "JessSamples", "Brancorsini", "Geridu"))
+# What are we looking at specifically
+tmp <- krakenProp %>% pull(Taxon) %>% unique() %>% sort()
+ind <- c(which(tmp == "Homo sapiens"), which(tmp == "Other"))
+ind2 <- which(tmp == "Brucella melitensis")
+ind3 <- c(ind, ind2)
+plotDf <- krakenProp %>% mutate(Taxon = factor(Taxon, levels = c(tmp[ind2],tmp[-ind3],tmp[ind])))
+
+spe <- plotDf %>%
+	ggplot(aes(x = Sample, y = Reads, fill = Taxon)) +
+	geom_col() + scale_fill_manual(values = colour) +
+	theme_bw() +
+	theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),legend.text = element_text(face = "italic")) +
+	scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+	geom_text(data = krakenabund, inherit.aes = F, aes(x = Sample, label = Abundance, y = 1.02), size = 2.5) +
+	guides(fill = guide_legend(title = "Species", ncol = 1)) + ylab("Abundance")
+spe
+#ggsave("../KrakenSpecies006.pdf", width = 8, height = 6)
+
+ggarrange(fam, gen,spe, ncol = 1, align = "hv", labels = "AUTO")
+ggsave("KrakenNoUnclass.png", height = 12, width = 9)
+#spe
+#ggsave("../SpeciesKrakenV2.pdf", width = 8, height = 6)

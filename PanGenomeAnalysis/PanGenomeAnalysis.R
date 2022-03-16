@@ -199,8 +199,10 @@ colnames(AllPA)[(ncol(AllPA)-1):ncol(AllPA)] <- c("Brancorsini", "Geridu")
 colnames(AllPA) <- gsub("--","-XXX-", colnames(AllPA))
 
 # Merging the Corsini and Geridu Data
-ancientOnly <- Corsini %>% full_join(Geridu) %>% pivot_longer(cols = JessSamples:KayBMel, names_to = "Sample", values_to = "MeanCoverage", values_drop_na = T) %>%
-	mutate(Sample = ifelse(Sample == "KayBMel", "Geridu", "Brancorsini"), Status = ifelse(Gene %in% coreGenes, "Core", "Accessory"))
+ancientOnly <- Corsini %>% full_join(Geridu) %>%
+	pivot_longer(cols = JessSamples:KayBMel, names_to = "Sample", values_to = "MeanCoverage", values_drop_na = T) %>%
+	mutate(Sample = ifelse(Sample == "KayBMel", "Geridu", "Brancorsini"), Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>%
+       	inner_join(depthDf %>% select(Gene, GC) %>% distinct())
 
 # Now to make a boxplot to compare our gene to everyone else
 tmp <- AllPA %>% select(-Gene) %>% summarize_all(sum) %>% t() %>% as.data.frame()
@@ -323,10 +325,12 @@ coord$ST[(ncol(coord)-1):ncol(coord)] <- c("Brancorsini", "Geridu")
 
 # Clustering based on PCoA Coordinates
 fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "silhouette")
+fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "wss")
 
 clustered <- clara(coord[,-c(5,6)], 5)
 
 coord$clusters <- factor(clustered$clustering)
+write.table(coord, file = "FullPhyloClustering.tab", sep = "\t", row.names = F, col.names = T)
 
 ann_colors$ST <- ann_colors$ST[mixedsort(unique(coord$ST))]
 p1 <- coord %>%
@@ -405,7 +409,6 @@ vcfCorsini <- vcfHet %>% filter(!is.na(FILTER),QUAL >= 30) %>% # does all of the
 
 coreHet <-vcfCorsini %>% filter(Status == "Core") %>% pull(HeteroFrac)
 accessHet <-vcfCorsini %>% filter(Status == "Accessory") %>% pull(HeteroFrac)
-t.test(coreHet, accessHet)
 car:::Anova(type = 3, lm(HeteroFrac ~ Status, vcfCorsini))
 
 # Now for Geridu
@@ -422,7 +425,7 @@ vcfGeridu <- vcfHet %>% filter(!is.na(FILTER),QUAL >= 30) %>%
 
 coreHet <-vcfGeridu %>% filter(Status == "Core") %>% pull(HeteroFrac)
 accessHet <-vcfGeridu %>% filter(Status == "Accessory") %>% pull(HeteroFrac)
-t.test(coreHet, accessHet)
+car:::Anova(type = 3, lm(HeteroFrac ~ Status, vcfGeridu))
 
 # Summary Statistics of both
 vcfPlot <- vcfCorsini %>% bind_rows(vcfGeridu)
@@ -454,6 +457,15 @@ r2 <- round(summary(model)$adj.r.squared,2)
 tmp <- summary(model)$fstatistic
 pval <- round(pf(tmp[1],tmp[2],tmp[3], lower.tail = F),3)
 
+ancientOnly %>% filter(Sample == "Brancorsini") %>% ggplot(aes(x = GC, y = HeteroFrac, colour = Status)) +
+	geom_point() +
+	theme_bw() +
+	geom_smooth(method = "lm") +
+	scale_y_log10() + annotation_logticks(sides = "l") + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+	ylab("P(Heterozygous)") +
+	scale_colour_manual(values = c(Core = "#f8333c", Accessory = "#007dba")) +
+	theme(legend.position = "bottom") 
+
 copyHet <- ancientOnly %>% filter(Sample == "Brancorsini") %>% ggplot(aes(x = CopyNumber, y = HeteroFrac, colour = Status)) +
 	geom_point() +
 	theme_bw() +
@@ -469,8 +481,11 @@ hetPlots <- ggarrange(hetHist, copyHet, ncol = 1, common.legend = T, legend = "b
 ggarrange(tmp, hetPlots, common.legend = T)
 ggsave(file = "Heterozygosity.png", height = 6, width = 9)
 
+# Looking for potential HGTs and Transposons
+ancientOnly<- ancientOnly %>% left_join(read.delim("../BlastResults/COGClassified90/Pangenome.tab"), by = c("Gene" = "Query"))
+ancientOnly %>% filter(Sample != "Brancorsini") %>% filter(HeteroFrac > 0, Status == "Accessory") %>% select(Gene, CopyNumber,HeteroFrac, Name)
+
 # Saving the high copy number genes
 highCopyCor <- ancientOnly %>% filter(Sample == "Brancorsini", MeanCoverage > (mean(MeanCoverage) + 2*sd(MeanCoverage)))
 highCopyGer <- ancientOnly %>% filter(Sample != "Brancorsini", MeanCoverage > (mean(MeanCoverage) + 2*sd(MeanCoverage)))
-highCopyCor %>% bind_rows(highCopyGer) %>% write.table(file = "HighCopyNumberGenes.tab", sep = "\t", row.names =F, quote = F)
 highCopyCor %>% bind_rows(highCopyGer) %>% pull(Gene) %>% unique() %>% write.table(file = "HighCopyNumberGenes.list", sep = "\t", row.names =F, quote = F)

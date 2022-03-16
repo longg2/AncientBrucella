@@ -213,19 +213,6 @@ segmentPlot <- MedianLength %>% left_join(fld)
 fldModel <- fld %>% filter(Sample != "Geridu") %>% lm(formula = log10(Reads) ~ Length * Sample)
 fldModel %>% summary()
 
-#reduce(list(ecoli,kaero, human),bind_rows) %>% mutate(Sample = NameEdits(Sample)) %>% group_by(Organism, Sample) %>%
-#	summarize(MeanLength = mean(rep(Length, Reads)), StandardDeviation = sd(rep(Length, Reads)), Error = qnorm(0.975)*StandardDeviation/sqrt(sum(Reads))) %>%
-#       	dplyr:::select(-c(StandardDeviation)) %>% xtable:::xtable() %>%print(file ="~/MeanLengthTable.tex")
-
-#FLDfigureSupp <- reduce(list(kaero, human),bind_rows) %>% mutate(Sample = NameEdits(Sample)) %>%
-#	mutate(Organism =factor(Organism, levels = c("Escherichia coli","Homo sapiens","Klebsiella aerogenes")))  %>%
-#	ggplot(aes(x = Length, y = Reads, colour = Sample)) +
-#	geom_point() + facet_grid(Organism ~.) + 
-#	scale_colour_manual(values = colourList) + theme_bw() +
-#	ylab("Reads") + scale_y_log10(limits = c(1,10^6), breaks = c(1,10,100,10^3,10^4, 10^5,10^6)) + scale_x_continuous(breaks = pretty_breaks(n = 10)) +
-#	theme(legend.position = "bottom", strip.text.y = element_text(face = "italic")) + annotation_logticks(sides = "l") +
-#	xlab("Read Length")# + ylab(bquote(log[10]("Reads")))
-
 FLDfigure <- fld %>%
 	ggplot(aes(x = Length, y = Reads, colour = Sample)) +
 	geom_segment(data = segmentPlot, aes(x = Length, y = Reads, xend = Length, yend = 0), lty = 2) +
@@ -256,7 +243,8 @@ figure <- mismatches %>% group_by(Sample) %>%
 	#scale_y_continuous(breaks = scales:::breaks_pretty(n = 10)) +
 	scale_y_log10() + annotation_logticks(sides = "l") +
 	scale_color_manual(values = colourList) + theme_bw() +ylab("Mapped Reads") +
-	theme(legend.text = element_text(face = "italic"), legend.position = "bottom", axis.title.y = element_blank())
+	theme(legend.text = element_text(face = "italic"), legend.position = "bottom") +
+	ylab("Reads")
 figure
 ggsave("BmelMismatches.png", width = 6, height = 4)
 #

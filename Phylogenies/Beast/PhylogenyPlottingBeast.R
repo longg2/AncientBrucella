@@ -49,14 +49,21 @@ ann_colors$ST <- ann_colors$ST[mixedsort(unique(STData$ST))]
 # Let's see if we can include some geographic information
 STData <- STData %>% mutate(Country = LocationID(Sample))
 
+# Reading the Clustering data from the P/A Analysis
+wholeCluster <- read.delim("../../PanGenomeAnalysis/FullPhyloClustering.tab") %>% as_tibble()
+colnames(wholeCluster)[5] <- "Sample"
+wholeCluster$Sample[which(wholeCluster$Sample %in% c("Brancorsini", "Geridu"))] <- c("JessSample", "KayBMel")
+STData <- STData %>% left_join(wholeCluster %>% select(Sample, clusters)) %>% mutate(clusters = replace(clusters, is.na(clusters), 0))
+
 p1 <- ggtree(tree, right = T, mrsd = "2018-05-01") %<+% STData +
 #p1 <- ggtree(tree, right = T, mrsd = "2017-01-01") %<+% STData + #This is for the ST11 Phylo
 	theme_tree2() +
 	geom_rootedge(rootedge = 50) +
 	geom_range("height_0.95_HPD", colour = "red", size = 0.75, alpha = 0.75) +
-	geom_tippoint(aes(colour = ST), size = 2) +
+	#geom_tippoint(aes(colour = ST), size = 2) +
+	geom_tippoint(aes(colour = ST, shape = as.factor(clusters)), size = 2) + #only if including clustering results
 	#geom_tippoint(aes(colour = ST, shape = Country), size = 2) + #only for ST11
-	scale_color_manual(values = ann_colors$ST) + guides(colour = guide_legend(nrow = 2, title ="Sequence Type")) +
+	scale_color_manual(values = ann_colors$ST) + guides(colour = guide_legend(nrow = 2, title ="Sequence Type"), shape = guide_legend(title = "P/A Clusters")) +
 	#scale_shape_manual(values = c(16,15,17,18,10,14,8)) + # only for ST11
 	#scale_shape_manual(values = c(16:18,6:10)) +
 	new_scale_color() +
@@ -106,5 +113,5 @@ tempestPlot <- tempestPlot + annotate(geom = "text", x = 1700, y = 0.0016,label 
 	guides(colour = guide_legend(nrow = 1))
 
 ggarrange(p1,tempestPlot, ncol = 1, common.legend = T, legend = "bottom", labels = "AUTO", heights = c(2,1))
-ggsave(file = "WholePhylogeneticsSNPs.pdf", width = 9, height = 12)
+ggsave(file = "WholePhylogeneticsSNPsWithClusters.pdf", width = 9, height = 12)
 
