@@ -1,0 +1,170 @@
+Gene	Length	Sample	MeanCoverage	Status	GC	CopyNumber	HeteroFrac	Match	COG	COGMembershipClass	FunctionalCategory	Name	Gene.y	FunctionalPathway	PMID	PDBID
+addB	720	Brancorsini	17.7435545311019	Core	0.5903	0.874093810122835	0	WP_004684550	COG1208	2	JM	NDP-sugar pyrophosphorylase, includes eIF-2Bgamma, eIF-2Bepsilon, and LPS biosynthesis protein s	GCD1			6JQ8
+addB	720	Geridu	1.88877860624407	Core	0.5903	0.761685380085444	0	WP_004684550	COG1208	2	JM	NDP-sugar pyrophosphorylase, includes eIF-2Bgamma, eIF-2Bepsilon, and LPS biosynthesis protein s	GCD1			6JQ8
+ccoG	1551	Brancorsini	22.196407616613	Core	0.5835	1.09345297587562	0	WP_004682974	COG0348	0	C	Polyferredoxin NapH	NapH		27322068	
+ccoG	1551	Geridu	2.3215527557985	Core	0.5835	0.936209668694378	0	WP_004682974	COG0348	0	C	Polyferredoxin NapH	NapH		27322068	
+ccoN	1626	Brancorsini	11.2134831952232	Core	0.5769	0.552405451437602	0	WP_002963527	COG3278	1	C	Cbb3-type cytochrome oxidase, subunit 1	CcoN			3MK7
+ccoO	732	Brancorsini	20.0622169814222	Core	0.5888	0.988317174558443	0	WP_002963526	COG2993	0	C	Cbb3-type cytochrome oxidase, cytochrome c subunit FixO	CcoO			3MK7
+ccoP	864	Brancorsini	21.4551382570555	Core	0.6088	1.05693611237529	0	WP_002963524	COG2010	1	C	Cytochrome c, mono- and diheme variants	CccA			1A2S
+ccoP	864	Geridu	2.61346840902616	Core	0.6088	1.05393012812067	0	WP_002963524	COG2010	1	C	Cytochrome c, mono- and diheme variants	CccA			1A2S
+ccoS	159	Brancorsini	17.2014035614733	Core	0.5346	0.847386038245794	0	WP_002963520	COG3197	0	O	Cytochrome oxidase maturation protein, CcoS/FixS family	FixS			
+clpS	351	Brancorsini	18.9040075519348	Core	0.5242	0.931260754923572	0	WP_004686968	COG2127	0	O	ATP-dependent Clp protease adapter protein ClpS	ClpS			1LZW
+group_1001	1380	Brancorsini	22.1363249810727	Core	0.592	1.09049314842224	0	WP_004683758	COG3200	0	E	3-deoxy-D-arabino-heptulosonate 7-phosphate (DAHP) synthase, class II	AroG2	Aromatic amino acid biosynthesis		6BMC
+group_1001	1380	Geridu	1.90451548658503	Core	0.592	0.768031572087107	0	WP_004683758	COG3200	0	E	3-deoxy-D-arabino-heptulosonate 7-phosphate (DAHP) synthase, class II	AroG2	Aromatic amino acid biosynthesis		6BMC
+group_1022	306	Brancorsini	18.2251218814486	Core	0.5784	0.897817074779725	0	WP_002963433	COG0832	0	E	Urease beta subunit	UreB			
+group_1074	1212	Brancorsini	21.0503592998699	Core	0.5858	1.03699564439726	0	WP_004684510	COG3034	1	M	Murein L,D-transpeptidase YafK	YafK			4XZZ
+group_1074	1212	Geridu	2.34643050983399	Core	0.5858	0.946242089368537	0	WP_004684510	COG3034	1	M	Murein L,D-transpeptidase YafK	YafK			4XZZ
+group_1172	708	Brancorsini	23.1429842977556	Core	0.5918	1.14008381392687	0	WP_002971389	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_1172	708	Geridu	1.75637987390997	Core	0.5918	0.708293109319909	0	WP_002971389	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_1173	717	Brancorsini	20.1140716737984	Core	0.6053	0.990871672055124	0	WP_004684060	COG0741	3	M	Soluble lytic murein transglycosylase or regulatory protein s ( may contain LysM/invasin domain)	MltE			153L
+group_1173	717	Geridu	2.42255934899764	Core	0.6053	0.976942470875472	0	WP_004684060	COG0741	3	M	Soluble lytic murein transglycosylase or regulatory protein s ( may contain LysM/invasin domain)	MltE			153L
+group_1276	720	Brancorsini	19.8174460144554	Core	0.5569	0.976259117828695	0	WP_002966517	COG3736	0	U	Type IV secretory pathway, component VirB8	VirB8			2BHM
+group_1276	720	Geridu	2.31696376310315	Core	0.5569	0.934359071364542	0	WP_002966517	COG3736	0	U	Type IV secretory pathway, component VirB8	VirB8			2BHM
+group_1352	690	Brancorsini	21.3141976930063	Core	0.5797	1.04999301230959	0	WP_002963753	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_1352	690	Geridu	3.72973168142417	Core	0.5797	1.50408421823007	0	WP_002963753	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_1401	510	Brancorsini	15.4789839577203	Core	0.5627	0.762535152734907	0	WP_004683193	COG3194	0	F	Ureidoglycolate hydrolase (allantoin degradation)	AllA			1XSQ
+group_1401	510	Geridu	2.25428245744061	Core	0.5627	0.909081659829916	0	WP_004683193	COG3194	0	F	Ureidoglycolate hydrolase (allantoin degradation)	AllA			1XSQ
+group_1428	819	Brancorsini	17.692721762618	Core	0.5995	0.871589655264496	0	WP_004682943	COG3257	0	F	Ureidoglycine aminohydrolase	AllE		19935661	1RC6
+group_1428	819	Geridu	2.13276912265075	Core	0.5995	0.860079129682188	0	WP_004682943	COG3257	0	F	Ureidoglycine aminohydrolase	AllE		19935661	1RC6
+group_1432	708	Brancorsini	20.7728665496277	Core	0.6285	1.02332562721352	0	WP_004682901	COG1346	0	M	Putative effector of murein hydrolase	LrgB			
+group_1432	708	Geridu	1.67631957747895	Core	0.6285	0.676007293970657	0	WP_004682901	COG1346	0	M	Putative effector of murein hydrolase	LrgB			
+group_1447	843	Brancorsini	19.5845205705437	Core	0.618	0.96478460248362	0	WP_004682792	COG0829	0	O	Urease accessory protein UreH	UreH			3SF5
+group_1447	843	Geridu	1.54987878726996	Core	0.618	0.625017675054892	0	WP_004682792	COG0829	0	O	Urease accessory protein UreH	UreH			3SF5
+group_1513	1635	Brancorsini	13.383707529366	Core	0.556	0.659316366819693	0	WP_004684471	COG2194	0	M	Phosphoethanolamine transferase for periplasmic glucans OpgE, AlkP superfamily	OpgE			5ZZU
+group_1513	1635	Geridu	1.30221175870189	Core	0.556	0.525141303009026	0	WP_004684471	COG2194	0	M	Phosphoethanolamine transferase for periplasmic glucans OpgE, AlkP superfamily	OpgE			5ZZU
+group_1525	807	Brancorsini	22.9495997134622	Core	0.5812	1.13055718453547	0	WP_002965066	COG0708	0	L	Exonuclease III	XthA			1AKO
+group_1539	720	Brancorsini	15.6316171750175	Core	0.5847	0.770054263419565	0.00138888888888889	WP_002965156	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_1539	720	Geridu	1.80449062189842	Core	0.5847	0.727694670332214	0	WP_002965156	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_1588	1350	Brancorsini	18.6045662141619	Core	0.5748	0.916509493028247	0	WP_004681527	COG3256	2	P	Nitric oxide reductase large subunit	NorB			3WFC
+group_1588	1350	Geridu	2.60931252523445	Core	0.5748	1.0522541900753	0	WP_004681527	COG3256	2	P	Nitric oxide reductase large subunit	NorB			3WFC
+group_1653	783	Brancorsini	23.14644045656	Core	0.5045	1.14025407333078	0	WP_002967853	COG3306	0	M	Glycosyltransferase involved in LPS biosynthesis, GR25 family				
+group_1653	783	Geridu	2.74293220697413	Core	0.5045	1.1061388315766	0	WP_002967853	COG3306	0	M	Glycosyltransferase involved in LPS biosynthesis, GR25 family				
+group_1773	591	Brancorsini	20.9372511513888	Core	0.5533	1.03142364177014	0	WP_004684011	COG1999	0	O	Cytochrome oxidase Cu insertion factor, SCO1/SenC/PrrC family	Sco1			1ON4
+group_1773	591	Geridu	1.83477877131347	Core	0.5533	0.739908934366664	0	WP_004684011	COG1999	0	O	Cytochrome oxidase Cu insertion factor, SCO1/SenC/PrrC family	Sco1			1ON4
+group_1878	2400	Brancorsini	21.6150857893893	Core	0.5562	1.06481554531035	0.000416666666666667	WP_004683433	COG1452	0	M	LPS assembly outer membrane protein LptD (organic solvent tolerance protein OstA)	LptD			4N4R
+group_1878	2400	Geridu	2.74549026505995	Core	0.5562	1.10717041645316	0	WP_004683433	COG1452	0	M	LPS assembly outer membrane protein LptD (organic solvent tolerance protein OstA)	LptD			4N4R
+group_1950	720	Brancorsini	18.7443798263599	Core	0.5653	0.923397076504206	0	WP_002963486	COG3306	0	M	Glycosyltransferase involved in LPS biosynthesis, GR25 family				
+group_1950	720	Geridu	2.5774235173994	Core	0.5653	1.03939434987323	0	WP_002963486	COG3306	0	M	Glycosyltransferase involved in LPS biosynthesis, GR25 family				
+group_1956	303	Brancorsini	19.9581360426779	Core	0.604	0.983189875845627	0	WP_010658102	COG0831	0	E	Urease gamma subunit	UreA			1A5K
+group_1956	303	Geridu	3.04357534234569	Core	0.604	1.22737881178314	0	WP_010658102	COG0831	0	E	Urease gamma subunit	UreA			1A5K
+group_199	2100	Brancorsini	22.7001716421561	Core	0.5981	1.11826970669006	0	WP_004685524	COG0741	1	M	Soluble lytic murein transglycosylase or regulatory protein s ( may contain LysM/invasin domain)	MltE			153L
+group_199	2100	Geridu	2.12849123523345	Core	0.5981	0.858353991387716	0	WP_004685524	COG0741	1	M	Soluble lytic murein transglycosylase or regulatory protein s ( may contain LysM/invasin domain)	MltE			153L
+group_1997	810	Brancorsini	21.4831044785718	Core	0.5383	1.05831380144413	0	WP_004681802	COG1208	2	JM	NDP-sugar pyrophosphorylase, includes eIF-2Bgamma, eIF-2Bepsilon, and LPS biosynthesis protein s	GCD1			6JQ8
+group_1997	810	Geridu	3.53511681157062	Core	0.5383	1.42560212370367	0	WP_004681802	COG1208	2	JM	NDP-sugar pyrophosphorylase, includes eIF-2Bgamma, eIF-2Bepsilon, and LPS biosynthesis protein s	GCD1			6JQ8
+group_217	2112	Brancorsini	20.2842553192991	Core	0.5062	0.999255362642911	0.000473484848484848	WP_004683330	COG3306	1	M	Glycosyltransferase involved in LPS biosynthesis, GR25 family				
+group_217	2112	Brancorsini	20.2842553192991	Core	0.5062	0.999255362642911	0.000473484848484848	WP_004683330	COG3307	1	M	O-antigen ligase	RfaL			
+group_217	2112	Geridu	3.57053892575445	Core	0.5062	1.43988675527264	0	WP_004683330	COG3306	1	M	Glycosyltransferase involved in LPS biosynthesis, GR25 family				
+group_217	2112	Geridu	3.57053892575445	Core	0.5062	1.43988675527264	0	WP_004683330	COG3307	1	M	O-antigen ligase	RfaL			
+group_2195	501	Brancorsini	21.2665967789192	Core	0.5689	1.04764806703458	0	WP_002964630	COG5465	0	R	Uncharacterized conserved protein YbjN, helps stabilize unstable proteins	YbjN		16701556	
+group_2195	501	Geridu	2.70468333415844	Core	0.5689	1.09071425659881	0	WP_002964630	COG5465	0	R	Uncharacterized conserved protein YbjN, helps stabilize unstable proteins	YbjN		16701556	
+group_2219	480	Brancorsini	24.6359245026631	Core	0.5833	1.21362994526745	0	WP_002964470	COG0832	1	E	Urease beta subunit	UreB			
+group_2220	303	Brancorsini	17.1714498548606	Core	0.571	0.845910440473406	0	WP_002964469	COG0831	0	E	Urease gamma subunit	UreA			1A5K
+group_2220	303	Geridu	1.62118728513674	Core	0.571	0.653774163571555	0	WP_002964469	COG0831	0	E	Urease gamma subunit	UreA			1A5K
+group_2347	1956	Brancorsini	21.4437943693164	Core	0.5895	1.05637728285564	0	WP_002964936	COG0739	1	M	Murein DD-endopeptidase MepM and murein hydrolase activator NlpD, contains LysM domain	NlpD			2GU1
+group_2347	1956	Geridu	2.00921871988366	Core	0.5895	0.810255113685682	0	WP_002964936	COG0739	1	M	Murein DD-endopeptidase MepM and murein hydrolase activator NlpD, contains LysM domain	NlpD			2GU1
+group_2479	762	Brancorsini	21.0963287231304	Core	0.5761	1.03926021817567	0	WP_004681861	COG3346	0	O	Cytochrome oxidase assembly protein ShyY1	Shy1			
+group_2479	762	Geridu	2.43470223161582	Core	0.5761	0.981839315922205	0	WP_004681861	COG3346	0	O	Cytochrome oxidase assembly protein ShyY1	Shy1			
+group_2492	684	Brancorsini	21.8891423006619	Core	0.5599	1.07831628439323	0.00146198830409357	WP_002965068	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_2492	684	Geridu	1.59239947317972	Core	0.5599	0.642164938742439	0	WP_002965068	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_281	1902	Brancorsini	17.5865341018245	Core	0.6351	0.866358573924604	0	WP_004681531	COG4548	0	P	Nitric oxide reductase activation protein	NorD			
+group_281	1902	Geridu	2.08432766152101	Core	0.6351	0.840544202396098	0	WP_004681531	COG4548	0	P	Nitric oxide reductase activation protein	NorD			
+group_317	750	Brancorsini	11.8667565387641	Core	0.6	0.584587401503265	0.00133333333333333	WP_004683138	COG3346	0	O	Cytochrome oxidase assembly protein ShyY1	Shy1			
+group_363	1350	Brancorsini	23.387425382519	Core	0.5941	1.15212561979823	0	WP_004684314	COG4942	0	D	Septal ring factor EnvC, activator of murein hydrolases AmiA and AmiB	EnvC			
+group_363	1350	Geridu	2.70155272789661	Core	0.5941	1.08945178093726	0	WP_004684314	COG4942	0	D	Septal ring factor EnvC, activator of murein hydrolases AmiA and AmiB	EnvC			
+group_3713	699	Brancorsini	19.1970998977395	Core	0.5494	0.945699248902509	0	WP_002964699	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_3713	699	Geridu	2.73134097512405	Core	0.5494	1.10146445004337	0	WP_002964699	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_3743	555	Brancorsini	22.5956566756472	Core	0.564	1.11312102663667	0	WP_004682002	COG0450	0	V	Alkyl hydroperoxide reductase subunit AhpC (peroxiredoxin)	AhpC			2RII
+group_3743	555	Geridu	4.37474386359029	Core	0.564	1.76419747211212	0	WP_004682002	COG0450	0	V	Alkyl hydroperoxide reductase subunit AhpC (peroxiredoxin)	AhpC			2RII
+group_381	1722	Brancorsini	15.6937600909114	Core	0.5923	0.77311558566087	0	WP_004683985	COG0804	0	E	Urease alpha subunit	UreC			5A6T
+group_381	1722	Geridu	2.26779986662303	Core	0.5923	0.914532808480611	0	WP_004683985	COG0804	0	E	Urease alpha subunit	UreC			5A6T
+group_3825	420	Brancorsini	21.0268147653413	Core	0.6167	1.03583577917084	0	WP_002963490	COG1380	0	R	Putative effector of murein hydrolase LrgA, UPF0299 family	YohJ			
+group_3825	420	Geridu	2.46907275466721	Core	0.6167	0.995699873653847	0	WP_002963490	COG1380	0	R	Putative effector of murein hydrolase LrgA, UPF0299 family	YohJ			
+group_3859	600	Brancorsini	21.1154811273056	Core	0.5417	1.04020371559661	0	WP_004683270	COG0605	0	P	Superoxide dismutase	SodA			1AP5
+group_3859	600	Geridu	3.01762653575226	Core	0.5417	1.216914469087	0	WP_004683270	COG0605	0	P	Superoxide dismutase	SodA			1AP5
+group_3953	645	Brancorsini	23.1121459572279	Core	0.5519	1.13856463677877	0	WP_002964550	COG0741	3	M	Soluble lytic murein transglycosylase or regulatory protein s ( may contain LysM/invasin domain)	MltE			153L
+group_3953	645	Geridu	2.5071539856443	Core	0.5519	1.0110568439176	0	WP_002964550	COG0741	3	M	Soluble lytic murein transglycosylase or regulatory protein s ( may contain LysM/invasin domain)	MltE			153L
+group_4000	1302	Brancorsini	21.5835604087445	Core	0.5806	1.06326252277278	0	WP_004686795	COG2989	2	M	Murein L,D-transpeptidase YcbB/YkuD	YcbB		18456808	6NTW
+group_4000	1302	Geridu	2.92218885839804	Core	0.5806	1.17842743661548	0	WP_004686795	COG2989	2	M	Murein L,D-transpeptidase YcbB/YkuD	YcbB		18456808	6NTW
+group_403	1284	Brancorsini	14.8436805389137	Core	0.5514	0.731238448066442	0	WP_002968069	COG2951	1	M	Membrane-bound lytic murein transglycosylase B	MltB			1D0K
+group_403	1284	Geridu	2.06603937149087	Core	0.5514	0.833169106608443	0	WP_002968069	COG2951	1	M	Membrane-bound lytic murein transglycosylase B	MltB			1D0K
+group_4055	1044	Brancorsini	20.7061571906613	Core	0.5546	1.02003935006722	0	WP_004686828	COG3704	0	U	Type IV secretory pathway, VirB6 component	VirB6			
+group_4055	1044	Geridu	2.06312254320531	Core	0.5546	0.831992840923313	0	WP_004686828	COG3704	0	U	Type IV secretory pathway, VirB6 component	VirB6			
+group_4112	522	Brancorsini	19.6807608451243	Core	0.5326	0.969525649614166	0	WP_002972093	COG2032	0	P	Cu/Zn superoxide dismutase	SodC			1ESO
+group_4112	522	Geridu	2.53958217230169	Core	0.5326	1.02413411808725	0	WP_002972093	COG2032	0	P	Cu/Zn superoxide dismutase	SodC			1ESO
+group_4132	159	Brancorsini	19.9437348991751	Core	0.4969	0.982480437927059	0	WP_002963525	COG4736	0	C	Cbb3-type cytochrome oxidase, subunit 3	CcoQ			
+group_446	1734	Brancorsini	20.4619587308552	Core	0.5802	1.00800949653455	0	WP_004683424	COG0739	1	M	Murein DD-endopeptidase MepM and murein hydrolase activator NlpD, contains LysM domain	NlpD			2GU1
+group_446	1734	Geridu	2.37651975473376	Core	0.5802	0.958376141428528	0	WP_004683424	COG0739	1	M	Murein DD-endopeptidase MepM and murein hydrolase activator NlpD, contains LysM domain	NlpD			2GU1
+group_490	717	Brancorsini	24.4306340739406	Core	0.5788	1.20351680290304	0	WP_002966153	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_490	717	Geridu	3.17559176002917	Core	0.5788	1.28061690699893	0	WP_002966153	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_517	1122	Brancorsini	17.6360265938532	Core	0.549	0.868796703266389	0.00089126559714795	WP_002965270	COG1835	0	M	Peptidoglycan/LPS O-acetylase OafA/YrhL, contains acyltransferase and SGNH-hydrolase domains	OafA			
+group_517	1122	Geridu	2.94184370713757	Core	0.549	1.18635362282026	0	WP_002965270	COG1835	0	M	Peptidoglycan/LPS O-acetylase OafA/YrhL, contains acyltransferase and SGNH-hydrolase domains	OafA			
+group_557	1233	Brancorsini	21.326166347478	Core	0.5848	1.05058261946924	0	WP_014490148	COG2951	1	M	Membrane-bound lytic murein transglycosylase B	MltB			1D0K
+group_557	1233	Brancorsini	21.326166347478	Core	0.5848	1.05058261946924	0	WP_014490148	COG3409	3	M	Peptidoglycan-binding (PGRP) domain of peptidoglycan hydrolases	PGRP			4FET
+group_557	1233	Geridu	2.36729062457335	Core	0.5848	0.954654321681708	0	WP_014490148	COG2951	1	M	Membrane-bound lytic murein transglycosylase B	MltB			1D0K
+group_557	1233	Geridu	2.36729062457335	Core	0.5848	0.954654321681708	0	WP_014490148	COG3409	3	M	Peptidoglycan-binding (PGRP) domain of peptidoglycan hydrolases	PGRP			4FET
+group_706	1113	Brancorsini	20.4667930698992	Core	0.5948	1.00824764869437	0	WP_012091475	COG0160	1	E	Acetylornithine aminotransferase/4-aminobutyrate aminotransferase	ArgD	Arginine biosynthesis		1SF2
+group_706	1113	Brancorsini	20.4667930698992	Core	0.5948	1.00824764869437	0	WP_012091475	COG0739	3	M	Murein DD-endopeptidase MepM and murein hydrolase activator NlpD, contains LysM domain	NlpD			2GU1
+group_706	1113	Brancorsini	20.4667930698992	Core	0.5948	1.00824764869437	0	WP_012091475	COG2334	1	T	Ser/Thr protein kinase RdoA involved in Cpx stress response, MazF antagonist	SrkA	Threonine biosynthesis		1ZYL
+group_706	1113	Geridu	2.41799128533884	Core	0.5948	0.97510031357196	0	WP_012091475	COG0160	1	E	Acetylornithine aminotransferase/4-aminobutyrate aminotransferase	ArgD	Arginine biosynthesis		1SF2
+group_706	1113	Geridu	2.41799128533884	Core	0.5948	0.97510031357196	0	WP_012091475	COG0739	3	M	Murein DD-endopeptidase MepM and murein hydrolase activator NlpD, contains LysM domain	NlpD			2GU1
+group_706	1113	Geridu	2.41799128533884	Core	0.5948	0.97510031357196	0	WP_012091475	COG2334	1	T	Ser/Thr protein kinase RdoA involved in Cpx stress response, MazF antagonist	SrkA	Threonine biosynthesis		1ZYL
+group_71	1539	Brancorsini	22.8017310114354	Core	0.5549	1.12327278630928	0	WP_004683587	COG1086	3	MO	NDP-sugar epimerase, includes UDP-GlcNAc-inverting 4,6-dehydratase FlaA1 and capsular polysaccharide biosynthesis protein EpsC	FlaA1			2GN4
+group_71	1539	Brancorsini	22.8017310114354	Core	0.5549	1.12327278630928	0	WP_004683587	COG2148	1	M	Sugar transferase involved in LPS biosynthesis (colanic, teichoic acid)	WcaJ			5W7L
+group_71	1539	Geridu	3.08830259446212	Core	0.5549	1.2454159146579	0	WP_004683587	COG1086	3	MO	NDP-sugar epimerase, includes UDP-GlcNAc-inverting 4,6-dehydratase FlaA1 and capsular polysaccharide biosynthesis protein EpsC	FlaA1			2GN4
+group_71	1539	Geridu	3.08830259446212	Core	0.5549	1.2454159146579	0	WP_004683587	COG2148	1	M	Sugar transferase involved in LPS biosynthesis (colanic, teichoic acid)	WcaJ			5W7L
+group_795	1038	Brancorsini	15.8701584403211	Core	0.6339	0.781805428784728	0	WP_004681510	COG2055	0	C	Malate/lactate/ureidoglycolate dehydrogenase, LDH2 family	AllD	TCA cycle		1NXU
+group_795	1038	Geridu	1.86886068658416	Core	0.6339	0.753653105600485	0	WP_004681510	COG2055	0	C	Malate/lactate/ureidoglycolate dehydrogenase, LDH2 family	AllD	TCA cycle		1NXU
+group_866	1413	Brancorsini	20.9515115194082	Core	0.5867	1.03212614472094	0	WP_011069144	COG3946	2	U	Type IV secretory pathway, VirJ component	VirJ			
+group_866	1413	Geridu	2.76080101060543	Core	0.5867	1.11334476161021	0	WP_011069144	COG3946	2	U	Type IV secretory pathway, VirJ component	VirJ			
+group_903	1239	Brancorsini	22.7835841495776	Core	0.594	1.12237882452754	0	WP_004681229	COG2951	1	M	Membrane-bound lytic murein transglycosylase B	MltB			1D0K
+group_903	1239	Brancorsini	22.7835841495776	Core	0.594	1.12237882452754	0	WP_004681229	COG3409	3	M	Peptidoglycan-binding (PGRP) domain of peptidoglycan hydrolases	PGRP			4FET
+group_903	1239	Geridu	2.07914108029704	Core	0.594	0.838452616289675	0	WP_004681229	COG2951	1	M	Membrane-bound lytic murein transglycosylase B	MltB			1D0K
+group_903	1239	Geridu	2.07914108029704	Core	0.594	0.838452616289675	0	WP_004681229	COG3409	3	M	Peptidoglycan-binding (PGRP) domain of peptidoglycan hydrolases	PGRP			4FET
+group_924	2496	Brancorsini	19.2100096033909	Core	0.5561	0.946335214699585	0	WP_004681223	COG3451	0	U	Type IV secretory pathway, VirB4 component	VirB4			
+group_924	2496	Geridu	3.13254014384987	Core	0.5561	1.26325553572734	0	WP_004681223	COG3451	0	U	Type IV secretory pathway, VirB4 component	VirB4			
+group_955	1299	Brancorsini	20.242590569504	Core	0.6043	0.99720284831539	0	WP_002964019	COG0739	1	M	Murein DD-endopeptidase MepM and murein hydrolase activator NlpD, contains LysM domain	NlpD			2GU1
+group_955	1299	Geridu	1.87751531075716	Core	0.6043	0.757143245038168	0	WP_002964019	COG0739	1	M	Murein DD-endopeptidase MepM and murein hydrolase activator NlpD, contains LysM domain	NlpD			2GU1
+mepA	945	Brancorsini	20.6042457164845	Core	0.619	1.01501892484169	0	WP_004686911	COG3770	0	M	Murein endopeptidase MepA (D-alanyl-D-alanine-endopeptidase)	MepA			1TZP
+mepA	945	Geridu	2.94875551807902	Core	0.619	1.18914094015147	0	WP_004686911	COG3770	0	M	Murein endopeptidase MepA (D-alanyl-D-alanine-endopeptidase)	MepA			1TZP
+murG	1140	Brancorsini	14.1065912267174	Core	0.6184	0.694927504609811	0	WP_004684021	COG0707	0	M	UDP-N-acetylglucosamine:LPS N-acetylglucosamine transferase	MurG	Mureine biosynthesis		1F0K
+murG	1140	Geridu	2.13916336353238	Core	0.6184	0.862657727184392	0	WP_004684021	COG0707	0	M	UDP-N-acetylglucosamine:LPS N-acetylglucosamine transferase	MurG	Mureine biosynthesis		1F0K
+nikR	417	Brancorsini	19.3654474262554	Core	0.5372	0.953992487575022	0	WP_004682148	COG0864	0	K	Metal-responsive transcriptional regulator, contains CopG/Arc/MetJ DNA-binding domain	NikR			1Q5V
+nikR	417	Geridu	2.10447470609116	Core	0.5372	0.848668875796293	0	WP_004682148	COG0864	0	K	Metal-responsive transcriptional regulator, contains CopG/Arc/MetJ DNA-binding domain	NikR			1Q5V
+nosZ_1	2259	Brancorsini	22.4999357037237	Core	0.5914	1.10840556171048	0	WP_004681567	COG0348	3	C	Polyferredoxin NapH	NapH		27322068	
+nosZ_1	2259	Brancorsini	22.4999357037237	Core	0.5914	1.10840556171048	0	WP_004681567	COG3901	1	K	Transcriptional regulator NosR of nitric oxide reductase	NosR			
+nosZ_1	2259	Geridu	2.98005366176014	Core	0.5914	1.20176250330711	0	WP_004681567	COG0348	3	C	Polyferredoxin NapH	NapH		27322068	
+nosZ_1	2259	Geridu	2.98005366176014	Core	0.5914	1.20176250330711	0	WP_004681567	COG3901	1	K	Transcriptional regulator NosR of nitric oxide reductase	NosR			
+phoB	687	Brancorsini	24.6715177738229	Core	0.6186	1.21538336270973	0.00145560407569141	WP_002965207	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+phoB	687	Geridu	1.77576546346834	Core	0.6186	0.716110711712343	0	WP_002965207	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+purE	489	Brancorsini	17.9248915711735	Core	0.6278	0.883026946039581	0	WP_002964830	COG0041	0	F	Phosphoribosylcarboxyaminoimidazole (NCAIR) mutase	PurE	Purine biosynthesis		1D7A
+purE	489	Geridu	2.0118524801382	Core	0.6278	0.811317226880899	0	WP_002964830	COG0041	0	F	Phosphoribosylcarboxyaminoimidazole (NCAIR) mutase	PurE	Purine biosynthesis		1D7A
+puuE	1428	Brancorsini	20.0019514334548	Core	0.612	0.985348336361477	0	WP_002963511	COG0726	1	GM	Peptidoglycan/xylan/chitin deacetylase, PgdA/NodB/CDA1 family	CDA1			1NY1
+puuE	1428	Brancorsini	20.0019514334548	Core	0.612	0.985348336361477	0	WP_002963511	COG3195	1	F	2-oxo-4-hydroxy-4-carboxy--5-ureidoimidazoline (OHCU) decarboxylase (uric acid degradation)	PucL			2O70
+puuE	1428	Geridu	2.60726983736684	Core	0.612	1.05143043790038	0.000700280112044818	WP_002963511	COG0726	1	GM	Peptidoglycan/xylan/chitin deacetylase, PgdA/NodB/CDA1 family	CDA1			1NY1
+puuE	1428	Geridu	2.60726983736684	Core	0.612	1.05143043790038	0.000700280112044818	WP_002963511	COG3195	1	F	2-oxo-4-hydroxy-4-carboxy--5-ureidoimidazoline (OHCU) decarboxylase (uric acid degradation)	PucL			2O70
+surE	768	Brancorsini	19.7100878944138	Core	0.6094	0.970970376611126	0	WP_004683703	COG0496	0	L	Broad specificity polyphosphatase and 5'/3'-nucleotidase SurE	SurE			2V4N
+surE	768	Geridu	3.12808375523251	Core	0.6094	1.26145841347776	0	WP_004683703	COG0496	0	L	Broad specificity polyphosphatase and 5'/3'-nucleotidase SurE	SurE			2V4N
+ureC	1713	Brancorsini	20.1714654426209	Core	0.603	0.993699038915549	0	WP_004682812	COG0804	0	E	Urease alpha subunit	UreC			5A6T
+ureC	1713	Geridu	1.97131774444196	Core	0.603	0.794970834845651	0	WP_004682812	COG0804	0	E	Urease alpha subunit	UreC			5A6T
+ureE_1	732	Brancorsini	22.8258781836079	Core	0.5888	1.12446233903904	0.00136612021857923	WP_004686385	COG0830	0	O	Urease accessory protein UreF	UreF			3SF5
+ureE_1	732	Geridu	2.58090149034873	Core	0.5888	1.04079690766326	0	WP_004686385	COG0830	0	O	Urease accessory protein UreF	UreF			3SF5
+ureE_2	489	Brancorsini	21.933998430333	Core	0.591	1.08052601442353	0	WP_002963435	COG2371	0	O	Urease accessory protein UreE	UreE			1EAR
+ureE_2	489	Geridu	1.29782027061311	Core	0.591	0.523370353114219	0	WP_002963435	COG2371	0	O	Urease accessory protein UreE	UreE			1EAR
+ureF	687	Brancorsini	17.575028259428	Core	0.6317	0.865791766095801	0	WP_004682815	COG0830	0	O	Urease accessory protein UreF	UreF			3SF5
+ureG_1	639	Brancorsini	20.3572768210999	Core	0.5634	1.00285259242109	0	WP_002964473	COG0378	0	O	Hydrogenase/urease maturation factor HypB, Ni2+-binding GTPase	HypB		24338018;23899293	2HF8
+ureG_1	639	Geridu	1.97314848056896	Core	0.5634	0.795709113507916	0	WP_002964473	COG0378	0	O	Hydrogenase/urease maturation factor HypB, Ni2+-binding GTPase	HypB		24338018;23899293	2HF8
+ureG_2	627	Brancorsini	18.9058127648358	Core	0.571	0.931349684423012	0	WP_002963437	COG0378	0	O	Hydrogenase/urease maturation factor HypB, Ni2+-binding GTPase	HypB		24338018;23899293	2HF8
+ureG_2	627	Geridu	3.04801944203664	Core	0.571	1.22917097829278	0	WP_002963437	COG0378	0	O	Hydrogenase/urease maturation factor HypB, Ni2+-binding GTPase	HypB		24338018;23899293	2HF8
+virB10	1143	Brancorsini	20.4731399751054	Core	0.5853	1.00856031381141	0	WP_041594650	COG2948	3	U	Type IV secretory pathway, VirB10 component	VirB10			2BHV
+virB11	1086	Brancorsini	22.0884055268566	Core	0.5866	1.08813251102902	0	WP_005972055	COG0630	0	NU	Type IV secretory pathway ATPase VirB11/Archaellum biosynthesis ATPase ArlI/FlaI	VirB11		32416640	1G6O
+virB11	1086	Geridu	2.67308890637928	Core	0.5866	1.07797321132649	0	WP_005972055	COG0630	0	NU	Type IV secretory pathway ATPase VirB11/Archaellum biosynthesis ATPase ArlI/FlaI	VirB11		32416640	1G6O
+virB5	717	Brancorsini	24.9300868178328	Core	0.5607	1.22812114873013	0.00139470013947001	NA	NA	NA	NA	NA	NA	NA	NA	NA
+virB5	717	Geridu	1.63777058272563	Core	0.5607	0.660461689195418	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+virB9	870	Brancorsini	23.4770141923582	Core	0.5759	1.15653899841408	0	WP_041594649	COG3504	0	U	Type IV secretory pathway, VirB9 components	VirB9			
+virB9	870	Geridu	2.52141546970556	Core	0.5759	1.01680805471164	0	WP_041594649	COG3504	0	U	Type IV secretory pathway, VirB9 components	VirB9			
+vjbR	780	Brancorsini	24.3739532983071	Core	0.5333	1.20072455994815	0	WP_002966460	COG2197	3	TK	DNA-binding response regulator, NarL/FixJ family, contains REC and HTH domains	CitB			1A04
+vjbR	780	Geridu	3.10827789256712	Core	0.5333	1.25347132807646	0	WP_002966460	COG2197	3	TK	DNA-binding response regulator, NarL/FixJ family, contains REC and HTH domains	CitB			1A04
+xth	840	Brancorsini	20.6955484674885	Core	0.5512	1.01951673667302	0	WP_004683693	COG0708	0	L	Exonuclease III	XthA			1AKO
+xth	840	Geridu	2.95659226316403	Core	0.5512	1.19230125451493	0	WP_004683693	COG0708	0	L	Exonuclease III	XthA			1AKO
+yut	1050	Brancorsini	15.9021520983823	Core	0.601	0.78338151989012	0	WP_002964475	COG4413	0	E	Urea transporter	Utp			
+yut	1050	Geridu	2.10737350490451	Core	0.601	0.849837870758773	0	WP_002964475	COG4413	0	E	Urea transporter	Utp			

@@ -3,7 +3,7 @@ library(tidyr)
 library(ggplot2)
 library(ggrepel)
 library(ggpubr)
-#library(ggvenn)
+library(ape)
 library(scales)
 library(ggExtra)
 #library(reshape2)
@@ -389,6 +389,75 @@ ggarrange(p1,p1Clust, legend = "bottom", align = "hv", nrow = 1, common.legend =
 ggsave(file = "PCoA_Accessory_ClusterWhole.pdf", width = 9, height = 6)
 
 ################################################
+### Let's take a look at the Virulence Genes ###
+################################################
+
+# These are all coming from the Głowacka et al. 2018 paper Brucella - Virulence Factors, Pathogenesis and Treatment
+identifiedCOGGenes <- read.delim("../BlastResults/COGClassified90/Pangenome.tab") %>% as_tibble()
+
+# Let's look for the genes, first in the names than the gene name itself
+fromCOGName <- grep("LPS|lipopolisaccharide|T4SS|Type IV|VirB|VjbR|sodA|sodC|superoxide|sod|opg|urease|ure|ahpC|ahpD|ahp|nord|Nitric Oxide Reductase|Alkyl hydroperoxide reductase|cbb|cytochrome oxidase|Brucella virulence factor A|BvfA|xthA|Exonuclease III|Base excision repair|bvr|ompR",ignore.case = T, identifiedCOGGenes$Name)
+fromCOGName <- identifiedCOGGenes$Query[fromCOGName]
+
+# From Gene Name
+fromGeneName <- grep("ompR|bvrr|bvrs|xth|bvf|nord|ahp|cco|ure|opg|sod|vjbr|virb|lps", ignore.case = T, AllPA$Gene)
+fromGeneName <- AllPA$Gene[fromGeneName]
+
+#
+virulenceDf<- AllPA %>% filter(Gene %in% unique(c(fromCOGName,fromGeneName)))
+
+# Preparing the data
+virulenceData <- as.data.frame(virulenceDf)
+rownames(virulenceData) <- virulenceData[,1]
+virulenceData <- virulenceData[,-1]
+genomes <- colnames(virulenceData)
+virulenceData <- apply(virulenceData, MARGIN = 1,FUN = as.numeric)
+rownames(virulenceData) <- genomes
+
+# We'll be removing the genes that are too common
+virulenceDataSub <- virulenceData
+maxCount <- virulenceDataSub %>% colSums() %>% max()
+ind <- virulenceDataSub %>% colSums() >= (maxCount - 5)
+virulenceDataSub <- virulenceDataSub[,!ind]
+
+######################################
+# If I want to use a MDS plot
+geneDist <- dist(virulenceDataSub, method = "binary")
+
+fit <- cmdscale(geneDist, eig = T, k = 4, add =T)
+coord <- fit$points %>% as_tibble()
+coord$Genome <- rownames(fit$points)
+contrib <- fit$eig/sum(fit$eig) * 100
+coord <- coord %>% left_join(MLSTResults)
+coord$ST[(ncol(coord)-1):ncol(coord)] <- c("Brancorsini", "Geridu")
+
+# Clustering based on PCoA Coordinates
+fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "silhouette")
+fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "wss")
+
+clustered <- clara(coord[,-c(5,6)], 5)
+
+coord$clusters <- factor(clustered$clustering)
+#write.table(coord, file = "FullPhyloClustering.tab", sep = "\t", row.names = F, col.names = T)
+
+ann_colors$ST <- ann_colors$ST[mixedsort(unique(coord$ST))]
+p1 <- coord %>%
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, shape = clusters, group = clusters)) +
+	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
+	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
+	geom_point() +
+	stat_ellipse(show.legend = F, colour = "black") +
+	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
+	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
+	scale_colour_manual(values = ann_colors$ST) +
+	guides(colour = guide_legend(nrow = 2)) +
+	#geom_text_repel(show.legend = F) +
+	theme_classic() +
+	theme(legend.position = "bottom")
+
+p1
+
+################################################
 # Now to do to the SNP heterozygosity analysis #
 ################################################
 ancientOnly %>% group_by(Sample) %>% summarize(sum(Length)) # What's our estimated genome lengths?
@@ -489,3 +558,6 @@ ancientOnly %>% filter(Sample != "Brancorsini") %>% filter(HeteroFrac > 0, Statu
 highCopyCor <- ancientOnly %>% filter(Sample == "Brancorsini", MeanCoverage > (mean(MeanCoverage) + 2*sd(MeanCoverage)))
 highCopyGer <- ancientOnly %>% filter(Sample != "Brancorsini", MeanCoverage > (mean(MeanCoverage) + 2*sd(MeanCoverage)))
 highCopyCor %>% bind_rows(highCopyGer) %>% pull(Gene) %>% unique() %>% write.table(file = "HighCopyNumberGenes.list", sep = "\t", row.names =F, quote = F)
+
+# Saving the list of virulence genes found in the ancient genomes
+ancientOnly %>% filter(Gene %in% unique(c(fromCOGName, fromGeneName))) %>% write.table(file = "VirulenceGenes.tab", sep = "\t", row.names =F, quote = F)
