@@ -16,6 +16,7 @@ library(purrr)
 #library(FactoMineR)
 library(factoextra)
 library(gtools)
+library(xtable)
 
 ## Functions
 VCFParsing <- function(vcf){
@@ -561,3 +562,31 @@ highCopyCor %>% bind_rows(highCopyGer) %>% pull(Gene) %>% unique() %>% write.tab
 
 # Saving the list of virulence genes found in the ancient genomes
 ancientOnly %>% filter(Gene %in% unique(c(fromCOGName, fromGeneName))) %>% write.table(file = "VirulenceGenes.tab", sep = "\t", row.names =F, quote = F)
+
+virAncientOnly <- ancientOnly %>% filter(Gene %in% unique(c(fromCOGName, fromGeneName)))
+
+lipoPolyName <- virAncientOnly %>% filter(grepl("LPS|lipopolisaccharide", ignore.case =T, Name) | grepl("lps", ignore.case = T, Gene)) %>%
+	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "Lipopoly")
+t4ss <- virAncientOnly %>% filter(grepl("T4SS|Type IV|VirB|VjbR", ignore.case =T, Name) | grepl("vjbr|virb", ignore.case = T, Gene)) %>%
+	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "T4SS")
+sod <- virAncientOnly %>% filter(grepl("sodA|sodC|superoxide|sod", ignore.case =T, Name) | grepl("sod", ignore.case = T, Gene)) %>%
+	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "SuperOxide")
+cycicOPG <- virAncientOnly %>% filter(grepl("opg", ignore.case =T, Name) | grepl("opg", ignore.case = T, Gene)) %>%
+	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "OPG")
+urease <- virAncientOnly %>% filter(grepl("urease|ure", ignore.case =T, Name) | grepl("ure", ignore.case = T, Gene)) %>%
+	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "Urease")
+cytoOxi <- virAncientOnly %>% filter(grepl("cbb|cytochrome oxidase", ignore.case =T, Name) | grepl("cco", ignore.case = T, Gene)) %>%
+	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "CytoOxi")
+ahp <- virAncientOnly %>% filter(grepl("ahpC|ahpD|ahp|Alkyl hydroperoxide reductase", ignore.case =T, Name) | grepl("ahp", ignore.case = T, Gene)) %>%
+	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "Alkyl")
+nor <- virAncientOnly %>% filter(grepl("nord|Nitric Oxide Reductase", ignore.case =T, Name) | grepl("nord", ignore.case = T, Gene)) %>%
+	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "Nitric")
+bruceVir <- virAncientOnly %>% filter(grepl("Brucella virulence factor A|BvfA", ignore.case =T, Name) | grepl("bvf", ignore.case = T, Gene)) %>%
+	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "Brucella Virulence Factor")
+exo <- virAncientOnly %>% filter(grepl("xthA|Exonuclease III|Base excision repair", ignore.case =T, Name) | grepl("xth", ignore.case = T, Gene)) %>%
+	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "Exonuclease")
+bvr <- virAncientOnly %>% filter(grepl("bvr|ompR", ignore.case =T, Name) | grepl("ompR|bvrr|bvrs|bvf", ignore.case = T, Gene)) %>%
+	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "BvrR/BvrS")
+
+virCatSummarized <- bind_rows(list(lipoPolyName, t4ss, sod, cycicOPG, urease, cytoOxi, ahp, nor,bruceVir, exo, bvr))
+virCatSummarized %>% xtable(auto = T) %>% print(file = "~/Documents/University/ComprehensiveExamination/Paper/VirTable.tex")
