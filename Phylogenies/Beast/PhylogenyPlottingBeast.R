@@ -1,4 +1,5 @@
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(ggtree)
 library(phangorn)
@@ -16,7 +17,8 @@ colour <- c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#
 '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3',
 '#808000', '#ffd8b1', '#000075', '#808080', '#f0f0ff', '#000000')
 
-ann_colors <- list(ST = c("5" = colour[10], "7" = colour[15], "8" = colour[3], "9" = colour[9], "10" = colour[6], "11" = colour[17], "12" = colour[8], "39" = colour[13], "40" = colour[2], "41" = colour[16], "42" = colour[7], "43" = colour[4], "71" = colour[11], "88" = colour[12], "102" = colour[19], "Brancorsini" = colour[1], "NF" = colour[20], "Reference" = colour[22], "Geridu" = colour[5]))
+ann_colors <- list(ST = c("5" = colour[10], "7" = colour[15], "8" = colour[3], "9" = colour[9], "10" = colour[6], "11" = colour[17], "12" = colour[8], "39" = colour[13], "40" = colour[2], "41" = colour[16], "42" = colour[7], "43" = colour[4], "71" = colour[11], "88" = colour[12], "102" = colour[19], "Brancorsini" = colour[1], "NF" = colour[20], "Reference" = colour[22], "Geridu" = colour[5]),
+		Clusters = c("1" = colour[4],"2" = colour[2], "3" = colour[5], "4" = colour[6], "5" = colour[1], "0" = colour[22]))
 
 LocationID <- function(Sample){
 	ifelse(grepl("\\dTE\\d|\\dCB\\d|\\dIS\\d|Kay|JessSample", Sample), "Italy",
@@ -28,13 +30,13 @@ LocationID <- function(Sample){
 }
 
 # Basic Tree
-tree <- read.beast(file = "BeastResults/InvariantWhole/WholeInvariant.nexus")
+tree <- read.beast(file = "Beast/BeastResults/InvariantST11/ST11KayIncludedInvariant.nexus")
 Tiplabels <- tree@phylo$tip.label
 
 ####################################################
 # Let's colour these based on their Sequence Type ##
 ####################################################
-STData <- read.delim("../MLSTResults.txt")[,1:2]
+STData <- read.delim("MLSTResults.txt")[,1:2]
 rownames(STData) <- STData$Sample
 STData["JessSample",] <- list(Sample = "JessSample", ST = "Brancorsini")
 STData["Reference",] <- list(Sample = "Reference", ST = "Reference")
@@ -50,20 +52,48 @@ ann_colors$ST <- ann_colors$ST[mixedsort(unique(STData$ST))]
 STData <- STData %>% mutate(Country = LocationID(Sample))
 
 # Reading the Clustering data from the P/A Analysis
-wholeCluster <- read.delim("../../PanGenomeAnalysis/FullPhyloClustering.tab") %>% as_tibble()
+wholeCluster <- read.delim("../PanGenomeAnalysis/ItalyClustering.tab") %>% as_tibble()
 colnames(wholeCluster)[5] <- "Sample"
 wholeCluster$Sample[which(wholeCluster$Sample %in% c("Brancorsini", "Geridu"))] <- c("JessSample", "KayBMel")
 STData <- STData %>% left_join(wholeCluster %>% select(Sample, clusters)) %>% mutate(clusters = replace(clusters, is.na(clusters), 0))
+
+###########Cluster Plotting#################
+#pClust <- ggtree(tree, right = T, mrsd = "2018-05-01") %<+% STData +
+pClust <- ggtree(tree, right = T, mrsd = "2017-01-01") %<+% STData + #This is for the ST11 Phylo
+	theme_tree2() +
+	geom_rootedge(rootedge = 50) +
+	geom_range("height_0.95_HPD", colour = "red", size = 0.75, alpha = 0.75) +
+	#geom_tippoint(aes(colour = ST), size = 2) +
+	geom_tippoint(aes(colour = as.factor(clusters)), size = 2) + #only if including clustering results
+	#geom_tippoint(aes(colour = ST, shape = Country), size = 2) + #only for ST11
+	scale_color_manual(values = ann_colors$Clusters) + guides(colour = guide_legend(nrow = 2, title ="Clusters")) +
+	#scale_shape_manual(values = c(16,15,17,18,10,14,8)) + # only for ST11
+	#scale_shape_manual(values = c(16:18,6:10)) +
+	new_scale_color() +
+       	geom_nodepoint(aes(color = ifelse(posterior < 0.5, NA,
+						 ifelse(posterior >= 0.5 & posterior < 0.9, "Fifty", "Ninety"))),
+			      shape = "square", show.legend = F) +
+	scale_color_manual(values = c("NA" = NA, "Fifty" = "grey", "Ninety" = "black")) +
+       	#geom_nodelab(size = 2.5,mapping = aes(label = round(2018.3287671232877 - height_median)),
+       	#geom_nodelab(size = 2.5,mapping = aes(label = round(decimal_date(ymd("2017-01-01")) - height_median)), # This is for the ST11 Phylo
+	#		    geom = "label", nudge_y = 0.4, nudge_x = -50) +
+	xlab("Year") +
+	scale_x_continuous(breaks = scales:::pretty_breaks()) +
+	theme(panel.grid.major.x = element_line(color = "grey10", size = 0.2),
+	      panel.grid.minor.x = element_line(color = "grey80", size = 0.2),
+	      legend.position = "bottom")
+
+pClust
+ggsave("Beast/ST11Clustered.pdf", width = 9, height = 6)
 
 p1 <- ggtree(tree, right = T, mrsd = "2018-05-01") %<+% STData +
 #p1 <- ggtree(tree, right = T, mrsd = "2017-01-01") %<+% STData + #This is for the ST11 Phylo
 	theme_tree2() +
 	geom_rootedge(rootedge = 50) +
 	geom_range("height_0.95_HPD", colour = "red", size = 0.75, alpha = 0.75) +
-	#geom_tippoint(aes(colour = ST), size = 2) +
-	geom_tippoint(aes(colour = ST, shape = as.factor(clusters)), size = 2) + #only if including clustering results
+	geom_tippoint(aes(colour = ST), size = 2) +
 	#geom_tippoint(aes(colour = ST, shape = Country), size = 2) + #only for ST11
-	scale_color_manual(values = ann_colors$ST) + guides(colour = guide_legend(nrow = 2, title ="Sequence Type"), shape = guide_legend(title = "P/A Clusters")) +
+	scale_color_manual(values = ann_colors$ST) + guides(colour = guide_legend(nrow = 2, title ="Sequence Type")) +
 	#scale_shape_manual(values = c(16,15,17,18,10,14,8)) + # only for ST11
 	#scale_shape_manual(values = c(16:18,6:10)) +
 	new_scale_color() +
@@ -82,13 +112,17 @@ p1 <- ggtree(tree, right = T, mrsd = "2018-05-01") %<+% STData +
 
 p1 
 
+tree@data %>% mutate(height_median = round(decimal_date(ymd("2017-01-01")) - height_median),heightn = round(decimal_date(ymd("2017-01-01")) - height),height_0.95_HPD = gsub("c\\(|\\)| ","",paste(height_0.95_HPD,sep = ","))) %>%
+       	filter(height_median < 1500) %>% separate(height_0.95_HPD, into = c("HeightCIHi", "HeightCILo"), sep = ",") %>% mutate(HeightCILo = round(decimal_date(ymd("2017-01-01")) - as.numeric(HeightCILo))) %>%
+	mutate(HeightCIHi = round(decimal_date(ymd("2017-01-01")) - as.numeric(HeightCIHi)))
+
 #ggsave(plot = p1, "ST11Invariant.pdf", width = 9, height = 6)
 #######################
 ### Now for Tempest ###
 #######################
 
 # Now to get the Tempest Plot
-tempest <- as_tibble(read.delim("BeastResults/InvariantWhole/WholeInvariantTempestSNPS.tab"))# %>% filter(date > 0)
+tempest <- as_tibble(read.delim("Beast/BeastResults/InvariantWhole/WholeInvariantTempestSNPS.tab"))# %>% filter(date > 0)
 # Getting the Phylogroups plotted
 
 STData <- STData[match(tempest$tip, STData$Sample),] # Getting them in the Right Order

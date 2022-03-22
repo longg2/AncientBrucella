@@ -322,7 +322,7 @@ coord <- fit$points %>% as_tibble()
 coord$Genome <- rownames(fit$points)
 contrib <- fit$eig/sum(fit$eig) * 100
 coord <- coord %>% left_join(MLSTResults)
-coord$ST[(ncol(coord)-1):ncol(coord)] <- c("Brancorsini", "Geridu")
+coord$ST[coord$Genome %in% c("Brancorsini", "Geridu")] <- c("Brancorsini", "Geridu")
 
 # Clustering based on PCoA Coordinates
 fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "silhouette")
@@ -335,21 +335,22 @@ write.table(coord, file = "FullPhyloClustering.tab", sep = "\t", row.names = F, 
 
 ann_colors$ST <- ann_colors$ST[mixedsort(unique(coord$ST))]
 p1 <- coord %>%
-       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, linetype = clusters, group = clusters)) +
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, group = clusters)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
-	stat_ellipse(show.legend = F, colour = "black") +
+	#stat_ellipse(show.legend = F, colour = "black") +
 	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
 	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
 	scale_colour_manual(values = ann_colors$ST) +
 	guides(colour = guide_legend(nrow = 2)) +
+	#annotate(geom = "text", x = clustered$medoids[,1], y = clustered$medoids[,2], label = paste("Cluster",1:5)) +
 	#geom_text_repel(show.legend = F) +
 	theme_classic() +
 	theme(legend.position = "bottom")
 
 p1
-ggsave(p1, file = "AccessoryPCoA.pdf", width = 9, height = 6)
+ggsave(p1, file = "AccessoryPCoAWithClust.pdf", width = 9, height = 6)
 
 # Pulling out the Genomes in cluster 1 and doing the same thing
 italy <- coord %>% filter(clusters == 1) %>% pull(Genome)
@@ -360,25 +361,27 @@ coord <- fit$points %>% as_tibble()
 coord$Genome <- rownames(fit$points)
 contrib <- fit$eig/sum(fit$eig) * 100
 coord <- coord %>% left_join(MLSTResults)
-coord$ST[(ncol(coord)-1):ncol(coord)] <- c("Brancorsini", "Geridu")
+coord$ST[coord$Genome %in% c("Brancorsini", "Geridu")] <- c("Brancorsini", "Geridu")
 
 # Getting the clusters ready (if we want them)
 fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "wss") + ggtitle("WSS Plot")
 fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "silhouette") + ggtitle("Silhouette Plot")
 
-clustered <- clara(coord[,-c(5,6)], 4)
+clustered <- clara(coord[,-c(5,6)], 3)
 coord$clusters <- factor(clustered$clustering)
+write.table(coord, file = "ItalyClustering.tab", sep = "\t", row.names = F, col.names = T)
 
 ann_colors$ST <- ann_colors$ST[mixedsort(unique(coord$ST))]
 p1Clust <- coord %>%
-       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, linetype = clusters, group = clusters)) +
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, group = clusters)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
-	stat_ellipse(show.legend = T, colour = "black") +
+	#stat_ellipse(colour = "black") +
 	geom_point() +
 	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
 	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
 	scale_colour_manual(values = ann_colors$ST) +
+	#annotate(geom = "text", x = clustered$medoids[,1], y = clustered$medoids[,2], label = paste("Cluster",1:3)) +
 	#guide(shape = )
 	#geom_text_repel(show.legend = F) +
 	theme_classic() +

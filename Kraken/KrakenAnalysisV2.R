@@ -6,7 +6,7 @@ library(purrr)
 library(reshape2)
 library(ggplot2)
 library(ggpubr)
-library(ggforce)
+#library(ggforce)
 library(ggrepel)
 
 colour <- c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6',
@@ -87,7 +87,8 @@ report_files <- list.files(path ="CombinedReports", full.names = T)
 ranked = "^F$"
 
 # Getting the ID numbers - Used to ease IDing the files of interest
-num <- gsub(".tab","", basename(report_files))
+#num <- gsub(".tab","", basename(report_files))
+num <- c("Brancorsini", "Geridu", "Water Blank", "Library Blank")
 
 tmp <- lapply(report_files, function(x){KrakenParsingProp(x,ranked)})
 krakentable <- as_tibble(reduce(tmp, by = "Taxon",full_join))
@@ -97,16 +98,14 @@ colnames(krakentable)[-1] <- colnames(krakentableCount)[-1] <-  num
 
 krakentable <- krakentable %>% pivot_longer(c(everything(), -Taxon)) %>% group_by(name) %>% mutate(value = value/sum(value, na.rm = T)) %>% 
 	pivot_wider(Taxon)
-krakenProp <- KrakenAnalysis(krakentable, 0.01)
+krakenProp <- KrakenAnalysis(krakentable, 0.012)
 
 ########################################
 ### Preparing the Proportional Data ####
 ########################################
 #Sample Translations
-krakenProp <- krakenProp %>% mutate(Sample = ifelse(Sample == "JessSamples", "Brancorsini", "Geridu"))
-
 krakenabund <- krakentableCount %>% filter(Taxon %in% unique(krakenProp$Taxon)) %>% pivot_longer(c(everything(), -Taxon), names_to = "Sample") %>% group_by(Sample) %>%
-	summarize(Abundance = sum(value, na.rm = T)) %>% mutate(Sample = ifelse(Sample == "JessSamples", "Brancorsini", "Geridu"))
+	summarize(Abundance = sum(value, na.rm = T))
 
 
 # What are we looking at specifically
@@ -124,7 +123,7 @@ fam <- plotDf %>%
 	scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
 	geom_text(data = krakenabund, inherit.aes = F, aes(x = Sample, label = Abundance, y = 1.02), size = 2.5) +
 	guides(fill = guide_legend(title = "Family", ncol = 2)) + ylab("Abundance")
-#ggsave(figure,file = "../MaxiKraken235Genus0.01.pdf", width = 12, height = 9)
+ggsave(fam,file = "Kraken2Family0.02.pdf", width = 9, height = 6)
 fam
 
 #############
@@ -144,10 +143,8 @@ krakenProp <- KrakenAnalysis(krakentable, 0.01)
 ########################################
 ### Preparing the Proportional Data ####
 ########################################
-krakenProp <- krakenProp %>% mutate(Sample = ifelse(Sample == "JessSamples", "Brancorsini", "Geridu"))
-
 krakenabund <- krakentableCount %>% filter(Taxon %in% unique(krakenProp$Taxon)) %>% pivot_longer(c(everything(), -Taxon), names_to = "Sample") %>% group_by(Sample) %>%
-	summarize(Abundance = sum(value, na.rm = T)) %>% mutate(Sample = ifelse(Sample == "JessSamples", "Brancorsini", "Geridu"))
+	summarize(Abundance = sum(value, na.rm = T))
 
 # What are we looking at specifically
 tmp <- krakenProp %>% pull(Taxon) %>% unique() %>% sort()
@@ -163,8 +160,9 @@ gen <- plotDf %>%
 	theme(axis.text.x = element_blank(),axis.title.x = element_blank(),legend.text = element_text(face = "italic")) +
 	scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
 	geom_text(data = krakenabund, inherit.aes = F, aes(x = Sample, label = Abundance, y = 1.02), size = 2.5) +
-	guides(fill = guide_legend(title = "Genus", ncol = 1)) + ylab("Abundance")
+	guides(fill = guide_legend(title = "Genus", ncol = 2)) + ylab("Abundance")
 gen
+ggsave(fam,file = "Kraken2Genus0.02.pdf", width = 9, height = 6)
 ###############
 ### Species ###
 ###############
@@ -182,10 +180,8 @@ krakenProp <- KrakenAnalysis(krakentable, 0.01)
 ########################################
 ### Preparing the Proportional Data ####
 ########################################
-krakenProp <- krakenProp %>% mutate(Sample = ifelse(Sample == "JessSamples", "Brancorsini", "Geridu"))
-
 krakenabund <- krakentableCount %>% filter(Taxon %in% unique(krakenProp$Taxon)) %>% pivot_longer(c(everything(), -Taxon), names_to = "Sample") %>% group_by(Sample) %>%
-	summarize(Abundance = sum(value, na.rm = T)) %>% mutate(Sample = ifelse(Sample == "JessSamples", "Brancorsini", "Geridu"))
+	summarize(Abundance = sum(value, na.rm = T))
 # What are we looking at specifically
 tmp <- krakenProp %>% pull(Taxon) %>% unique() %>% sort()
 ind <- c(which(tmp == "Homo sapiens"), which(tmp == "Other"))
@@ -200,9 +196,9 @@ spe <- plotDf %>%
 	theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),legend.text = element_text(face = "italic")) +
 	scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
 	geom_text(data = krakenabund, inherit.aes = F, aes(x = Sample, label = Abundance, y = 1.02), size = 2.5) +
-	guides(fill = guide_legend(title = "Species", ncol = 1)) + ylab("Abundance")
+	guides(fill = guide_legend(title = "Species", ncol = 2)) + ylab("Abundance")
 spe
-#ggsave("../KrakenSpecies006.pdf", width = 8, height = 6)
+ggsave("KrakenSpecies01.pdf", width = 9, height = 6)
 
 ggarrange(fam, gen,spe, ncol = 1, align = "hv", labels = "AUTO")
 ggsave("KrakenNoUnclass.png", height = 12, width = 9)
