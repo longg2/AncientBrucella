@@ -197,15 +197,15 @@ mapDamagePlotting <- function(folder, leg = F){
 #	   '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff', '#000000')
 colour <- c("#2e294e", "#f8333c", "#007dba", "#1b998b", "#34d1bf")
 
-colourList <- c(`Homo sapiens` = "#2e294e", `Brancorsini` = "#f8333c", `Geridu` = "#34d1bf")
+colourList <- c(`Human - Brancorsini` = "#007dba", `Brancorsini` = "#f8333c",`Human - Geridu` = "#1b998b", `Geridu` = "#34d1bf")
 ############# Readcounts ##########
 files <- list.files(path = "FLD", full.names = T)
 fld <- as_tibble(reduce(lapply(files, function(f){FLDParsing(f)}), bind_rows)) %>% filter(Sample != "PoinarScriptKay")
-fld <- fld %>% mutate(Sample = replace(Sample, Sample == "BmelMapped", "Brancorsini"), Sample = replace(Sample, Sample == "KayBMel", "Geridu"), Sample = replace(Sample, Sample == "Human", "Homo sapiens"))
+fld <- fld %>% mutate(Sample = replace(Sample, Sample == "BmelMapped", "Brancorsini"), Sample = replace(Sample, Sample == "KayBMel", "Geridu"), Sample = replace(Sample, Sample == "Human", "Human - Brancorsini"),Sample = replace(Sample, Sample == "HumanGeridu", "Human - Geridu"))
 fld %>% group_by(Sample,Length) %>% summarize(Reads = sum(Reads)) %>% summarize(MeanLength = mean(rep(Length, Reads)), SD = sd(rep(Length,Reads)))
 
 MedianLength <- fld %>% group_by(Sample,Length) %>% summarize(Reads = sum(Reads)) %>% summarize(Length = median(rep(Length, Reads)))
-MedianLength$Pos <- c(1e5, 3e4, 1e4)
+MedianLength$Pos <- c(1e5, 3e4, 1e4, 3e3)
 segmentPlot <- MedianLength %>% left_join(fld)
 
 
@@ -218,12 +218,12 @@ FLDfigure <- fld %>%
 	geom_segment(data = segmentPlot, aes(x = Length, y = Reads, xend = Length, yend = 0), lty = 2) +
 	geom_point() + #facet_grid(Organism ~.) + 
 #	geom_smooth(method = "rlm") +
-	geom_text(data = MedianLength, aes(x = 100, y = Pos, label = Length, colour = Sample),show.legend = F) +# + ylab(bquote(log[10]("Reads")))
+	geom_text(data = MedianLength, aes(x = 250, y = Pos, label = Length, colour = Sample),show.legend = F) +# + ylab(bquote(log[10]("Reads")))
 	scale_colour_manual(values = colourList) + theme_bw() +
 	ylab("Reads") + scale_y_log10(limits = c(1,10^6), breaks = c(1,10,100,10^3,10^4, 10^5,10^6)) + scale_x_continuous(breaks = pretty_breaks(n = 10)) +
-	theme(legend.position = "bottom", legend.text = element_text(face = "italic")) + annotation_logticks(sides = "l") +
+	theme(legend.position = "bottom") + annotation_logticks(sides = "l") +
 	xlab("Read Length")  +
-	annotate(geom = "text", x = 100, y = 3e5, label = "Median Read Lengths")# + ylab(bquote(log[10]("Reads")))
+	annotate(geom = "text", x = 250, y = 3e5, label = "Median Read Lengths")# + ylab(bquote(log[10]("Reads")))
 FLDfigure
 
 
@@ -232,7 +232,7 @@ ggsave(FLDfigure, file = "FLDLog.png", width = 6, height = 4)
 ############# Mismatches ##########
 files <- list.files("Mismatches", full.names = T)
 mismatches <- as_tibble(reduce(lapply(files, function(f){MismatchParsing(f)}), bind_rows))
-mismatches <- mismatches %>% mutate(Sample = replace(Sample, Sample == "BmelMapped", "Brancorsini"), Sample = replace(Sample, Sample == "KayBMel", "Geridu"), Sample = replace(Sample, Sample == "Human", "Homo sapiens"))
+mismatches <- mismatches %>% mutate(Sample = replace(Sample, Sample == "BmelMapped", "Brancorsini"), Sample = replace(Sample, Sample == "KayBMel", "Geridu"), Sample = replace(Sample, Sample == "Human", "Human - Brancorsini"),Sample = replace(Sample, Sample == "HumanGeridu", "Human - Geridu"))
 #mismatches <- mismatches %>% mutate(Sample = replace(Sample, Sample == "BmelMapped", "Brucella melitensis"), Sample = replace(Sample, Sample == "Human", "Homo sapiens"))
 
 figure <- mismatches %>% group_by(Sample) %>% 
@@ -260,19 +260,19 @@ ggsave("BmelMismatches.png", width = 6, height = 4)
 
 ############# Overlapping Smiles ##########
 mapDamage <- mapDamageParsing("MapDamage")
-mapDamage <- mapDamage %>% mutate(Sample = replace(Sample, Sample == "JessSample", "Brancorsini"), Sample = replace(Sample, Sample == "Kay", "Geridu"), Sample = replace(Sample, Sample == "HomoSapiens", "Homo sapiens"))
+mapDamage <- mapDamage %>% mutate(Sample = replace(Sample, Sample == "JessSample", "Brancorsini"), Sample = replace(Sample, Sample == "Kay", "Geridu"), Sample = replace(Sample, Sample == "HomoSapiens", "Human - Brancorsini"),Sample = replace(Sample, Sample == "HumanGeridu", "Human - Geridu"))
 
 annotationDF <- mapDamage %>% group_by(Sample) %>% filter(Pos == -25 | Pos == 25)
-annotationDF$Pos <- rep(c(0.125,0.15,0.175),2)
+annotationDF$Pos <- rep(c(0.1,0.125,0.15,0.175),2)
 
 mapDamagefigure <- mapDamage  %>%
 	#mutate(Sample =factor(Sample, levels = c("Homo sapiens","Brucella melitensis"))) %>%
-	ggplot(aes(x = Pos, y = DamageFrac, col = Sample)) + geom_point() + theme_bw()+
+	ggplot(aes(x = Pos, y = DamageFrac, col = Sample)) + geom_line() + theme_bw()+
 	scale_colour_manual(values = colourList) +# facet_grid(Organism ~.) +
 	xlab("Distance from Center") + ylab("Fraction Damaged") +
-	geom_text(data = annotationDF, aes(x = c(rep(-10,3), rep(10,3)), y = Pos, label = signif(DamageFrac, 3), colour = Sample),show.legend = F) +# + ylab(bquote(log[10]("Reads")))
+	geom_text(data = annotationDF, aes(x = c(rep(-10,4), rep(10,4)), y = Pos, label = signif(DamageFrac, 3), colour = Sample),show.legend = F) +# + ylab(bquote(log[10]("Reads")))
 	coord_cartesian(ylim = c(0,0.25)) + geom_vline(xintercept = 0, lty = 2, size = 1) +
-	theme(legend.text = element_text(face = "italic"), legend.position = "none") +
+	theme(legend.position = "bottom") +
 	annotate(geom = "text", x = -10, y = 0.20, label = "CT Deamination") +
 	annotate(geom = "text", x = 10, y = 0.20, label = "GA Deamination") 
 	#annotate(geom = "text", x = -10, y = annotationDF$Pos, label = signif(annotationDF$DamageFrac,3), colour = colourList[c(2,1)])

@@ -161,34 +161,50 @@ ggsave(file = "GenePresenceHistogram.pdf", width = 9, height = 6)
 GCPlots <- lapply(split(GCBiased, GCBiased$Genome), function(x)CorrectingGC(x))
 
 GCRescue <- depthDf %>% filter(Genome == "JessSamples", CV <=1) %>% select(Gene, MeanCoverage, GCCorrected, GC) %>%
-	pivot_longer(-c(Gene, GC), names_to = "Status", values_to = "MeanDepth") %>%
-       	mutate(Status = factor(ifelse("MeanCoverage" == Status, "Before GC Correction", "After GC Correction"), levels = c("Before GC Correction", "After GC Correction")))
+	rowwise() %>%# This is for plotting only the regions that matter
+	mutate(Alpha = ifelse(between(10, min(MeanCoverage,GCCorrected), max(MeanCoverage,GCCorrected)),1,0.5)) %>% ungroup() %>%
+	pivot_longer(-c(Gene, GC, Alpha), names_to = "Status", values_to = "MeanDepth") %>%
+       	mutate(Status = factor(ifelse("MeanCoverage" == Status, "Before GC Correction", "After GC Correction"), levels = c("Before GC Correction", "After GC Correction"))) 
+lm(data = GCRescue, MeanDepth ~ GC*Status) %>% summary()
 
-dumbbellCor <- GCRescue %>% ggplot(aes(x = GC, y = MeanDepth)) + 
-	geom_line(aes(group = Gene)) + geom_point(aes(colour = Status)) +
-	scale_colour_manual(values = c("#f8333c","#007dba")) + theme_bw() +
+dumbbellCorBran <- GCRescue %>% ggplot(aes(x = GC, y = MeanDepth, alpha = Alpha)) + 
+	geom_line(aes(group = Gene), arrow = arrow(length = unit(0.25, "cm"))) + geom_point(aes(colour = Status)) +
+	geom_smooth(aes(group = Status, colour = Status), method = "lm") +
+	scale_colour_manual(values = c(colour[6],colour[7])) + theme_bw() +
 	geom_hline(yintercept = 10, lty = 2, colour = "grey60") +
-	coord_cartesian(ylim = c(5,15)) +
-	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 5)) +
-	theme(legend.position = "bottom") + xlab("GC Content") + ylab("Mean Coverage")
+	#coord_cartesian(ylim = c(5,15)) +
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+	theme(legend.position = "bottom", axis.title.x = element_blank()) + xlab("GC Content") + ylab("Mean Read Depth") +
+	guides(alpha = guide_none())
 ggarrange(GCPlots$JessSamples$Plot, dumbbellCor, ncol = 1, labels = "AUTO")
 ggsave("GCCorrectionCorsiniAroundThreshold.png", width = 9, height = 6)
 
 GCRescue <- depthDf %>% filter(Genome != "JessSamples", CV <=1) %>% select(Gene, MeanCoverage, GCCorrected, GC) %>%
-	pivot_longer(-c(Gene, GC), names_to = "Status", values_to = "MeanDepth") %>%
+	rowwise() %>%# This is for plotting only the regions that matter
+	mutate(Alpha = ifelse(between(1, min(MeanCoverage,GCCorrected), max(MeanCoverage,GCCorrected)),1,0.5)) %>% ungroup() %>%
+	pivot_longer(-c(Gene, GC, Alpha), names_to = "Status", values_to = "MeanDepth") %>%
        	mutate(Status = factor(ifelse("MeanCoverage" == Status, "Before GC Correction", "After GC Correction"), levels = c("Before GC Correction", "After GC Correction")))
+lm(data = GCRescue, MeanDepth ~ GC*Status) %>% summary()
 
-dumbbellCor <- GCRescue %>% ggplot(aes(x = GC, y = MeanDepth)) + 
-	geom_line(aes(group = Gene)) + geom_point(aes(colour = Status)) +
-	scale_colour_manual(values = c("#f8333c","#007dba")) + theme_bw() +
+dumbbellCorGer <- GCRescue %>% ggplot(aes(x = GC, y = MeanDepth, alpha = Alpha)) + 
+	geom_line(aes(group = Gene), arrow = arrow(length = unit(0.25, "cm"))) + geom_point(aes(colour = Status)) +
+	geom_smooth(aes(group = Status, colour = Status), method = "lm") +
+	scale_colour_manual(values = c(colour[6],colour[7])) + theme_bw() +
 	geom_hline(yintercept = 1, lty = 2, colour = "grey60") +
-	coord_cartesian(ylim = c(0,2)) +
+	coord_cartesian(ylim = c(0,9)) +
 	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
 	theme(legend.position = "bottom") +
-	theme(legend.position = "bottom") + xlab("GC Content") + ylab("Mean Coverage")
+	theme(legend.position = "bottom") + xlab("GC Content") + ylab("Mean Read Depth") +
+	guides(alpha = guide_none())
 
 ggarrange(GCPlots$KayBMel$Plot, dumbbellCor, ncol = 1, labels = "AUTO")
 ggsave("GCCorrectionGeriduAroundThreshold.pdf", width = 9, height = 6)
+
+#With the Histograms
+dumbCorr <- ggarrange(dumbbellCorBran,dumbbellCorGer,ncol = 1, labels = c("B","D"), common.legend = T, legend = "bottom", align = "hv")
+ggarrange(histPlot, dumbCorr, nrow  = 1)
+ggsave(file = "~/Documents/University/ComprehensiveExamination/Paper/Figures/BruceCov.pdf", width = 9, height = 6)
+
 #####################################################################
 # Gene Presence table
 Corsini <- Corsini %>% filter(JessSamples >= 10)
@@ -389,8 +405,11 @@ p1Clust <- coord %>%
 p1Clust
 ggsave(p1Clust, file = "AccessoryItalyPCoA.pdf", width = 9, height = 6)
 
-ggarrange(p1,p1Clust, legend = "bottom", align = "hv", nrow = 1, common.legend = T, labels = "AUTO")
-ggsave(file = "PCoA_Accessory_ClusterWhole.pdf", width = 9, height = 6)
+tmp <- ggplot() + theme_void()
+tmp <- ggarrange(tmp,tmp, nrow = 1, labels = c("A", "B"))
+accessPCOA <- ggarrange(p1,p1Clust, legend = "bottom", align = "hv", nrow = 1, common.legend = T, labels = c("C","D"))
+ggarrange(tmp,accessPCOA, nrow = 2)
+ggsave(file = "~/Documents/University/ComprehensiveExamination/Paper/Figures/BruceFig2.pdf", width = 9, height = 6)
 
 ################################################
 ### Let's take a look at the Virulence Genes ###
@@ -563,6 +582,9 @@ highCopyCor <- ancientOnly %>% filter(Sample == "Brancorsini", MeanCoverage > (m
 highCopyGer <- ancientOnly %>% filter(Sample != "Brancorsini", MeanCoverage > (mean(MeanCoverage) + 2*sd(MeanCoverage)))
 highCopyCor %>% bind_rows(highCopyGer) %>% pull(Gene) %>% unique() %>% write.table(file = "HighCopyNumberGenes.list", sep = "\t", row.names =F, quote = F)
 
+# 
+tmp <- ancientOnly %>% filter(Sample == "Brancorsini") %>% mutate(High = ifelse(MeanCoverage > (mean(MeanCoverage) + 2*sd(MeanCoverage)), T, F))
+t.test(tmp %>% filter(High, HeteroFrac > 0) %>% pull(HeteroFrac), tmp %>% filter(!High) %>% pull(HeteroFrac))
 # Saving the list of virulence genes found in the ancient genomes
 ancientOnly %>% filter(Gene %in% unique(c(fromCOGName, fromGeneName))) %>% write.table(file = "VirulenceGenes.tab", sep = "\t", row.names =F, quote = F)
 

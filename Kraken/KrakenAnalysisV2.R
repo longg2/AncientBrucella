@@ -119,7 +119,8 @@ fam <- plotDf %>%
 	ggplot(aes(x = Sample, y = Reads, fill = Taxon)) +
 	geom_col() + scale_fill_manual(values = colour) +
 	theme_bw() +
-	theme(axis.text.x = element_blank(),axis.title.x = element_blank(),legend.text = element_text(face = "italic")) +
+	theme(legend.text = element_text(face = "italic")) +
+	#theme(axis.text.x = element_blank(),axis.title.x = element_blank(),legend.text = element_text(face = "italic")) +
 	scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
 	geom_text(data = krakenabund, inherit.aes = F, aes(x = Sample, label = Abundance, y = 1.02), size = 2.5) +
 	guides(fill = guide_legend(title = "Family", ncol = 2)) + ylab("Abundance")
@@ -157,12 +158,13 @@ gen <- plotDf %>%
 	ggplot(aes(x = Sample, y = Reads, fill = Taxon)) +
 	geom_col() + scale_fill_manual(values = colour) +
 	theme_bw() +
-	theme(axis.text.x = element_blank(),axis.title.x = element_blank(),legend.text = element_text(face = "italic")) +
+	theme(legend.text = element_text(face = "italic")) +
+	#theme(axis.text.x = element_blank(),axis.title.x = element_blank(),legend.text = element_text(face = "italic")) +
 	scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
 	geom_text(data = krakenabund, inherit.aes = F, aes(x = Sample, label = Abundance, y = 1.02), size = 2.5) +
 	guides(fill = guide_legend(title = "Genus", ncol = 2)) + ylab("Abundance")
 gen
-ggsave(fam,file = "Kraken2Genus0.02.pdf", width = 9, height = 6)
+ggsave(gen,file = "Kraken2Genus0.02.pdf", width = 9, height = 6)
 ###############
 ### Species ###
 ###############
@@ -193,7 +195,8 @@ spe <- plotDf %>%
 	ggplot(aes(x = Sample, y = Reads, fill = Taxon)) +
 	geom_col() + scale_fill_manual(values = colour) +
 	theme_bw() +
-	theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),legend.text = element_text(face = "italic")) +
+	theme(legend.text = element_text(face = "italic")) +
+	#theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),legend.text = element_text(face = "italic")) +
 	scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
 	geom_text(data = krakenabund, inherit.aes = F, aes(x = Sample, label = Abundance, y = 1.02), size = 2.5) +
 	guides(fill = guide_legend(title = "Species", ncol = 2)) + ylab("Abundance")
