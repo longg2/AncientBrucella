@@ -215,7 +215,7 @@ fldModel %>% summary()
 
 FLDfigure <- fld %>%
 	ggplot(aes(x = Length, y = Reads, colour = Sample)) +
-	geom_segment(data = segmentPlot, aes(x = Length, y = Reads, xend = Length, yend = 0), lty = 2) +
+	geom_segment(data = segmentPlot, aes(x = Length, y = Reads, xend = Length, yend = 0), lty = 2, show.legend = F) +
 	geom_point() + #facet_grid(Organism ~.) + 
 #	geom_smooth(method = "rlm") +
 	geom_text(data = MedianLength, aes(x = 250, y = Pos, label = Length, colour = Sample),show.legend = F) +# + ylab(bquote(log[10]("Reads")))
@@ -223,7 +223,8 @@ FLDfigure <- fld %>%
 	ylab("Reads") + scale_y_log10(limits = c(1,10^6), breaks = c(1,10,100,10^3,10^4, 10^5,10^6)) + scale_x_continuous(breaks = pretty_breaks(n = 10)) +
 	theme(legend.position = "bottom") + annotation_logticks(sides = "l") +
 	xlab("Read Length")  +
-	annotate(geom = "text", x = 250, y = 3e5, label = "Median Read Lengths")# + ylab(bquote(log[10]("Reads")))
+	annotate(geom = "text", x = 250, y = 3e5, label = "Median Read Lengths") +
+	guides(colour = guide_legend(nrow = 2))# + ylab(bquote(log[10]("Reads")))
 FLDfigure
 
 
@@ -285,4 +286,4 @@ right <- ggarrange(FLDfigure, mapDamagefigure, common.legend = T, legend = "bott
 ggarrange(plot.new(), right, nrow = 1, labels = "A")
 #bottom <- ggarrange(FLDfigure, figure, common.legend =T, legend = "bottom")
 #ggarrange(mapDamagefigure, bottom, ncol = 1)
-ggsave("Figure1.png", width = 9, height = 6)
+ggsave("Figure1.pdf", width = 9, height = 6)
