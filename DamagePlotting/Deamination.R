@@ -96,6 +96,17 @@ deaminationParsing <- function(folder, age){
 	Rate$ErrorRate <- log(1/(1 - Rate$Error)) * Rate$Age^-1
 	return(Rate)
 }
+mapDamageParsingOld <- function(folder){
+	files <- list.files(path = folder, pattern = "5p.*", recursive = T, full.names = T)
+	#CT <- reduce(lapply(files, function(f){DamageParsing(f)}), bind_rows)%>% mutate(Pos = Pos - 2*Pos) %>% group_by(Sample) %>% mutate(Pos = sort(Pos))
+	CT <- reduce(lapply(files, function(f){DamageParsing(f)}), bind_rows)%>% group_by(Sample) %>% mutate(Deam = "5'")
+	files <- list.files(path = folder, pattern = "3p.*", recursive = T, full.names = T)
+	GA <- reduce(lapply(files, function(f){DamageParsing(f)}), bind_rows) %>% group_by(Sample) %>% mutate(Deam = "3'")
+	
+	# Trying something different
+	plotDf <- CT %>% bind_rows(GA)
+	return(plotDf)
+}
 
 mapDamageParsing <- function(folder){
 	files <- list.files(path = folder, pattern = "5p.*", recursive = T, full.names = T)
@@ -227,7 +238,6 @@ FLDfigure <- fld %>%
 	guides(colour = guide_legend(nrow = 2))# + ylab(bquote(log[10]("Reads")))
 FLDfigure
 
-
 ggsave(FLDfigure, file = "FLDLog.png", width = 6, height = 4)
 
 ############# Mismatches ##########
@@ -260,26 +270,35 @@ ggsave("BmelMismatches.png", width = 6, height = 4)
 #	ylab("Reads") #+ scale_y_continuous(breaks = pretty_breaks(n = 10)) 
 
 ############# Overlapping Smiles ##########
-mapDamage <- mapDamageParsing("MapDamage")
+mapDamage <- mapDamageParsingOld("MapDamage") 
 mapDamage <- mapDamage %>% mutate(Sample = replace(Sample, Sample == "JessSample", "Brancorsini"), Sample = replace(Sample, Sample == "Kay", "Geridu"), Sample = replace(Sample, Sample == "HomoSapiens", "Human - Brancorsini"),Sample = replace(Sample, Sample == "HumanGeridu", "Human - Geridu"))
 
-annotationDF <- mapDamage %>% group_by(Sample) %>% filter(Pos == -25 | Pos == 25)
+annotationDF <- mapDamage %>% group_by(Sample) %>% filter(Pos == 1)
 annotationDF$Pos <- rep(c(0.1,0.125,0.15,0.175),2)
 
-mapDamagefigure <- mapDamage  %>%
+fivePrime <- mapDamage %>% filter(Deam == "5'") %>%
 	#mutate(Sample =factor(Sample, levels = c("Homo sapiens","Brucella melitensis"))) %>%
 	ggplot(aes(x = Pos, y = DamageFrac, col = Sample)) + geom_line() + theme_bw()+
 	scale_colour_manual(values = colourList) +# facet_grid(Organism ~.) +
-	xlab("Distance from Center") + ylab("Fraction Damaged") +
-	geom_text(data = annotationDF, aes(x = c(rep(-10,4), rep(10,4)), y = Pos, label = signif(DamageFrac, 3), colour = Sample),show.legend = F) +# + ylab(bquote(log[10]("Reads")))
-	coord_cartesian(ylim = c(0,0.25)) + geom_vline(xintercept = 0, lty = 2, size = 1) +
+	xlab("Distance from End") + ylab("Fraction Damaged") +
+	#geom_text(data = annotationDF, aes(x = c(rep(10,8)), y = Pos, label = signif(DamageFrac, 3), colour = Sample),show.legend = F) +# + ylab(bquote(log[10]("Reads")))
+	geom_text(data = annotationDF %>% filter(Deam == "5'"), aes(y = Pos, x = 12.5, label = signif(DamageFrac, 3), colour = Sample), show.legend = F) +
+	coord_cartesian(ylim = c(0,0.25)) +
 	theme(legend.position = "bottom") +
-	annotate(geom = "text", x = -10, y = 0.20, label = "CT Deamination") +
-	annotate(geom = "text", x = 10, y = 0.20, label = "GA Deamination") 
-	#annotate(geom = "text", x = -10, y = annotationDF$Pos, label = signif(annotationDF$DamageFrac,3), colour = colourList[c(2,1)])
+	annotate(geom = "text", x = 12.5, y = 0.2, label = "CT Deamination")
 
-mapDamagefigure
-ggsave("MapDamageFigure.pdf", width = 6, height = 4)
+threePrime <- mapDamage %>% filter(Deam != "5'") %>%
+	#mutate(Sample =factor(Sample, levels = c("Homo sapiens","Brucella melitensis"))) %>%
+	ggplot(aes(x = Pos, y = DamageFrac, col = Sample)) + geom_line() + theme_bw()+
+	scale_colour_manual(values = colourList) +# facet_grid(Organism ~.) +
+	xlab("Distance from End") + ylab("Fraction Damaged") +
+	scale_x_reverse() + scale_y_continuous(position = "right")+
+	geom_text(data = annotationDF %>% filter(Deam != "5'"), aes(y = Pos, x = 12.5, label = signif(DamageFrac, 3), colour = Sample), show.legend = F) +
+	coord_cartesian(ylim = c(0,0.25)) +
+	theme(legend.position = "bottom", axis.title.y = element_blank(), axis.text.y = element_blank()) +
+	annotate(geom = "text", x = 12.5, y = 0.2, label = "GA Deamination")
+ggarrange(fivePrime, threePrime, common.legend = T, legend = "bottom", labels = c("5`","3`"), align = "hv")
+ggsave("MapDamageFigure.pdf", width = 9, height = 6)
 	#annotate(geom = "text", x = 10, y = , label = c("5`", "3`"), fontface = "bold")
 
 right <- ggarrange(FLDfigure, mapDamagefigure, common.legend = T, legend = "bottom", ncol = 1, labels = c("B", "C"))

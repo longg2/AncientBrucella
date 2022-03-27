@@ -1,0 +1,1 @@
+bcftools mpileup -Ou -f panGenomeAll.fasta PanGenomeDedupRaw.bam | bcftools call -Ou -mv | bcftools filter -s LowQual -e '%QUAL<100' > test.vcf

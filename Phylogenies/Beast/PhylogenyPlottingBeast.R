@@ -11,6 +11,7 @@ library(phytools)
 library(ape)
 library(gtools)
 library(lubridate)
+library(fastbaps)
 
 # For the colours
 colour <- c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6',
@@ -30,7 +31,7 @@ LocationID <- function(Sample){
 }
 
 # Basic Tree
-tree <- read.beast(file = "BeastResults/InvariantWhole/WholeInvariant.nexus")
+tree <- read.beast(file = "BeastResults/InvariantST11/ST11KayIncludedInvariant.nexus")
 Tiplabels <- tree@phylo$tip.label
 
 ####################################################
@@ -58,79 +59,25 @@ janData <- read.delim("../JanowiczInfo.csv") %>% as_tibble() %>% mutate(Sample_I
 janData %>% select(Sequence.type..ST., Lineage) %>% distinct() # This is how Lineages were identified
 
 # This is for the BAPS data
-#STData <- STData %>% mutate(Sample_ID = gsub("_[1,2]\\d\\d\\d$","",Sample)) %>% 
-#	left_join(janData %>% select(-c(Global.phylogeny, Temporal.analysis, cgMLST.Complex, cgMLST.analysis, Collection.Date, Genbank.accession,SRA.accession))) %>%
-#	mutate(Lineage = replace(Lineage, is.na(Lineage), "Unknown"), BAPS = replace(BAPS, is.na(BAPS), "Unknown")) %>% as_tibble()
-#
-############Cluster Plotting#################
-##pClust <- ggtree(tree, right = T, mrsd = "2018-05-01") %<+% STData +
-#pClust <- ggtree(tree, right = T, mrsd = "2017-01-01") %<+% STData + #This is for the ST11 Phylo
-#	theme_tree2() +
-#	geom_rootedge(rootedge = 50) +
-#	geom_range("height_0.95_HPD", colour = "red", size = 0.75, alpha = 0.75) +
-#	#geom_tippoint(aes(colour = ST), size = 2) +
-#	#geom_tippoint(aes(colour = as.factor(clusters)), size = 2) + #only if including clustering results
-#	geom_tippoint(aes(colour = ST, shape = BAPS), size = 2) + #only for ST11
-#	scale_color_manual(values = ann_colors$ST) + guides(colour = guide_legend(nrow = 2, title ="ST"), shape = guide_legend(nrow = 2,title = "Janowicz BAPS")) +
-#	#scale_shape_manual(values = c(16,15,17,18,10,14,8)) + # only for ST11
-#	#scale_shape_manual(values = c(16:18,6:10)) +
-#	new_scale_color() +
-#       	geom_nodepoint(aes(color = ifelse(posterior < 0.5, NA,
-#						 ifelse(posterior >= 0.5 & posterior < 0.9, "Fifty", "Ninety"))),
-#			      shape = "square", show.legend = F) +
-#	scale_color_manual(values = c("NA" = NA, "Fifty" = "grey", "Ninety" = "black")) +
-#       	#geom_nodelab(size = 2.5,mapping = aes(label = round(2018.3287671232877 - height_median)),
-#       	#geom_nodelab(size = 2.5,mapping = aes(label = round(decimal_date(ymd("2017-01-01")) - height_median)), # This is for the ST11 Phylo
-#	#		    geom = "label", nudge_y = 0.4, nudge_x = -50) +
-#	xlab("Year") +
-#	scale_x_continuous(breaks = scales:::pretty_breaks()) +
-#	theme(panel.grid.major.x = element_line(color = "grey10", size = 0.2),
-#	      panel.grid.minor.x = element_line(color = "grey80", size = 0.2),
-#	      legend.position = "bottom")
-#
-#pClust
-#ggsave("ST11ClusteredBAPS.png", width = 9, height = 6)
+
+sparse.data <- import_fasta_sparse_nt("../ST11FullSeq.fasta")
+sparse.data <- optimise_prior(sparse.data, type = "optimise.baps")
+multi <- multi_res_baps(sparse.data) %>% rename(Sample = Isolates, BAPS=`Level 1`)%>%as_tibble()
+STData <- STData %>% left_join(multi) %>% mutate(BAPS = replace(BAPS, is.na(BAPS), 0),BAPS = factor(BAPS))
 
 # For Whole Phylogeny
-p1 <- ggtree(tree, right = T, mrsd = "2018-05-01") %<+% STData +
-	theme_tree2() +
-	geom_rootedge(rootedge = 50) +
-	geom_range("height_0.95_HPD", colour = "red", size = 0.75, alpha = 0.75) +
-	geom_tippoint(aes(colour = ST), size = 2) +
-	scale_color_manual(values = ann_colors$ST) + guides(colour = guide_legend(nrow = 2, title ="Sequence Type")) +
-	new_scale_color() +
-       	geom_nodepoint(aes(color = ifelse(posterior < 0.5, NA,
-						 ifelse(posterior >= 0.5 & posterior < 0.9, "Fifty", "Ninety"))),
-			      shape = "square", show.legend = F) +
-	scale_color_manual(values = c("NA" = NA, "Fifty" = "grey", "Ninety" = "black")) +
-       	geom_nodelab(size = 2.5,mapping = aes(label = round(2018.3287671232877 - height_median)),
-			    geom = "label", nudge_y = 0.4, nudge_x = -50) +
-	xlab("Year") +
-	scale_x_continuous(breaks = scales:::pretty_breaks()) +
-	theme(panel.grid.major.x = element_line(color = "grey10", size = 0.2),
-	      panel.grid.minor.x = element_line(color = "grey80", size = 0.2),
-	      legend.position = "bottom")
-
-p1 + geom_cladelabel(node = 103, label = "Western\nMediterranean") +
-	geom_cladelabel(node = 121, label = "Eastern\nMediterranean") +
-	geom_cladelabel(node = 182, label = "African") +
-	geom_cladelabel(node = 191, label = "American") 
-
-# For only the Western Med.
-#p1 <- ggtree(tree, right = T, mrsd = "2017-01-01") %<+% STData + #This is for the ST11 Phylo
+#p1 <- ggtree(tree, right = T, mrsd = "2018-05-01") %<+% STData +
 #	theme_tree2() +
 #	geom_rootedge(rootedge = 50) +
 #	geom_range("height_0.95_HPD", colour = "red", size = 0.75, alpha = 0.75) +
 #	geom_tippoint(aes(colour = ST), size = 2) +
-#	#geom_tippoint(aes(colour = ST, shape = Country), size = 2) + #only for ST11
 #	scale_color_manual(values = ann_colors$ST) + guides(colour = guide_legend(nrow = 2, title ="Sequence Type")) +
-#	#scale_shape_manual(values = c(16,15,17,18,10,14,8)) + # only for ST11
 #	new_scale_color() +
 #       	geom_nodepoint(aes(color = ifelse(posterior < 0.5, NA,
 #						 ifelse(posterior >= 0.5 & posterior < 0.9, "Fifty", "Ninety"))),
 #			      shape = "square", show.legend = F) +
 #	scale_color_manual(values = c("NA" = NA, "Fifty" = "grey", "Ninety" = "black")) +
-#       	geom_nodelab(size = 2.5,mapping = aes(label = round(decimal_date(ymd("2017-01-01")) - height_median)), # This is for the ST11 Phylo
+#       	geom_nodelab(size = 2.5,mapping = aes(label = round(2018.3287671232877 - height_median)),
 #			    geom = "label", nudge_y = 0.4, nudge_x = -50) +
 #	xlab("Year") +
 #	scale_x_continuous(breaks = scales:::pretty_breaks()) +
@@ -138,9 +85,35 @@ p1 + geom_cladelabel(node = 103, label = "Western\nMediterranean") +
 #	      panel.grid.minor.x = element_line(color = "grey80", size = 0.2),
 #	      legend.position = "bottom")
 #
-#p1 
+#p1 + geom_cladelabel(node = 103, label = "Western\nMediterranean") +
+#	geom_cladelabel(node = 121, label = "Eastern\nMediterranean") +
+#	geom_cladelabel(node = 182, label = "African") +
+#	geom_cladelabel(node = 191, label = "American") 
 
-ggsave("WholePhylo.png", width = 9, height = 6)
+# For only the Western Med.
+p1 <- ggtree(tree, right = T, mrsd = "2017-01-01") %<+% STData + #This is for the ST11 Phylo
+	theme_tree2() +
+	geom_rootedge(rootedge = 50) +
+	geom_range("height_0.95_HPD", colour = "red", size = 0.75, alpha = 0.75) +
+	geom_tippoint(aes(colour = ST, shape = BAPS), size = 2) + #only for ST11
+	scale_color_manual(values = ann_colors$ST) + guides(colour = guide_legend(nrow = 2, title ="Sequence Type")) +
+	#scale_shape_manual(values = c(16,15,17,18,10,14,8)) + # only for ST11
+	new_scale_color() +
+       	geom_nodepoint(aes(color = ifelse(posterior < 0.5, NA,
+						 ifelse(posterior >= 0.5 & posterior < 0.9, "Fifty", "Ninety"))),
+			      shape = "square", show.legend = F) +
+	scale_color_manual(values = c("NA" = NA, "Fifty" = "grey", "Ninety" = "black")) +
+       	geom_nodelab(size = 2.5,mapping = aes(label = round(decimal_date(ymd("2017-01-01")) - height_median)), # This is for the ST11 Phylo
+			    geom = "label", nudge_y = 0.4, nudge_x = -50) +
+	xlab("Year") +
+	scale_x_continuous(breaks = scales:::pretty_breaks()) +
+	theme(panel.grid.major.x = element_line(color = "grey10", size = 0.2),
+	      panel.grid.minor.x = element_line(color = "grey80", size = 0.2),
+	      legend.position = "bottom")
+
+p1 
+
+ggsave("ST11Invariant.pdf", width = 9, height = 6)
 #ggsave("~/Documents/University/LabMeetings/2022/Mar25/Figures/WholePhylo.pdf", width = 9, height = 6)
 
 tree@data %>% mutate(height_median = round(decimal_date(ymd("2017-01-01")) - height_median),heightn = round(decimal_date(ymd("2017-01-01")) - height),height_0.95_HPD = gsub("c\\(|\\)| ","",paste(height_0.95_HPD,sep = ","))) %>%

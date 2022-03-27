@@ -110,7 +110,7 @@ roaryOutput <- as_tibble(read.delim("PresenceAbsence.tab"))
 colnames(roaryOutput)[2:ncol(roaryOutput)] <- gsub("X|\\.scaffold|\\.genome|\\.result|_genomic", "", colnames(roaryOutput)[2:ncol(roaryOutput)])
 colnames(roaryOutput)[2:ncol(roaryOutput)] <- gsub("\\.", "-", colnames(roaryOutput)[2:ncol(roaryOutput)])
 # Finding the Core Genome
-coreGenes <- rowSums(roaryOutput[,-1]) >= floor(0.95 * ncol(roaryOutput))
+coreGenes <- rowSums(roaryOutput[,-1]) >= floor(0.99 * ncol(roaryOutput))
 #coreGenes <- rowSums(ecoliOnly[,-1]) >= floor(0.99 * ncol(ecoliOnly))
 coreGenes <- roaryOutput$Gene[coreGenes]
 
@@ -131,7 +131,8 @@ Geridu <- depthDf %>% filter(Genome != "JessSamples", CV <=1) %>%
 
 GeriduRect <- Geridu %>% summarize(Mean = mean(KayBMel), SD2 = 2*sd(KayBMel))
 
-corsiniPlot <- Corsini %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% ggplot(aes(x = JessSamples, fill = Status)) + 
+corsiniPlot <- Corsini %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% mutate(Status = factor(Status, levels = c("Core","Accessory"))) %>%
+       	ggplot(aes(x = JessSamples, fill = Status)) + 
 	geom_rect(data = CorsiniRect, inherit.aes = F, aes(xmin = Mean + SD2, xmax = Inf, ymin = -Inf, ymax = Inf), colour = "black", lty = 2, alpha = 0.5) +
 	geom_histogram(position = "identity", alpha = 0.75, colour = "black", binwidth = 1) +
 	geom_vline(xintercept = 10, colour = "black", lty = 2) +
@@ -140,7 +141,8 @@ corsiniPlot <- Corsini %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "
 	xlab("Mean Read Depth") + ylab("Genes") + theme(legend.position = "bottom", axis.title.x = element_blank(), axis.text.x = element_blank()) + 
 	scale_x_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0,50)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0, 1250))
 
-geriduPlot <- Geridu %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% ggplot(aes(x = KayBMel, fill = Status)) + 
+geriduPlot <- Geridu %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% mutate(Status = factor(Status, levels = c("Core","Accessory"))) %>%
+       	ggplot(aes(x = KayBMel, fill = Status)) + 
 	geom_rect(data = GeriduRect, inherit.aes = F, aes(xmin = Mean + SD2, xmax = Inf, ymin = -Inf, ymax = Inf), colour = "black", lty = 2, alpha = 0.5) +
 	geom_histogram(position = "identity", alpha = 0.75, colour = "black", binwidth = 1) +
 	geom_vline(xintercept = 1, colour = "black", lty = 2) +
@@ -366,7 +368,7 @@ p1 <- coord %>%
 	theme(legend.position = "bottom")
 
 p1
-ggsave(p1, file = "AccessoryPCoAWithClust.pdf", width = 9, height = 6)
+ggsave(p1, file = "AccessoryPCoAWithClust.png", width = 9, height = 6)
 
 # Pulling out the Genomes in cluster 1 and doing the same thing
 italy <- coord %>% filter(clusters == 1) %>% pull(Genome)
@@ -414,7 +416,6 @@ ggsave(file = "~/Documents/University/ComprehensiveExamination/Paper/Figures/Bru
 ################################################
 ### Let's take a look at the Virulence Genes ###
 ################################################
-
 # These are all coming from the Głowacka et al. 2018 paper Brucella - Virulence Factors, Pathogenesis and Treatment
 identifiedCOGGenes <- read.delim("../BlastResults/COGClassified90/Pangenome.tab") %>% as_tibble()
 
@@ -427,7 +428,7 @@ fromGeneName <- grep("ompR|bvrr|bvrs|xth|bvf|nord|ahp|cco|ure|opg|sod|vjbr|virb|
 fromGeneName <- AllPA$Gene[fromGeneName]
 
 #
-virulenceDf<- AllPA %>% filter(Gene %in% unique(c(fromCOGName,fromGeneName)))
+virulenceDf<- AllPA %>% filter(Gene %in% unique(c(fromCOGName,fromGeneName, "group_2139"))) # <--- group_2139 is bvfA per a blast run against only that gene
 
 # Preparing the data
 virulenceData <- as.data.frame(virulenceDf)
@@ -443,6 +444,15 @@ maxCount <- virulenceDataSub %>% colSums() %>% max()
 ind <- virulenceDataSub %>% colSums() >= (maxCount - 5)
 virulenceDataSub <- virulenceDataSub[,!ind]
 
+# Saving the genes that were shared amongst them ALL except for Geridu
+tmp <- virulenceDf[,-which(colnames(virulenceDf) == "Geridu")] %>% as.data.frame()
+rownames(tmp) <- tmp[,1]
+tmp <- tmp[,-1]
+genomes <- colnames(tmp)
+tmp <- apply(tmp, MARGIN = 1,FUN = as.numeric)
+rownames(tmp) <- genomes
+maxCount <- tmp %>% colSums() %>% max()
+colnames(tmp)[which(colSums(tmp) == 324)] %>% write.table("SharedVirGenes.list", col.names = F, row.names =F, quote = F)
 ######################################
 # If I want to use a MDS plot
 geneDist <- dist(virulenceDataSub, method = "binary")
@@ -573,6 +583,9 @@ hetPlots <- ggarrange(hetHist, copyHet, ncol = 1, common.legend = T, legend = "b
 ggarrange(tmp, hetPlots, common.legend = T)
 ggsave(file = "Heterozygosity.png", height = 6, width = 9)
 
+hetHist %>% ggsave(file = "~/Documents/University/LabMeetings/2022/Mar25/Figures/HetHist.pdf", width = 6, height= 4)
+copyHet %>% ggsave(file = "~/Documents/University/LabMeetings/2022/Mar25/Figures/HetCN.pdf", width = 6, height= 4)
+
 # Looking for potential HGTs and Transposons
 ancientOnly<- ancientOnly %>% left_join(read.delim("../BlastResults/COGClassified90/Pangenome.tab"), by = c("Gene" = "Query"))
 ancientOnly %>% filter(Sample != "Brancorsini") %>% filter(HeteroFrac > 0, Status == "Accessory") %>% select(Gene, CopyNumber,HeteroFrac, Name)
@@ -585,10 +598,12 @@ highCopyCor %>% bind_rows(highCopyGer) %>% pull(Gene) %>% unique() %>% write.tab
 # 
 tmp <- ancientOnly %>% filter(Sample == "Brancorsini") %>% mutate(High = ifelse(MeanCoverage > (mean(MeanCoverage) + 2*sd(MeanCoverage)), T, F))
 t.test(tmp %>% filter(High, HeteroFrac > 0) %>% pull(HeteroFrac), tmp %>% filter(!High) %>% pull(HeteroFrac))
-# Saving the list of virulence genes found in the ancient genomes
-ancientOnly %>% filter(Gene %in% unique(c(fromCOGName, fromGeneName))) %>% write.table(file = "VirulenceGenes.tab", sep = "\t", row.names =F, quote = F)
 
-virAncientOnly <- ancientOnly %>% filter(Gene %in% unique(c(fromCOGName, fromGeneName)))
+
+# Saving the list of virulence genes found in the ancient genomes
+ancientOnly %>% filter(Gene %in% unique(c(fromCOGName, fromGeneName,"group_2139"))) %>% write.table(file = "VirulenceGenes.tab", sep = "\t", row.names =F, quote = F) # <-- 2139 comes from a blast run against bvfA
+
+virAncientOnly <- ancientOnly %>% filter(Gene %in% unique(c(fromCOGName, fromGeneName, "group_2139")))
 
 lipoPolyName <- virAncientOnly %>% filter(grepl("LPS|lipopolisaccharide", ignore.case =T, Name) | grepl("lps", ignore.case = T, Gene)) %>%
 	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "Lipopoly")
@@ -606,7 +621,7 @@ ahp <- virAncientOnly %>% filter(grepl("ahpC|ahpD|ahp|Alkyl hydroperoxide reduct
 	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "Alkyl")
 nor <- virAncientOnly %>% filter(grepl("nord|Nitric Oxide Reductase", ignore.case =T, Name) | grepl("nord", ignore.case = T, Gene)) %>%
 	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "Nitric")
-bruceVir <- virAncientOnly %>% filter(grepl("Brucella virulence factor A|BvfA", ignore.case =T, Name) | grepl("bvf", ignore.case = T, Gene)) %>%
+bruceVir <- virAncientOnly %>% filter(grepl("Brucella virulence factor A|BvfA", ignore.case =T, Name) | grepl("bvf|group_2139", ignore.case = T, Gene)) %>%
 	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "Brucella Virulence Factor")
 exo <- virAncientOnly %>% filter(grepl("xthA|Exonuclease III|Base excision repair", ignore.case =T, Name) | grepl("xth", ignore.case = T, Gene)) %>%
 	summarize(Mean = mean(MeanCoverage), SD = sd(MeanCoverage), Genes = length(Gene)) %>% mutate(Category = "Exonuclease")
@@ -615,3 +630,8 @@ bvr <- virAncientOnly %>% filter(grepl("bvr|ompR", ignore.case =T, Name) | grepl
 
 virCatSummarized <- bind_rows(list(lipoPolyName, t4ss, sod, cycicOPG, urease, cytoOxi, ahp, nor,bruceVir, exo, bvr))
 virCatSummarized %>% xtable(auto = T) %>% print(file = "~/Documents/University/ComprehensiveExamination/Paper/VirTable.tex")
+write.table(unique(c(fromCOGName, fromGeneName)), file = "../VirulenceGenes.list", quote = F, row.names = F, col.names = F)
+
+# Trying to figure out if bruceVir is a case of Just missing
+depthDf <- depthDf %>% left_join(read.delim("../BlastResults/COGClassified90/Pangenome.tab"), by = c("Gene" = "Query"))
+depthDf %>% filter(grepl("Brucella virulence factor A|BvfA", ignore.case =T, Name) | grepl("bvf", ignore.case = T, Gene))
