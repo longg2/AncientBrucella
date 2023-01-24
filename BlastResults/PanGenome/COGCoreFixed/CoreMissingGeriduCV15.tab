@@ -1,0 +1,155 @@
+Query	Match	COG	COGMembershipClass	FunctionalCategory	Name	Gene	FunctionalPathway	PMID	PDBID
+argF	WP_002963466	COG0078	0	E	Ornithine carbamoyltransferase	ArgF	Arginine biosynthesis		1A1S
+aspS	WP_004683546	COG0173	0	J	Aspartyl-tRNA synthetase	AspS	Aminoacyl-tRNA synthetases		1C0A
+carB	WP_004684046	COG0458	1	EF	Carbamoylphosphate synthase large subunit	CarB	Arginine biosynthesis		1C30
+ccmE	WP_002963757	COG2332	0	CO	Cytochrome c biogenesis protein CcmE	CcmE			1J6Q
+coxB	WP_002963625	COG1622	0	C	Heme/copper-type cytochrome/quinol oxidase, subunit 2	CyoA			1CYW
+dapD	WP_002965622	COG2171	0	E	Tetrahydrodipicolinate N-succinyltransferase	DapD	Lysine biosynthesis		3BXY
+der	WP_004682999	COG1160	0	J	Double Era-like domain GTPase Der	Der			1MKY
+dnaA_1	WP_002970905	COG0593	1	L	Chromosomal replication initiation ATPase DnaA	DnaA			1L8Q
+fbcH	WP_004684075	COG1290	0	C	Cytochrome b subunit of the bc complex	QcrB/PetB			1VF5
+flaF	WP_004680989	COG5442	0	N	Flagellar biosynthesis regulator FlaF	FlaF			
+flgA	WP_006256599	COG1261	2	N	Flagellar basal body P-ring formation protein FlgA	FlgA			3VJP
+flgB	WP_004681368	COG1815	0	N	Flagellar basal body rod protein FlgB	FlgB			
+fmt	WP_004682455	COG0223	0	J	Methionyl-tRNA formyltransferase	Fmt			1FMT
+folB	WP_002964148	COG1539	0	H	Dihydroneopterin aldolase	FolB	Folate biosynthesis		1B9L
+glcA_1	WP_004685544	COG1620	2	C	L-lactate permease	LldP			
+glmS	WP_004684961	COG0449	0	M	Glucosamine 6-phosphate synthetase, contains amidotransferase and phosphosugar isomerase domains	GlmS			2J6H
+glmU	WP_004681894	COG1207	0	M	Bifunctional protein GlmU, N-acetylglucosamine-1-phosphate-uridyltransferase/glucosamine-1-phosphate-acetyltransferase	GlmU			3FWW
+glyA2	WP_012092341	COG0112	0	E	Glycine/serine hydroxymethyltransferase	GlyA	Serine biosynthesis		1BJ4
+gmk	WP_002963622	COG0194	0	F	Guanylate kinase	Gmk			1EX6
+group_1	WP_002969982	COG3293	0	X	Transposase				
+group_100	WP_004683305	COG5449	0	S	Uncharacterized conserved protein, DUF2163 domain				
+group_1030	WP_004682293	COG0665	0	E	Glycine/D-amino acid oxidase (deaminating)	DadA			3AWI
+group_1079	WP_004684555	COG1434	0	M	Lipid carrier protein ElyC involved in cell wall biogenesis, DUF218 family	ElyC		24391520	3CA8
+group_1113	WP_004681480	COG1024	0	I	Enoyl-CoA hydratase/carnithine racemase	CaiD	Fatty acid biosynthesis		1DCI
+group_1185	WP_002964461	COG0614	0	P	ABC-type Fe3+-hydroxamate transport system, periplasmic component	FepB			1ESZ
+group_1277	WP_004681215	COG2885	0	M	Outer membrane protein OmpA and related peptidoglycan-associated (lipo)proteins	OmpA			1OAP
+group_1295	WP_002966643	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_1313	WP_004683704	COG2518	0	O	Protein-L-isoaspartate O-methyltransferase	Pcm		24909784	3LBF
+group_1342	WP_004681977	COG1653	0	G	ABC-type glycerol-3-phosphate transport system, periplasmic component	UgpB			2Z8D
+group_1354	WP_004683323	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_1361	WP_004686521	COG5451	0	S	Predicted secreted protein				
+group_1495	WP_002968361	COG0169	0	E	Shikimate 5-dehydrogenase	AroE	Aromatic amino acid biosynthesis		1NPD
+group_1575	WP_004682474	COG0289	0	E	4-hydroxy-tetrahydrodipicolinate reductase	DapB	Lysine biosynthesis	29684280	1ARZ
+group_1621	WP_002964883	COG5468	0	S	Predicted lipoprotein involved in lipopolysaccharide assembly				
+group_1689	WP_004683956	COG4103	0	P	Tellurite resistance protein TerB	TerB2		23044854	2JXU
+group_178	WP_002963705	COG4448	0	E	L-asparaginase II	AnsA2			
+group_1853	WP_002965914	COG5457	0	S	Uncharacterized conserved protein YjiS, DUF1127 family	YjiS			
+group_1907	WP_002970018	COG0492	2	O	Thioredoxin reductase	TrxB			3FBS
+group_2074	WP_004683841	COG2919	0	D	Cell division protein FtsB	FtsB			4IFF
+group_2136	WP_004681235	COG0330	0	O	Regulator of protease activity HflC, stomatin/prohibitin superfamily	HflC			
+group_2152	WP_004684284	COG0144	1	J	16S rRNA C967 or C1407 C5-methylase, RsmB/RsmF family	RsmB	16S rRNA modification		2FRX
+group_2166	WP_002964825	COG5509	0	S	Uncharacterized small protein, DUF1192 family				
+group_2172	WP_005970906	COG1109	0	G	Phosphomannomutase	ManB			6MNV
+group_2200	WP_004684049	COG1278	0	K	Cold shock protein, CspA family	CspC			1C9O
+group_2211	WP_002969148	COG0110	0	R	Acetyltransferase, isoleucine patch superfamily	WbbJ			
+group_2380	WP_002965527	COG5352	2	S	Uncharacterized conserved protein				5YIU
+group_2399	WP_002965418	COG2860	0	S	Uncharacterized membrane protein YeiH	YadS			5WUC
+group_2400	WP_002966536	COG2204	2	T	DNA-binding transcriptional response regulator, NtrC family, contains REC, AAA-type ATPase, and a Fis-type DNA-binding domains	AtoC			1ZY2
+group_2460	WP_002963588	COG1722	0	L	Exonuclease VII small subunit	XseB			1VP7
+group_2465	WP_004682938	COG4665	0	Q	TRAP-type mannitol/chloroaromatic compound transport system, small permease component	FcbT2			
+group_2487	WP_002966234	COG0753	0	P	Catalase	KatE			6RJR
+group_2488	WP_002964973	COG2388	3	R	Predicted acetyltransferase, GNAT superfamily	YidJ			1R57
+group_2502	WP_012091053	COG1866	0	C	Phosphoenolpyruvate carboxykinase, ATP-dependent	PckA	Gluconeogenesis		1AQ2
+group_2503	WP_004684571	COG0797	2	M	Peptidoglycan lytic transglycosylase RlpA, contains C-terminal SPOR domain	RlpA		24806796	4AVR
+group_2513	WP_002969380	COG2827	0	L	Predicted endonuclease, GIY-YIG superfamily	YhbQ			1YWL
+group_2516	WP_002966354	COG0745	0	TK	DNA-binding response regulator, OmpR family, contains REC and winged-helix (wHTH) domain	OmpR			1XHF
+group_2537	WP_004684232	COG1028	0	I	NAD(P)-dependent dehydrogenase, short-chain alcohol dehydrogenase family	FabG	Fatty acid biosynthesis		6L1H
+group_255	WP_004684137	COG1633	1	P	Rubrerythrin, includes spore coat protein YhjR	YhjR			2E0Z
+group_2556	WP_004684007	COG3814	0	O	SspB-like protein, predicted to bind SsrA peptide	SspB2			
+group_3589	WP_004683914	COG4764	0	R	Predicted transglycosylase, contains SLT domain	SLT			
+group_3606	WP_004684138	COG2814	0	G	Predicted arabinose efflux permease AraJ, MFS family	AraJ			4LDS
+group_3624	WP_002963803	COG0736	0	I	Phosphopantetheinyl transferase (holo-ACP synthase)	AcpS			1F7L
+group_3712	WP_002971243	COG5342	1	R	Invasion protein IalB, involved in pathogenesis	IalB			3DTD
+group_3718	WP_004683040	COG3668	0	X	Plasmid stabilization system protein ParE	ParE			3KXE
+group_3748	WP_002966111	COG0395	0	G	ABC-type glycerol-3-phosphate transport system, permease component	UgpE			1VR4
+group_3795	WP_004681742	COG3055	0	M	N-acetylneuraminic acid mutarotase	NanM		18063573	2UVK
+group_3801	WP_002967000	COG0760	3	O	Peptidyl-prolyl isomerase, parvulin family	SurA			2ZR5
+group_3802	WP_004686989	COG1247	0	E	L-amino acid N-acyltransferase MnaT	MnaT		27941785	3DR6
+group_3847	WP_002963624	COG5342	0	R	Invasion protein IalB, involved in pathogenesis	IalB			3DTD
+group_3851	WP_002963713	COG0433	0	L	Archaeal DNA helicase HerA or a related bacterial ATPase, contains HAS-barrel and ATPase domains	HerA			4D2I
+group_3857	WP_002969581	COG0494	2	V	8-oxo-dGTP pyrophosphatase MutT and related house-cleaning NTP pyrophosphohydrolases, NUDIX family	MutT			4V14
+group_3878	WP_004684121	COG1495	0	O	Disulfide bond formation protein DsbB	DsbB			2LTQ
+group_3892	WP_002963864	COG0847	2	L	DNA polymerase III, epsilon subunit or related 3'-5' exonuclease	DnaQ			1J53
+group_3896	WP_002972282	COG0122	0	L	3-methyladenine DNA glycosylase/8-oxoguanine DNA glycosylase	AlkA			1DIZ
+group_3901	WP_002972097	COG1522	0	K	DNA-binding transcriptional regulator, Lrp family	Lrp			1I1G
+group_3932	WP_004683134	COG5349	0	S	Uncharacterized conserved protein, DUF983 family				
+group_3941	WP_004681856	COG2188	0	K	DNA-binding transcriptional regulator, GntR family	MngR			2WV0
+group_3944	WP_002963809	COG1896	0	FR	5'-deoxynucleotidase YfbR and related HD superfamily hydrolases	YfbR			2PAQ
+group_3949	WP_004683321	COG0265	1	O	Periplasmic serine protease, S1-C subfamily, contain C-terminal PDZ domain	DegQ		29686141	2HGA
+group_3958	WP_004685190	COG0741	2	M	Soluble lytic murein transglycosylase or regulatory protein s ( may contain LysM/invasin domain)	MltE			153L
+group_3959	WP_004681745	COG0664	0	T	cAMP-binding domain of CRP or a regulatory subunit of cAMP-dependent protein kinases	Crp			1FT9
+group_3967	WP_004681740	COG0747	0	E	ABC-type transport system, periplasmic component	DdpA			3RQT
+group_3968	WP_004683406	COG0044	0	F	Dihydroorotase or related cyclic amidohydrolase	AllB	Pyrimidine biosynthesis		1J79
+group_3970	WP_002969422	COG0307	0	H	Riboflavin synthase alpha chain	RibC	Riboflavin/FAD biosynthesis		1I8D
+group_3986	WP_004684258	COG1846	1	K	DNA-binding transcriptional regulator, MarR family	MarR			1JGS
+group_3990	WP_002968219	COG0410	0	E	ABC-type branched-chain amino acid transport system, ATPase component LivF	LivF		26527648;32250026	1JI0
+group_3992	WP_002963636	COG0678	0	O	Peroxiredoxin	AHP1			1H4O
+group_4019	WP_004683133	COG3175	0	CO	Cytochrome c oxidase assembly protein Cox11	COX11			1SO9
+group_4022	WP_004681162	COG0559	0	E	Branched-chain amino acid ABC-type transport system, permease component	LivH			
+group_4023	WP_002965606	COG0451	0	M	Nucleoside-diphosphate-sugar epimerase	WcaG			2X4G
+group_4027	WP_002964979	COG2329	0	H	Heme-degrading monooxygenase HmoA and related ABM domain proteins	HmoA		21873409	1IUJ
+group_4036	WP_002966306	COG4314	0	P	Nitrous oxide reductase accessory protein NosL	NosL			2HPU
+group_4044	WP_011005034	COG1012	0	I	Acyl-CoA reductase or other NAD-dependent aldehyde dehydrogenase	AdhE	Proline degradation		1A4S
+group_405	WP_011004994	COG4581	3	L	Superfamily II RNA helicase	Dob10			4A4Z
+group_4058	WP_004681171	COG0346	0	Q	Catechol 2,3-dioxygenase or related enzyme, vicinal oxygen chelate (VOC) family	GloA		11830595	3R4Q
+group_4064	WP_005970945	COG0564	0	J	Pseudouridine synthase RluA, 23S rRNA- or tRNA-specific	RluA	23S rRNA modification		2I82
+group_4065	WP_010658744	COG1653	0	G	ABC-type glycerol-3-phosphate transport system, periplasmic component	UgpB			2Z8D
+group_4088	WP_004686851	COG3794	1	C	Plastocyanin	PetE			3BQV
+group_4096	WP_002965766	COG5515	0	S	Uncharacterized conserved protein, DUF1737 domain				2NNR
+group_4100	WP_002966292	COG0163	0	H	Flavin prenyltransferase UbiX	UbiX	Ubiquinone biosynthesis	28754323;26083743	1SBZ
+group_4115	WP_004683918	COG0563	0	F	Adenylate kinase or related kinase	Adk	Pyrimidine biosynthesis		1AK2
+group_4132	WP_002963525	COG4736	0	C	Cbb3-type cytochrome oxidase, subunit 3	CcoQ			
+group_4139	WP_002971893	COG5567	0	S	Small periplasmic lipoprotein YifL (function unknown)	YifL			
+group_414	WP_011982382	COG0155	0	P	Sulfite reductase, beta subunit (hemoprotein)	CysI	Cysteine biosynthesis		1AOP
+group_4148	WP_002965944	COG3453	0	R	Predicted phosphohydrolase, protein tyrosine phosphatase (PTP) superfamily, DUF442 family				2F46
+group_443	WP_002963765	COG0642	1	T	Signal transduction histidine kinase	BaeS			1JOY
+group_443	WP_002963765	COG2202	1	T	PAS domain	PAS			2MWG
+group_477	WP_004682835	COG0493	0	ER	NADPH-dependent glutamate synthase beta chain or related oxidoreductase	GltD	Glutamine biosynthesis		1H7X
+group_56	WP_002963460	COG1215	1	N	Glycosyltransferase, catalytic subunit of cellulose synthase and poly-beta-1,6-N-acetylglucosamine synthase	BcsA			4HG6
+group_588	WP_011982638	COG2223	1	P	Nitrate/nitrite transporter NarK	NarK			4JR9
+group_674	WP_006256674	COG0001	0	H	Glutamate-1-semialdehyde aminotransferase	HemL	Heme biosynthesis		2CFB
+group_714	WP_004682297	COG1012	0	I	Acyl-CoA reductase or other NAD-dependent aldehyde dehydrogenase	AdhE	Proline degradation		1A4S
+group_766	WP_040130030	COG1702	0	T	Phosphate starvation-inducible protein PhoH, predicted ATPase	PhoH		8444794;12762842	3B85
+group_805	WP_004681310	COG1566	1	V	Multidrug resistance efflux pump EmrA	EmrA			4TKO
+group_900	WP_004682096	COG0174	0	E	Glutamine synthetase	GlnA	Glutamine biosynthesis		1F1H
+group_910	WP_004684720	COG4948	0	MR	L-alanine-DL-glutamate epimerase or related enzyme of enolase superfamily	RspA	Non-phosphorylated Entner-Doudoroff pathway		1BKH
+group_934	WP_002966598	COG1409	3	T	3',5'-cyclic AMP phosphodiesterase CpdA	CpdA			2ZO9
+group_951	WP_004683719	COG2377	0	M	1,6-Anhydro-N-acetylmuramate kinase	AnmK		15901686	3CQY
+hipO_1	WP_012091109	COG1473	0	R	Metal-dependent amidase/aminoacylase/carboxypeptidase	AbgB	Lysine biosynthesis	17307853	3RAM
+hrpB_1	WP_025198990	COG1643	2	J	HrpA-like RNA helicase	HrpA			5N8R
+ispH	WP_004683139	COG0761	0	I	4-Hydroxy-3-methylbut-2-enyl diphosphate reductase IspH	IspH	Isoprenoid biosynthesis		3DNF
+lepB	WP_002970991	COG0681	3	U	Signal peptidase I	LepB		1925027	1B12
+ligA	WP_004684014	COG0272	0	L	NAD-dependent DNA ligase	Lig			5TT5
+metK	WP_011005450	COG0192	0	H	S-adenosylmethionine synthetase	MetK	Methionine biosynthesis		1FUG
+mscL	WP_002963483	COG1970	0	M	Large-conductance mechanosensitive channel	MscL			2OAR
+namA	WP_004681485	COG1902	0	C	2,4-dienoyl-CoA reductase or related NADH-dependent reductase, Old Yellow Enzyme (OYE) family	FadH			1BWK
+nrdR	WP_002966765	COG1327	0	K	Transcriptional regulator NrdR, contains Zn-ribbon and ATP-cone domains	NrdR			
+nuoN	WP_004683623	COG1007	0	C	NADH:ubiquinone oxidoreductase subunit 2 (chain N)	NuoN	NADH dehydrogenase		4HE8
+petA	WP_002964648	COG0723	0	C	Rieske Fe-S protein	QcrA/PetC		27663073	5CXM
+pgi	WP_004682840	COG0166	0	G	Glucose-6-phosphate isomerase	Pgi	Glycolysis		1B0Z
+pgk	WP_004684168	COG0126	0	G	3-phosphoglycerate kinase	Pgk	Glycolysis		13PK
+pgl	WP_002968509	COG0363	0	G	6-phosphogluconolactonase/Glucosamine-6-phosphate isomerase/deaminase	NagB	Pentose phosphate pathway	24163345	2RI0
+pgsA	WP_002963840	COG0558	0	I	Phosphatidylglycerophosphate synthase	PgsA	Phospholipid biosynthesis		4MND
+purS	WP_002963973	COG1828	0	F	Phosphoribosylformylglycinamidine (FGAM) synthase, PurS subunit	PurS	Purine biosynthesis		1GTD
+pyk	WP_004684192	COG0469	0	G	Pyruvate kinase	PykF	Glycolysis		6QXL
+recN	WP_004684015	COG0497	0	L	DNA repair ATPase RecN	RecN			4AD8
+rnd	WP_004683543	COG0349	0	J	Ribonuclease D	Rnd		18821773	5C0Y
+rnhA	WP_002963635	COG0328	0	L	Ribonuclease HI	RnhA			1LAW
+rplI	WP_004683101	COG0359	0	J	Ribosomal protein L9	RplI	Ribosome 50S subunit	27112601	1VS6
+rplM	WP_002963926	COG0102	0	J	Ribosomal protein L13	RplM	Ribosome 50S subunit		1VS6
+rplQ	WP_002964337	COG0203	0	J	Ribosomal protein L17	RplQ	Ribosome 50S subunit		1GD8
+rpmA	WP_010661520	COG0211	0	J	Ribosomal protein L27	RpmA	Ribosome 50S subunit		1VS6
+rpoB	WP_002966855	COG0085	1	K	DNA-directed RNA polymerase, beta subunit/140 kD subunit	RpoB	RNA polymerase		5UAJ
+rpoC	WP_004683930	COG0086	1	K	DNA-directed RNA polymerase, beta' subunit/160 kD subunit	RpoC	RNA polymerase		1NT9
+rpsF	WP_004683108	COG0360	1	J	Ribosomal protein S6	RpsF	Ribosome 30S subunit		4V4H
+thiG	WP_004684703	COG2022	0	H	Thiazole synthase ThiGH, ThiG subunit (thiamin biosynthesis)	ThiG	Thiamine biosynthesis		1TYG
+tkt	WP_004684164	COG0021	0	G	Transketolase	TktA	Pentose phosphate pathway		1AY0
+topA	WP_002968433	COG0550	1	L	DNA topoisomerase IA	TopA			1CY0
+topA	WP_002968433	COG1754	1	S	Uncharacterized C-terminal domain of topoisomerase IA				
+trpC	WP_002964269	COG0134	0	E	Indole-3-glycerol phosphate synthase	TrpC	Aromatic amino acid biosynthesis		6BMA
+truB	WP_004684584	COG0130	0	J	tRNA U55 pseudouridine synthase TruB, may also work on U342 of tmRNA	TruB	tRNA modification		1K8W
+tusA	WP_075589477	COG0425	0	JHO	Sulfur carrier protein TusA (tRNA thiolation, molybdenum cofactor biosynthesis)	TusA		23894086	1DCJ
+wrbA	WP_004683783	COG0655	0	C	Multimeric flavodoxin WrbA, includes NAD(P)H:quinone oxidoreductase	WrbA			4DY4
+ybgF	WP_004684148	COG1729	1	D	Cell division protein CpoB, coordinates peptidoglycan biosynthesis and outer membrane constriction	CpoB		25951518	2WZ7

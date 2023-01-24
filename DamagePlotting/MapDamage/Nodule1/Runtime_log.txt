@@ -1,0 +1,5 @@
+2022-09-21 09:49:33,064	INFO	main: Started with the command: /usr/bin/mapDamage --merge-reference-sequences -t Nodule1_S1 -i tmp3.sam -r Reference/GCF_000007125.1_ASM712v1_genomic.fna -d MapDamage/Nodule1_S1
+2022-09-21 09:49:52,430	DEBUG	main: BAM read in 28.559823 seconds
+2022-09-21 09:49:53,410	INFO	mapdamage.rscript: Performing Bayesian estimates
+2022-09-21 09:49:53,410	DEBUG	mapdamage.rscript: Call: Rscript /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/runGeneral.R --args 30 10000 10 50000 0 0 1 1 0 0 1 12 MapDamage/Nodule1_S1/ /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/ MapDamage/Nodule1_S1/Stats_out 0 0 0 MapDamage/Nodule1_S1/acgt_ratio.csv 0 0
+2022-09-21 09:49:57,515	ERROR	mapdamage.rscript: The Bayesian statistics program failed to finish

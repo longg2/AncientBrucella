@@ -1,0 +1,7 @@
+2022-06-21 11:33:20,585	INFO	main: Started with the command: /usr/bin/mapDamage --merge-reference-sequences -t JessSample -i tmp1.sam -r /home/sam/Scratch/Databases/hg38Poinar/Hardmasked/hg38Hard.fasta -d MapDamage/JessSample
+2022-06-21 11:42:01,116	DEBUG	main: BAM read in 523.866723 seconds
+2022-06-21 11:42:25,175	INFO	mapdamage.rscript: Performing Bayesian estimates
+2022-06-21 11:42:25,175	DEBUG	mapdamage.rscript: Call: Rscript /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/runGeneral.R --args 30 10000 10 50000 0 0 1 1 0 0 1 12 MapDamage/JessSample/ /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/ MapDamage/JessSample/Stats_out 0 0 0 MapDamage/JessSample/acgt_ratio.csv 0 0
+2022-06-21 11:50:08,435	DEBUG	mapdamage.rscript: Bayesian estimates completed in 463.259613 seconds
+2022-06-21 11:50:08,436	INFO	main: Successful run
+2022-06-21 11:50:08,436	DEBUG	main: Run completed in 1011.186669 seconds

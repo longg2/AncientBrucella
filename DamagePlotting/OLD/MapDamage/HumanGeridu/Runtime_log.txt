@@ -1,0 +1,7 @@
+2022-06-21 11:33:17,928	INFO	main: Started with the command: /usr/bin/mapDamage --merge-reference-sequences -t KayBMel_XXXXXX -i tmp2.sam -r /home/sam/Scratch/Databases/hg38Poinar/Hardmasked/hg38Hard.fasta -d MapDamage/KayBMel_XXXXXX
+2022-06-21 11:37:57,653	DEBUG	main: BAM read in 287.196775 seconds
+2022-06-21 11:38:21,317	INFO	mapdamage.rscript: Performing Bayesian estimates
+2022-06-21 11:38:21,317	DEBUG	mapdamage.rscript: Call: Rscript /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/runGeneral.R --args 30 10000 10 50000 0 0 1 1 0 0 1 12 MapDamage/KayBMel_XXXXXX/ /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/ MapDamage/KayBMel_XXXXXX/Stats_out 0 0 0 MapDamage/KayBMel_XXXXXX/acgt_ratio.csv 0 0
+2022-06-21 11:46:18,089	DEBUG	mapdamage.rscript: Bayesian estimates completed in 476.772189 seconds
+2022-06-21 11:46:18,090	INFO	main: Successful run
+2022-06-21 11:46:18,091	DEBUG	main: Run completed in 787.634114 seconds

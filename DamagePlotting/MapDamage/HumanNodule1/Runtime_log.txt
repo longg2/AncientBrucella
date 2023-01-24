@@ -1,0 +1,5 @@
+2022-09-21 09:59:41,229	INFO	main: Started with the command: /usr/bin/mapDamage --merge-reference-sequences -t Nodule1_S1 -i tmp3.sam -r /home/sam/Scratch/Databases/hg38Poinar/Hardmasked/hg38Hard.fasta -d MapDamage/Nodule1_S1
+2022-09-21 10:05:34,990	DEBUG	main: BAM read in 369.198558 seconds
+2022-09-21 10:05:59,591	INFO	mapdamage.rscript: Performing Bayesian estimates
+2022-09-21 10:05:59,592	DEBUG	mapdamage.rscript: Call: Rscript /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/runGeneral.R --args 30 10000 10 50000 0 0 1 1 0 0 1 12 MapDamage/Nodule1_S1/ /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/ MapDamage/Nodule1_S1/Stats_out 0 0 0 MapDamage/Nodule1_S1/acgt_ratio.csv 0 0
+2022-09-21 10:06:02,267	ERROR	mapdamage.rscript: The Bayesian statistics program failed to finish

@@ -1,0 +1,212 @@
+Query	Match	Name	Organism
+aldH1	WP_006234428	coniferyl aldehyde dehydrogenase [Brucella abortus]	Brucella abortus
+apaG	WP_002963468	MULTISPECIES: Co2+/Mg2+ efflux protein ApaG [Brucella]	Brucella
+argF	WP_002963466	MULTISPECIES: ornithine carbamoyltransferase [Brucella]	Brucella
+argH	WP_002965047	MULTISPECIES: argininosuccinate lyase [Brucella]	Brucella
+aspS	WP_004683546	MULTISPECIES: aspartate--tRNA ligase [Brucella]	Brucella
+bluB	WP_002965598	MULTISPECIES: 5,6-dimethylbenzimidazole synthase [Brucella]	Brucella
+carA	WP_002964590	MULTISPECIES: glutamine-hydrolyzing carbamoyl-phosphate synthase small subunit [Brucella]	Brucella
+carB	WP_004684046	MULTISPECIES: carbamoyl-phosphate synthase large subunit [Brucella]	Brucella
+ccmE	WP_008933880	cytochrome c maturation protein CcmE [Brucella sp. NVSL 07-0026]	Brucella sp. NVSL 07-0026
+ccmI	WP_004686785	MULTISPECIES: c-type cytochrome biogenesis protein CcmI [Brucella]	Brucella
+cobA_2	WP_032450920	siroheme synthase CysG [Brucella sp. 63/311]	Brucella sp. 63/311
+cobT_1	WP_069125125	nicotinate-nucleotide--dimethylbenzimidazole phosphoribosyltransferase [Brucella melitensis]	Brucella melitensis
+coxB	WP_005969785	MULTISPECIES: cytochrome c oxidase subunit II [Brucella]	Brucella
+cysW_1	WP_076770952	MULTISPECIES: sulfate ABC transporter permease subunit CysW [unclassified Brucella]	unclassified Brucella
+dapD	WP_002965622	MULTISPECIES: 2,3,4,5-tetrahydropyridine-2,6-dicarboxylate N-succinyltransferase [Brucella]	Brucella
+der	WP_004682999	MULTISPECIES: ribosome biogenesis GTPase Der [Brucella]	Brucella
+dnaA_1	WP_006104384	chromosomal replication initiator protein DnaA [Brucella abortus]	Brucella abortus
+elaA	WP_002968104	GNAT family N-acetyltransferase [Brucella abortus]	Brucella abortus
+fbcH	WP_004684075	MULTISPECIES: cytochrome b N-terminal domain-containing protein [Brucella]	Brucella
+flaF	WP_002966647	MULTISPECIES: flagellar biosynthesis regulator FlaF [Brucella]	Brucella
+flgA	WP_002966427	MULTISPECIES: flagellar basal body P-ring formation protein FlgA [Brucella]	Brucella
+flgB	WP_004681368	MULTISPECIES: flagellar basal body rod protein FlgB [Brucella]	Brucella
+fmt	WP_004682455	MULTISPECIES: methionyl-tRNA formyltransferase [Brucella]	Brucella
+folB	WP_004685641	dihydroneopterin aldolase [Brucella melitensis]	Brucella melitensis
+glcA_1	WP_023598755	L-lactate permease [Brucella ceti]	Brucella ceti
+glmS	WP_004684961	MULTISPECIES: glutamine--fructose-6-phosphate transaminase (isomerizing) [Brucella]	Brucella
+glmU	WP_004684960	bifunctional UDP-N-acetylglucosamine diphosphorylase/glucosamine-1-phosphate N-acetyltransferase GlmU [Brucella melitensis]	Brucella melitensis
+glyA2	WP_005973536	serine hydroxymethyltransferase [Brucella melitensis]	Brucella melitensis
+gmk	WP_002963622	MULTISPECIES: guanylate kinase [Brucella]	Brucella
+group_1	WP_002965542	MULTISPECIES: IS5 family transposase [Brucella]	Brucella
+group_100	WP_004683305	MULTISPECIES: DUF2163 domain-containing protein [Brucella]	Brucella
+group_1030	WP_004684831	FAD-binding oxidoreductase [Brucella melitensis]	Brucella melitensis
+group_1079	WP_004685291	YdcF family protein [Brucella melitensis]	Brucella melitensis
+group_1089	WP_127841117	SH3 domain-containing protein [Brucella melitensis]	Brucella melitensis
+group_1104	WP_002965608	MULTISPECIES: glutathione S-transferase family protein [Brucella]	Brucella
+group_1132	WP_002963726	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_1185	WP_002964461	MULTISPECIES: ABC transporter substrate-binding protein [Brucella]	Brucella
+group_1277	WP_004681215	MULTISPECIES: OmpA family protein [Brucella]	Brucella
+group_1295	WP_002966643	MULTISPECIES: response regulator transcription factor [Brucella]	Brucella
+group_1300	WP_004688319	MULTISPECIES: murein L,D-transpeptidase [Brucella]	Brucella
+group_1313	WP_004685594	protein-L-isoaspartate(D-aspartate) O-methyltransferase [Brucella melitensis]	Brucella melitensis
+group_1342	WP_002967274	MULTISPECIES: ABC transporter substrate-binding protein [Brucella]	Brucella
+group_1354	WP_004683323	MULTISPECIES: response regulator transcription factor [Brucella]	Brucella
+group_1361	WP_225868622	TIGR02301 family protein [Brucella melitensis]	Brucella melitensis
+group_1362	WP_002963818	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_14	WP_005973133	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_1495	WP_025270785	shikimate dehydrogenase [Brucella melitensis]	Brucella melitensis
+group_1534	WP_004684539	MULTISPECIES: murein transglycosylase A [Brucella]	Brucella
+group_1575	WP_004684772	MULTISPECIES: 4-hydroxy-tetrahydrodipicolinate reductase [Brucella]	Brucella
+group_1608	WP_002971536	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_1617	WP_006097122	hypothetical protein [Brucella abortus]	Brucella abortus
+group_1621	WP_002964883	MULTISPECIES: LPS assembly lipoprotein LptE [Brucella]	Brucella
+group_163	WP_015799953	aminotransferase class III-fold pyridoxal phosphate-dependent enzyme [Brucella microti]	Brucella microti
+group_1633	WP_004685830	biotin transporter BioY [Brucella melitensis]	Brucella melitensis
+group_1689	WP_004683956	MULTISPECIES: TerB family tellurite resistance protein [Brucella]	Brucella
+group_169	WP_004684984	MULTISPECIES: Gfo/Idh/MocA family oxidoreductase [Brucella]	Brucella
+group_178	WP_002963705	MULTISPECIES: asparaginase [Brucella]	Brucella
+group_1803	WP_004684678	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_187	WP_006258297	D-alanyl-D-alanine carboxypeptidase [Brucella melitensis]	Brucella melitensis
+group_1907	WP_002970018	MULTISPECIES: thioredoxin reductase [Brucella]	Brucella
+group_207	WP_004681061	MULTISPECIES: amidohydrolase [Brucella]	Brucella
+group_209	WP_127840839	fumarylacetoacetate hydrolase family protein [Brucella melitensis]	Brucella melitensis
+group_2136	WP_153528633	SPFH/Band 7/PHB domain protein [Brucella sp. 2280]	Brucella sp. 2280
+group_2152	WP_004685854	MULTISPECIES: RsmB/NOP family class I SAM-dependent RNA methyltransferase [Brucella]	Brucella
+group_2172	WP_002971137	phosphoglucosamine mutase [Brucella abortus]	Brucella abortus
+group_2188	WP_006088496	OmpW family protein [Brucella abortus]	Brucella abortus
+group_2200	WP_004685777	cold-shock protein [Brucella melitensis]	Brucella melitensis
+group_2211	WP_002969148	MULTISPECIES: antibiotic acetyltransferase [Brucella]	Brucella
+group_2323	WP_004684798	MULTISPECIES: 2-hydroxyacid dehydrogenase [Brucella]	Brucella
+group_2380	WP_002971643	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2381	WP_002965526	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2398	WP_002965436	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2399	WP_002965418	MULTISPECIES: trimeric intracellular cation channel family protein [Brucella]	Brucella
+group_2400	WP_002966536	MULTISPECIES: response regulator [Brucella/Ochrobactrum group]	Brucella/Ochrobactrum group
+group_2413	WP_005968957	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_2447	WP_011005196	MULTISPECIES: NAD(P)/FAD-dependent oxidoreductase [Brucella]	Brucella
+group_2460	WP_002963588	MULTISPECIES: exodeoxyribonuclease VII small subunit [Brucella/Ochrobactrum group]	Brucella/Ochrobactrum group
+group_2465	WP_004682938	MULTISPECIES: TRAP transporter small permease subunit [Brucella]	Brucella
+group_2470	WP_004682379	MULTISPECIES: LacI family transcriptional regulator [Brucella]	Brucella
+group_2471	WP_008936650	MULTISPECIES: RNA-binding transcriptional accessory protein [unclassified Brucella]	unclassified Brucella
+group_2472	WP_004682211	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2487	WP_002966234	MULTISPECIES: catalase [Brucella]	Brucella
+group_2488	WP_002964973	MULTISPECIES: GNAT family N-acetyltransferase [Brucella]	Brucella
+group_2503	WP_076780379	MULTISPECIES: septal ring lytic transglycosylase RlpA family protein [unclassified Brucella]	unclassified Brucella
+group_2504	WP_004685326	LysR substrate-binding domain-containing protein [Brucella melitensis]	Brucella melitensis
+group_2516	WP_002966354	MULTISPECIES: response regulator transcription factor [Brucella]	Brucella
+group_2522	WP_005974677	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_2537	WP_004684232	MULTISPECIES: 3-hydroxybutyrate dehydrogenase [Brucella]	Brucella
+group_255	WP_141065144	rubrerythrin family protein, partial [Brucella melitensis]	Brucella melitensis
+group_2554	WP_002964569	MULTISPECIES: alkylphosphonate utilization protein [Brucella]	Brucella
+group_2556	WP_004684007	MULTISPECIES: SspB family protein [Brucella]	Brucella
+group_2563	WP_002969562	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2572	WP_004683894	MULTISPECIES: DUF1489 family protein [Brucella]	Brucella
+group_2579	WP_005971772	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_267	WP_002966296	MULTISPECIES: U32 family peptidase [Brucella]	Brucella
+group_300	WP_004685520	endonuclease/exonuclease/phosphatase family protein [Brucella melitensis]	Brucella melitensis
+group_353	WP_004685335	alpha-D-glucose phosphate-specific phosphoglucomutase [Brucella melitensis]	Brucella melitensis
+group_356	WP_004685353	sulfate/molybdate ABC transporter ATP-binding protein [Brucella melitensis]	Brucella melitensis
+group_3589	WP_004683914	MULTISPECIES: transglycosylase SLT domain-containing protein [Brucella]	Brucella
+group_3606	WP_160542826	MFS transporter [Brucella melitensis]	Brucella melitensis
+group_3612	WP_008510894	coniferyl aldehyde dehydrogenase [Brucella inopinata]	Brucella inopinata
+group_3656	WP_014315854	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_3668	WP_002967883	MULTISPECIES: DUF6356 family protein [Brucella]	Brucella
+group_3674	WP_002963637	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_3676	WP_187960935	hypothetical protein [Brucella sp. 6810]	Brucella sp. 6810
+group_3697	WP_002963813	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_3698	WP_006094027	L,D-transpeptidase [Brucella abortus]	Brucella abortus
+group_3704	WP_002964592	MULTISPECIES: DUF2306 domain-containing protein [Brucella]	Brucella
+group_3712	WP_002971243	MULTISPECIES: invasion associated locus B family protein [Brucella]	Brucella
+group_3718	WP_004683040	MULTISPECIES: type II toxin-antitoxin system RelE/ParE family toxin [Brucella]	Brucella
+group_373	WP_004684064	MULTISPECIES: ATP-binding protein [Brucella]	Brucella
+group_3731	WP_002971304	MULTISPECIES: ABC transporter ATP-binding protein [Brucella]	Brucella
+group_3734	WP_002969202	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_3748	WP_002966111	MULTISPECIES: carbohydrate ABC transporter permease [Brucella]	Brucella
+group_3795	WP_004681742	MULTISPECIES: N-acetylneuraminate epimerase [Brucella]	Brucella
+group_3801	WP_002967978	MULTISPECIES: peptidylprolyl isomerase [Brucella]	Brucella
+group_3802	WP_006074429	GNAT family N-acetyltransferase [Brucella suis]	Brucella suis
+group_3847	WP_005978406	invasion associated locus B family protein [Brucella ovis]	Brucella ovis
+group_3851	WP_126981363	DUF853 domain-containing protein [Brucella melitensis]	Brucella melitensis
+group_3857	WP_006013248	NUDIX domain-containing protein [Brucella ovis]	Brucella ovis
+group_3878	WP_004684121	MULTISPECIES: disulfide bond formation protein B [Brucella]	Brucella
+group_3892	WP_004685547	exonuclease domain-containing protein [Brucella melitensis]	Brucella melitensis
+group_3895	WP_002964873	MULTISPECIES: GntR family transcriptional regulator [Brucella]	Brucella
+group_3896	WP_153528015	DNA-3-methyladenine glycosylase [Brucella sp. 2280]	Brucella sp. 2280
+group_3901	WP_002972097	MULTISPECIES: Lrp/AsnC family transcriptional regulator [Brucella]	Brucella
+group_3932	WP_004683134	MULTISPECIES: DUF983 domain-containing protein [Brucella]	Brucella
+group_3941	WP_004684987	GntR family transcriptional regulator [Brucella melitensis]	Brucella melitensis
+group_3944	WP_002963809	MULTISPECIES: HD family hydrolase [Brucella]	Brucella
+group_3949	WP_046722143	DegQ family serine endoprotease [Brucella melitensis]	Brucella melitensis
+group_3958	WP_004685190	MULTISPECIES: lytic transglycosylase domain-containing protein [Brucella]	Brucella
+group_3959	WP_004685023	MULTISPECIES: Crp/Fnr family transcriptional regulator [Brucella]	Brucella
+group_3967	WP_153528474	ABC transporter substrate-binding protein [Brucella sp. 2280]	Brucella sp. 2280
+group_3968	WP_004683406	MULTISPECIES: dihydroorotase [Brucella]	Brucella
+group_3970	WP_002969422	MULTISPECIES: riboflavin synthase [Brucella]	Brucella
+group_3986	WP_002964874	MULTISPECIES: MarR family transcriptional regulator [Brucella]	Brucella
+group_3990	WP_002968219	MULTISPECIES: ABC transporter ATP-binding protein [Brucella]	Brucella
+group_3992	WP_004685479	peroxiredoxin [Brucella melitensis]	Brucella melitensis
+group_4019	WP_004683133	MULTISPECIES: cytochrome c oxidase assembly protein [Brucella]	Brucella
+group_4022	WP_006196133	branched-chain amino acid ABC transporter permease [Brucella suis]	Brucella suis
+group_4023	WP_002965606	MULTISPECIES: SDR family oxidoreductase [Brucella]	Brucella
+group_4027	WP_002964979	MULTISPECIES: antibiotic biosynthesis monooxygenase [Brucella]	Brucella
+group_4036	WP_002966306	MULTISPECIES: nitrous oxide reductase accessory protein NosL [Brucella]	Brucella
+group_4044	WP_002964735	MULTISPECIES: NAD-dependent succinate-semialdehyde dehydrogenase [Brucella]	Brucella
+group_405	WP_154142104	MULTISPECIES: helicase [unclassified Brucella]	unclassified Brucella
+group_4058	WP_004681171	MULTISPECIES: VOC family protein [Brucella]	Brucella
+group_4064	WP_005970945	MULTISPECIES: RluA family pseudouridine synthase [Brucella]	Brucella
+group_4065	WP_006640810	ABC transporter substrate-binding protein, partial [Brucella pinnipedialis]	Brucella pinnipedialis
+group_4088	WP_005974601	pseudoazurin [Brucella melitensis]	Brucella melitensis
+group_4091	WP_002969481	MULTISPECIES: DUF6460 domain-containing protein [Brucella]	Brucella
+group_4100	WP_004685062	UbiX family flavin prenyltransferase [Brucella melitensis]	Brucella melitensis
+group_4115	WP_002964341	MULTISPECIES: adenylate kinase [Brucella]	Brucella
+group_4124	WP_002969624	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_447	WP_004685533	ABC-F family ATP-binding cassette domain-containing protein [Brucella melitensis]	Brucella melitensis
+group_46	WP_004685796	DUF4159 domain-containing protein [Brucella melitensis]	Brucella melitensis
+group_477	WP_005978107	NAD(P)-dependent oxidoreductase [Brucella ovis]	Brucella ovis
+group_505	WP_002965052	MULTISPECIES: class I SAM-dependent methyltransferase [Brucella]	Brucella
+group_56	WP_004686617	MULTISPECIES: glycosyltransferase [Brucella]	Brucella
+group_560	WP_002966884	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_588	WP_025198823	MFS transporter [Brucella melitensis]	Brucella melitensis
+group_59	WP_004681903	MULTISPECIES: dihydroorotase [Brucella]	Brucella
+group_674	WP_002965550	MULTISPECIES: aspartate aminotransferase family protein [Brucella]	Brucella
+group_696	WP_004682927	MULTISPECIES: MATE family efflux transporter [Brucella]	Brucella
+group_7	WP_086440183	MULTISPECIES: porin [unclassified Brucella]	unclassified Brucella
+group_714	WP_004684829	aldehyde dehydrogenase family protein [Brucella melitensis]	Brucella melitensis
+group_759	WP_019443524	thioredoxin domain-containing protein, partial [Brucella abortus]	Brucella abortus
+group_766	WP_002965217	MULTISPECIES: PhoH family protein [Brucella]	Brucella
+group_805	WP_087913391	HlyD family secretion protein [Brucella melitensis]	Brucella melitensis
+group_900	WP_004682096	MULTISPECIES: glutamine synthetase family protein [Brucella]	Brucella
+group_910	WP_004684720	MULTISPECIES: L-fuconate dehydratase [Brucella]	Brucella
+group_934	WP_002966598	MULTISPECIES: metallophosphoesterase [Brucella]	Brucella
+group_939	WP_002966618	MULTISPECIES: phosphotransferase enzyme family protein [Brucella]	Brucella
+group_951	WP_004685609	MULTISPECIES: anhydro-N-acetylmuramic acid kinase [Brucella]	Brucella
+group_973	WP_002965986	MULTISPECIES: ABC transporter ATP-binding protein [Brucella]	Brucella
+hipO_1	WP_041594717	M20 family metallopeptidase [Brucella microti]	Brucella microti
+hrpB_1	WP_005974069	ATP-dependent helicase HrpB [Brucella melitensis]	Brucella melitensis
+hutI	WP_141068128	imidazolonepropionase, partial [Brucella melitensis]	Brucella melitensis
+ispH	WP_004683139	MULTISPECIES: 4-hydroxy-3-methylbut-2-enyl diphosphate reductase [Brucella]	Brucella
+lepB	WP_002970991	MULTISPECIES: signal peptidase I [Brucella]	Brucella
+ligA	WP_002964528	MULTISPECIES: NAD-dependent DNA ligase LigA [Brucella]	Brucella
+metK	WP_005970373	MULTISPECIES: methionine adenosyltransferase [Brucella]	Brucella
+moaD	WP_002963839	MULTISPECIES: molybdopterin converting factor subunit 1 [Brucella]	Brucella
+mscL	WP_006137752	large conductance mechanosensitive channel protein MscL [Brucella melitensis]	Brucella melitensis
+namA	WP_004685082	MULTISPECIES: NADH:flavin oxidoreductase/NADH oxidase family protein [Brucella]	Brucella
+nrdR	WP_002966765	MULTISPECIES: transcriptional regulator NrdR [Brucella]	Brucella
+nuoN	WP_004683623	MULTISPECIES: NADH-quinone oxidoreductase subunit NuoN [Brucella]	Brucella
+petA	WP_002964648	MULTISPECIES: ubiquinol-cytochrome c reductase iron-sulfur subunit [Brucella]	Brucella
+pgi	WP_004682840	MULTISPECIES: glucose-6-phosphate isomerase [Brucella]	Brucella
+pgk	WP_002964816	MULTISPECIES: phosphoglycerate kinase [Brucella]	Brucella
+pgl	WP_002968509	MULTISPECIES: 6-phosphogluconolactonase [Brucella]	Brucella
+pgsA	WP_002963840	MULTISPECIES: CDP-diacylglycerol--glycerol-3-phosphate 3-phosphatidyltransferase [Brucella]	Brucella
+purS	WP_002963973	MULTISPECIES: phosphoribosylformylglycinamidine synthase subunit PurS [Brucella]	Brucella
+pyk	WP_004685834	pyruvate kinase [Brucella melitensis]	Brucella melitensis
+queD	WP_004685238	6-carboxytetrahydropterin synthase QueD [Brucella melitensis]	Brucella melitensis
+rcsC	WP_046722154	hybrid sensor histidine kinase/response regulator [Brucella melitensis]	Brucella melitensis
+recN	WP_076771450	MULTISPECIES: DNA repair protein RecN [unclassified Brucella]	unclassified Brucella
+rnd	WP_004683543	MULTISPECIES: ribonuclease D [Brucella]	Brucella
+rnhA	WP_002963635	MULTISPECIES: ribonuclease HI [Brucella]	Brucella
+rplI	WP_004683101	MULTISPECIES: 50S ribosomal protein L9 [Brucella]	Brucella
+rplM	WP_002963926	MULTISPECIES: 50S ribosomal protein L13 [Brucella]	Brucella
+rplQ	WP_002964337	MULTISPECIES: 50S ribosomal protein L17 [Brucella]	Brucella
+rpmA	WP_002964927	MULTISPECIES: 50S ribosomal protein L27 [Brucella]	Brucella
+rpsF	WP_006072256	30S ribosomal protein S6 [Brucella suis]	Brucella suis
+rpsI	WP_004683599	MULTISPECIES: 30S ribosomal protein S9 [Brucella]	Brucella
+rpsK	WP_002964339	MULTISPECIES: 30S ribosomal protein S11 [Brucellaceae]	Brucellaceae
+thiG	WP_004684703	MULTISPECIES: thiazole synthase [Brucella]	Brucella
+tkt	WP_004684164	MULTISPECIES: transketolase [Brucella]	Brucella
+topA	WP_032449677	MULTISPECIES: type I DNA topoisomerase [Brucella]	Brucella
+trpC	WP_002964269	MULTISPECIES: indole-3-glycerol phosphate synthase TrpC [Brucella]	Brucella
+truB	WP_004684584	MULTISPECIES: tRNA pseudouridine(55) synthase TruB [Brucella]	Brucella
+tusA	WP_002965098	MULTISPECIES: sulfurtransferase TusA family protein [Brucella]	Brucella
+wecC	WP_002966084	MULTISPECIES: DUF995 domain-containing protein [Brucella]	Brucella

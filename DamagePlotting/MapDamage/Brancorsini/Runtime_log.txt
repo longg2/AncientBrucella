@@ -1,0 +1,5 @@
+2022-09-21 09:49:33,057	INFO	main: Started with the command: /usr/bin/mapDamage --merge-reference-sequences -t Brancorsini -i tmp1.sam -r Reference/GCF_000007125.1_ASM712v1_genomic.fna -d MapDamage/Brancorsini
+2022-09-21 09:53:42,122	DEBUG	main: BAM read in 253.535020 seconds
+2022-09-21 09:53:42,824	INFO	mapdamage.rscript: Performing Bayesian estimates
+2022-09-21 09:53:42,825	DEBUG	mapdamage.rscript: Call: Rscript /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/runGeneral.R --args 30 10000 10 50000 0 0 1 1 0 0 1 12 MapDamage/Brancorsini/ /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/ MapDamage/Brancorsini/Stats_out 0 0 0 MapDamage/Brancorsini/acgt_ratio.csv 0 0
+2022-09-21 09:53:44,090	ERROR	mapdamage.rscript: The Bayesian statistics program failed to finish

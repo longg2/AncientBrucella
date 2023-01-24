@@ -1,0 +1,7 @@
+2022-06-21 13:11:09,541	INFO	main: Started with the command: /usr/bin/mapDamage --merge-reference-sequences -t KayBMel_XXXXXX -i tmp2.sam -r ../BmelReference/GCF_000007125.1_ASM712v1_genomic.fna -d MapDamage/KayBMel_XXXXXX
+2022-06-21 13:11:32,520	DEBUG	main: BAM read in 27.485386 seconds
+2022-06-21 13:11:33,728	INFO	mapdamage.rscript: Performing Bayesian estimates
+2022-06-21 13:11:33,728	DEBUG	mapdamage.rscript: Call: Rscript /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/runGeneral.R --args 30 10000 10 50000 0 0 1 1 0 0 1 12 MapDamage/KayBMel_XXXXXX/ /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/ MapDamage/KayBMel_XXXXXX/Stats_out 0 0 0 MapDamage/KayBMel_XXXXXX/acgt_ratio.csv 0 0
+2022-06-21 13:21:15,895	DEBUG	mapdamage.rscript: Bayesian estimates completed in 582.166882 seconds
+2022-06-21 13:21:15,896	INFO	main: Successful run
+2022-06-21 13:21:15,896	DEBUG	main: Run completed in 610.860929 seconds

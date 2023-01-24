@@ -1,0 +1,7 @@
+2022-06-21 13:11:14,383	INFO	main: Started with the command: /usr/bin/mapDamage --merge-reference-sequences -t JessSample -i tmp1.sam -r ../BmelReference/GCF_000007125.1_ASM712v1_genomic.fna -d MapDamage/JessSample
+2022-06-21 13:16:38,729	DEBUG	main: BAM read in 327.807384 seconds
+2022-06-21 13:16:40,069	INFO	mapdamage.rscript: Performing Bayesian estimates
+2022-06-21 13:16:40,069	DEBUG	mapdamage.rscript: Call: Rscript /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/runGeneral.R --args 30 10000 10 50000 0 0 1 1 0 0 1 12 MapDamage/JessSample/ /usr/lib/python2.6/site-packages/mapdamage/Rscripts/stats/ MapDamage/JessSample/Stats_out 0 0 0 MapDamage/JessSample/acgt_ratio.csv 0 0
+2022-06-21 13:25:19,214	DEBUG	mapdamage.rscript: Bayesian estimates completed in 519.145042 seconds
+2022-06-21 13:25:19,215	INFO	main: Successful run
+2022-06-21 13:25:19,216	DEBUG	main: Run completed in 848.293953 seconds

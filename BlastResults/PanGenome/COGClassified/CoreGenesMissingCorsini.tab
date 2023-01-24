@@ -1,0 +1,17 @@
+Query	Match	COG	COGMembershipClass	FunctionalCategory	Name	Gene	FunctionalPathway	PMID	PDBID
+apaG	WP_002963468	COG2967	0	P	Uncharacterized conserved protein ApaG affecting Mg2+/Co2+ transport	ApaG			1TZA
+flgE	WP_004680995	COG1749	0	N	Flagellar hook protein FlgE	FlgE			3A69
+gmk	WP_002963622	COG0194	0	F	Guanylate kinase	Gmk			1EX6
+group_1085	WP_002965202	COG0226	0	P	ABC-type phosphate transport system, periplasmic component	PstS			2Q9T
+group_1633	WP_002964807	COG1268	0	H	Biotin transporter BioY	BioY			4DVE
+group_1689	WP_004683956	COG4103	0	P	Tellurite resistance protein TerB	TerB2		23044854	2JXU
+group_1803	WP_004684678	COG1092	3	J	23S rRNA G2069 N7-methylase RlmK or C1962 C5-methylase RlmI	RlmK	23S rRNA modification		2B78
+group_1884	WP_004683486	COG0150	0	F	Phosphoribosylaminoimidazole (AIR) synthetase	PurM	Purine biosynthesis		1CLI
+group_2188	WP_002964666	COG3047	0	M	Outer membrane protein OmpW	OmpW			2F1T
+group_2579	WP_012093625	COG1477	0	HO	FAD:protein FMN transferase ApbE	ApbE		23558683;30154099	1VRM
+group_3698	WP_002963714	COG1376	0	M	Lipoprotein-anchoring transpeptidase ErfK/SrfK	ErfK			4LZH
+group_3738	WP_004682487	COG3568	0	R	Metal-dependent hydrolase, endonuclease/exonuclease/phosphatase family	ElsH		15178340	
+hutH	WP_012091500	COG2986	0	E	Histidine ammonia-lyase	HutH			1B8F
+moaD	WP_002963839	COG1977	0	H	Molybdopterin synthase sulfur carrier subunit MoaD	MoaD	Molybdopterin biosynthesis	32239579	1FM0
+purS	WP_002963973	COG1828	0	F	Phosphoribosylformylglycinamidine (FGAM) synthase, PurS subunit	PurS	Purine biosynthesis		1GTD
+rpmA	WP_010661520	COG0211	0	J	Ribosomal protein L27	RpmA	Ribosome 50S subunit		1VS6

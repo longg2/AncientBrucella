@@ -1,0 +1,66 @@
+Query	Match	Name	Organism
+group_160	WP_158332664	FAD-dependent oxidoreductase [Brucella melitensis]	Brucella melitensis
+group_1772	WP_029077473	biotin/lipoyl-binding protein, partial [Brucella melitensis]	Brucella melitensis
+group_2029	WP_002968445	MULTISPECIES: Lrp/AsnC family transcriptional regulator [Brucella]	Brucella
+group_2030	WP_019444092	transporter substrate-binding domain-containing protein, partial [Brucella abortus]	Brucella abortus
+group_2031	WP_006133828	MULTISPECIES: ABC transporter substrate-binding protein [Brucella]	Brucella
+group_2031	WP_002971234	MULTISPECIES: ABC transporter substrate-binding protein [Brucella]	Brucella
+group_2031	WP_006073752	ABC transporter substrate-binding protein [Brucella suis]	Brucella suis
+group_2031	WP_025198058	ABC transporter substrate-binding protein [Brucella suis]	Brucella suis
+group_2031	WP_006204659	ABC transporter substrate-binding protein [Brucella suis]	Brucella suis
+group_2031	WP_006016145	MULTISPECIES: ABC transporter substrate-binding protein [Brucella]	Brucella
+group_2031	WP_008510254	ABC transporter substrate-binding protein [Brucella inopinata]	Brucella inopinata
+group_2294	WP_009363059	hypothetical protein [Brucella sp. NF 2653]	Brucella sp. NF 2653
+group_2296	WP_243463234	4Fe-4S binding protein, partial [Brucella suis]	Brucella suis
+group_2303	WP_008937158	MULTISPECIES: PilZ domain-containing protein [unclassified Brucella]	unclassified Brucella
+group_2303	WP_002966657	MULTISPECIES: PilZ domain-containing protein [Brucella]	Brucella
+group_2303	WP_105985299	PilZ domain-containing protein [Brucella sp. BCCN 84-3]	Brucella sp. BCCN 84-3
+group_2335	WP_004685967	MULTISPECIES: phosphotransferase [Brucella]	Brucella
+group_2335	WP_141066628	phosphotransferase, partial [Brucella melitensis]	Brucella melitensis
+group_2335	WP_023081079	MULTISPECIES: phosphotransferase [Brucella]	Brucella
+group_2335	WP_094285336	phosphotransferase [Brucella melitensis]	Brucella melitensis
+group_2386	WP_075678850	IS3-like element IS1953 family transposase, partial [Brucella abortus]	Brucella abortus
+group_2422	WP_004686193	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2601	WP_004683822	MULTISPECIES: tRNA-guanine transglycosylase, partial [Brucella]	Brucella
+group_2622	WP_005970024	MULTISPECIES: recombinase family protein [Brucella]	Brucella
+group_2653	WP_008936485	MULTISPECIES: ABC transporter ATP-binding protein [unclassified Brucella]	unclassified Brucella
+group_2653	WP_076773583	MULTISPECIES: ABC transporter ATP-binding protein [unclassified Brucella]	unclassified Brucella
+group_2653	WP_029077354	ABC transporter ATP-binding protein [Brucella melitensis]	Brucella melitensis
+group_2653	WP_160542735	ABC transporter ATP-binding protein [Brucella melitensis]	Brucella melitensis
+group_2653	WP_006073425	ABC transporter ATP-binding protein [Brucella suis]	Brucella suis
+group_2653	WP_006196218	ABC transporter ATP-binding protein [Brucella suis]	Brucella suis
+group_2653	WP_138144858	ABC transporter ATP-binding protein [Brucella sp. 10RB9215]	Brucella sp. 10RB9215
+group_2653	WP_008934516	ABC transporter ATP-binding protein [Brucella sp. NVSL 07-0026]	Brucella sp. NVSL 07-0026
+group_2653	WP_004687445	MULTISPECIES: ABC transporter ATP-binding protein [Brucella]	Brucella
+group_2653	WP_154167868	ABC transporter ATP-binding protein [Brucella sp. 10RB9213]	Brucella sp. 10RB9213
+group_2653	WP_002966279	MULTISPECIES: ABC transporter ATP-binding protein [Brucella]	Brucella
+group_2653	WP_069125173	ABC transporter ATP-binding protein [Brucella melitensis]	Brucella melitensis
+group_2653	WP_004692448	MULTISPECIES: ABC transporter ATP-binding protein [Brucella]	Brucella
+group_2653	WP_151844971	ABC transporter ATP-binding protein [Brucella melitensis]	Brucella melitensis
+group_2654	WP_005971330	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_3057	WP_004681908	MULTISPECIES: NUDIX hydrolase [Brucella]	Brucella
+group_3057	WP_006153153	NUDIX hydrolase [Brucella melitensis]	Brucella melitensis
+group_3057	WP_006120520	NUDIX hydrolase [Brucella abortus]	Brucella abortus
+group_3057	WP_009363107	MULTISPECIES: NUDIX hydrolase [unclassified Brucella]	unclassified Brucella
+group_3057	WP_187960514	NUDIX hydrolase [Brucella sp. 6810]	Brucella sp. 6810
+group_3057	WP_180881418	NUDIX hydrolase [Brucella sp. 191011898]	Brucella sp. 191011898
+group_3057	WP_004684950	MULTISPECIES: NUDIX hydrolase [Brucella]	Brucella
+group_3057	WP_101415745	NUDIX hydrolase [Brucella melitensis]	Brucella melitensis
+group_3057	WP_069714960	MULTISPECIES: NUDIX hydrolase [unclassified Brucella]	unclassified Brucella
+group_3057	WP_006237952	NUDIX hydrolase [Brucella abortus]	Brucella abortus
+group_3057	WP_070999380	NUDIX hydrolase [Brucella inopinata]	Brucella inopinata
+group_3057	WP_076778693	MULTISPECIES: NUDIX hydrolase [unclassified Brucella]	unclassified Brucella
+group_3057	WP_006016131	NUDIX hydrolase [Brucella ovis]	Brucella ovis
+group_3057	WP_009364287	NUDIX hydrolase [Brucella sp. BO2]	Brucella sp. BO2
+group_3057	WP_153528325	NUDIX hydrolase [Brucella sp. 2280]	Brucella sp. 2280
+group_3057	WP_025198198	MULTISPECIES: NUDIX hydrolase [Brucella]	Brucella
+group_3057	WP_154142189	MULTISPECIES: NUDIX hydrolase [unclassified Brucella]	unclassified Brucella
+group_3057	WP_006073739	NUDIX hydrolase [Brucella suis]	Brucella suis
+group_3057	WP_138145015	MULTISPECIES: NUDIX hydrolase [unclassified Brucella]	unclassified Brucella
+group_3057	WP_076773138	MULTISPECIES: NUDIX hydrolase [unclassified Brucella]	unclassified Brucella
+group_3274	WP_080112877	NUDIX hydrolase [Brucella abortus]	Brucella abortus
+group_3275	WP_234821737	AzlD family protein, partial [Brucella suis]	Brucella suis
+group_487	WP_025200560	amidohydrolase [Brucella abortus]	Brucella abortus
+group_487	WP_014489616	amidohydrolase [Brucella melitensis]	Brucella melitensis
+group_487	WP_006135397	MULTISPECIES: amidohydrolase [Brucella]	Brucella
+lysDH	WP_002966005	MULTISPECIES: saccharopine dehydrogenase family protein [Brucella]	Brucella
