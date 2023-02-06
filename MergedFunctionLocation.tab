@@ -1,0 +1,460 @@
+Gene	Africa.America	Fertile.Crescent	Indo.Pacific	Russia	Western.Mediterranean	Match	Name	Organism
+group_1115	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004681755	MULTISPECIES: glycosyltransferase family 4 protein [Brucella]	Brucella
+group_1571	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004681770	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_1739	TRUE	TRUE	TRUE	TRUE	TRUE	WP_005970087	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+fadJ	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004685084	3-hydroxyacyl-CoA dehydrogenase [Brucella melitensis]	Brucella melitensis
+group_1858	TRUE	TRUE	TRUE	TRUE	TRUE	WP_141062193	NfeD family protein [Brucella melitensis]	Brucella melitensis
+group_1873	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002970283	MULTISPECIES: DUF2312 domain-containing protein [Brucella]	Brucella
+group_2110	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002971358	MULTISPECIES: YdcF family protein [Brucella]	Brucella
+group_2111	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004685018	glycosyltransferase [Brucella melitensis]	Brucella melitensis
+fcl_2	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004686115	MULTISPECIES: NAD-dependent epimerase/dehydratase family protein [Brucella]	Brucella
+gmd_2	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004681750	MULTISPECIES: GDP-mannose 4,6-dehydratase [Brucella]	Brucella
+group_2462	TRUE	TRUE	TRUE	TRUE	TRUE	WP_005969374	MULTISPECIES: TnsA endonuclease N-terminal domain-containing protein [Brucella]	Brucella
+group_2465	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002971487	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2505	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004685012	glutamate-1-semialdehyde 2,1-aminomutase [Brucella melitensis]	Brucella melitensis
+group_2506	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004681768	MULTISPECIES: putative colanic acid biosynthesis acetyltransferase [Brucella]	Brucella
+group_2507	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004685017	porin family protein [Brucella melitensis]	Brucella melitensis
+group_2555	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002969568	MULTISPECIES: pyridoxamine 5'-phosphate oxidase family protein [Brucella]	Brucella
+group_257	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004685019	glycosyltransferase family 4 protein [Brucella melitensis]	Brucella melitensis
+group_2590	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002965526	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2591	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002971643	MULTISPECIES: GcrA family cell cycle regulator [Brucella]	Brucella
+group_2597	TRUE	TRUE	TRUE	TRUE	TRUE	NA	NA	NA
+group_354	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006162093	glycosyltransferase family 4 protein [Brucella pinnipedialis]	Brucella pinnipedialis
+group_355	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004681786	MULTISPECIES: polysaccharide pyruvyl transferase family protein [Brucella]	Brucella
+group_356	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004681774	MULTISPECIES: glycosyltransferase family 2 protein [Brucella]	Brucella
+group_529	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004685009	class I SAM-dependent methyltransferase [Brucella melitensis]	Brucella melitensis
+group_530	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006153194	DUF4910 domain-containing protein [Brucella melitensis]	Brucella melitensis
+pepE	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004690850	MULTISPECIES: Xaa-Pro peptidase family protein [Brucella]	Brucella
+pepE	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006168254	MULTISPECIES: Xaa-Pro peptidase family protein [Brucella]	Brucella
+group_562	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004685729	MULTISPECIES: sugar ABC transporter substrate-binding protein [Brucella]	Brucella
+group_787	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004681777	MULTISPECIES: MraY family glycosyltransferase [Brucella]	Brucella
+group_85	TRUE	TRUE	TRUE	TRUE	TRUE	WP_046722177	glycosyltransferase family A protein [Brucella melitensis]	Brucella melitensis
+group_1219	TRUE	TRUE	TRUE	TRUE	TRUE	WP_005970112	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_1333	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004685852	hypothetical protein [Brucella melitensis]	Brucella melitensis
+rfbC	TRUE	TRUE	TRUE	TRUE	TRUE	WP_012676997	MULTISPECIES: dTDP-4-dehydrorhamnose 3,5-epimerase [Brucella]	Brucella
+hldD	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004686870	MULTISPECIES: SDR family oxidoreductase [Brucella]	Brucella
+group_1570	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004685011	DUF4038 domain-containing protein [Brucella melitensis]	Brucella melitensis
+gloA	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002970104	lactoylglutathione lyase [Brucella abortus]	Brucella abortus
+secE	TRUE	TRUE	TRUE	TRUE	TRUE	WP_061346481	MULTISPECIES: preprotein translocase subunit SecE [Brucella]	Brucella
+iolG_1	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004685269	MULTISPECIES: Gfo/Idh/MocA family oxidoreductase [Brucella]	Brucella
+group_2400	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004682503	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2454	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002967499	MULTISPECIES: DUF6107 family protein [Brucella]	Brucella
+group_2528	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002964103	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2528	TRUE	TRUE	TRUE	TRUE	TRUE	WP_087932825	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_2543	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002964622	MULTISPECIES: BA14K family protein [Brucella]	Brucella
+group_66	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004684804	MULTISPECIES: Re/Si-specific NAD(P)(+) transhydrogenase subunit alpha [Brucella]	Brucella
+group_66	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006135623	MULTISPECIES: Re/Si-specific NAD(P)(+) transhydrogenase subunit alpha [Brucella]	Brucella
+group_66	TRUE	TRUE	TRUE	TRUE	TRUE	WP_054598431	MULTISPECIES: Re/Si-specific NAD(P)(+) transhydrogenase subunit alpha [Brucella]	Brucella
+group_66	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006151783	MULTISPECIES: Re/Si-specific NAD(P)(+) transhydrogenase subunit alpha [Brucella]	Brucella
+group_66	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006254075	Re/Si-specific NAD(P)(+) transhydrogenase subunit alpha [Brucella melitensis]	Brucella melitensis
+group_66	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006170743	MULTISPECIES: Re/Si-specific NAD(P)(+) transhydrogenase subunit alpha [Brucella]	Brucella
+group_1817	TRUE	TRUE	TRUE	TRUE	TRUE	WP_187961020	transposase [Brucella sp. 6810]	Brucella sp. 6810
+group_1933	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002970381	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_206	TRUE	TRUE	TRUE	TRUE	TRUE	WP_054598421	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_206	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004684349	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_206	TRUE	TRUE	TRUE	TRUE	TRUE	WP_087913386	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_2130	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002964199	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2387	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002970332	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2404	TRUE	TRUE	TRUE	TRUE	TRUE	WP_233274444	IS5 family transposase [Brucella abortus]	Brucella abortus
+group_2545	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002964603	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_944	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002963682	MULTISPECIES: family 1 glycosyltransferase WbkA [Brucella]	Brucella
+group_1543	TRUE	TRUE	TRUE	TRUE	TRUE	WP_157789946	hypothetical protein, partial [Brucella canis]	Brucella canis
+group_2265	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002967119	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2392	TRUE	TRUE	TRUE	TRUE	TRUE	WP_023080973	4'-phosphopantetheinyl transferase [Brucella sp. 04-5288]	Brucella sp. 04-5288
+group_2546	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004684051	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2587	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002965521	MULTISPECIES: helix-turn-helix transcriptional regulator [Brucella]	Brucella
+cobU	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002964426	MULTISPECIES: bifunctional adenosylcobinamide kinase/adenosylcobinamide-phosphate guanylyltransferase [Brucella]	Brucella
+group_1039	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004683498	MULTISPECIES: AAA family ATPase [Brucella]	Brucella
+cydX	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002972046	MULTISPECIES: cytochrome bd-I oxidase subunit CydX [Brucella]	Brucella
+group_2269	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006072075	hypothetical protein [Brucella suis]	Brucella suis
+group_2285	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004685195	Fur family transcriptional regulator [Brucella melitensis]	Brucella melitensis
+group_2405	TRUE	TRUE	TRUE	TRUE	TRUE	WP_005975609	IS3 family transposase [Brucella melitensis]	Brucella melitensis
+thcD	TRUE	TRUE	TRUE	TRUE	TRUE	WP_234430212	FAD/NAD(P)-binding oxidoreductase, partial [Brucella melitensis]	Brucella melitensis
+group_1028	TRUE	TRUE	TRUE	TRUE	TRUE	WP_005974330	DUF4167 domain-containing protein [Brucella melitensis]	Brucella melitensis
+group_1344	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006169748	MULTISPECIES: GNAT family N-acetyltransferase [Brucella]	Brucella
+group_1995	TRUE	TRUE	TRUE	TRUE	TRUE	WP_210163784	hypothetical protein, partial [Brucella melitensis]	Brucella melitensis
+group_2432	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004685198	VOC family protein, partial [Brucella melitensis]	Brucella melitensis
+group_2467	TRUE	TRUE	TRUE	TRUE	TRUE	WP_009363471	MULTISPECIES: molybdopterin-guanine dinucleotide biosynthesis protein B [Brucella]	Brucella
+group_2479	TRUE	TRUE	TRUE	TRUE	TRUE	NA	NA	NA
+group_3	TRUE	TRUE	TRUE	TRUE	TRUE	WP_087920702	DUF2249 domain-containing protein [Brucella melitensis]	Brucella melitensis
+group_594	TRUE	TRUE	TRUE	TRUE	TRUE	WP_065895622	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_597	TRUE	TRUE	TRUE	TRUE	TRUE	WP_141066642	serine hydrolase [Brucella melitensis]	Brucella melitensis
+group_597	TRUE	TRUE	TRUE	TRUE	TRUE	WP_005973119	MULTISPECIES: serine hydrolase [Brucella]	Brucella
+group_807	TRUE	TRUE	TRUE	TRUE	TRUE	WP_005973109	DEAD/DEAH box helicase [Brucella melitensis]	Brucella melitensis
+group_1349	TRUE	TRUE	TRUE	TRUE	TRUE	WP_025210031	ABC transporter ATP-binding protein [Brucella abortus]	Brucella abortus
+group_2408	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002966341	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2565	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004683905	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2586	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004684733	MULTISPECIES: AbiH family protein [Brucella]	Brucella
+group_3768	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004686432	MULTISPECIES: recombinase family protein [Brucella]	Brucella
+group_3830	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004682630	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2508	TRUE	TRUE	TRUE	TRUE	TRUE	NA	NA	NA
+group_1249	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002968106	ActS/PrrB/RegB family redox-sensitive histidine kinase, partial [Brucella abortus]	Brucella abortus
+group_1249	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006127242	ActS/PrrB/RegB family redox-sensitive histidine kinase [Brucella abortus]	Brucella abortus
+group_1249	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006104438	ActS/PrrB/RegB family redox-sensitive histidine kinase [Brucella abortus]	Brucella abortus
+group_2544	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002964621	MULTISPECIES: cold-shock protein [Brucella]	Brucella
+group_1473	TRUE	TRUE	TRUE	TRUE	TRUE	WP_025198054	NUDIX hydrolase [Brucella suis]	Brucella suis
+group_2163	TRUE	TRUE	TRUE	TRUE	TRUE	WP_025200520	MULTISPECIES: GNAT family N-acetyltransferase, partial [Brucella]	Brucella
+group_423	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004685081	type 1 glutamine amidotransferase domain-containing protein [Brucella melitensis]	Brucella melitensis
+mtgA_3	TRUE	TRUE	TRUE	TRUE	TRUE	WP_127843822	penicillin-binding protein 1A [Brucella melitensis]	Brucella melitensis
+group_1531	TRUE	TRUE	TRUE	TRUE	TRUE	WP_032450966	IS481 family transposase [Brucella sp. 63/311]	Brucella sp. 63/311
+group_1357	TRUE	TRUE	TRUE	TRUE	TRUE	WP_135258456	hypothetical protein, partial [Brucella suis]	Brucella suis
+group_2510	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004681646	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2577	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004684725	MULTISPECIES: AlpA family transcriptional regulator [Brucella]	Brucella
+ygaZ	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006074596	AzlC family ABC transporter permease [Brucella suis]	Brucella suis
+sutR	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002969195	MULTISPECIES: helix-turn-helix domain-containing protein [Brucella]	Brucella
+tuf_1	TRUE	TRUE	TRUE	TRUE	TRUE	WP_141060932	elongation factor Tu [Brucella melitensis]	Brucella melitensis
+tuf_1	TRUE	TRUE	TRUE	TRUE	TRUE	WP_141066319	elongation factor Tu [Brucella melitensis]	Brucella melitensis
+group_1413	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002966723	HK97 family phage prohead protease [Brucella abortus]	Brucella abortus
+group_1414	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002963740	MULTISPECIES: phage head-tail connector protein [Brucella]	Brucella
+group_1967	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002967503	MULTISPECIES: phage head closure protein [Brucella]	Brucella
+group_1968	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006072374	MULTISPECIES: DUF3168 domain-containing protein [Brucella]	Brucella
+group_2455	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006085224	HK97 family phage prohead protease [Brucella abortus]	Brucella abortus
+group_2456	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004685509	phage major capsid protein [Brucella melitensis]	Brucella melitensis
+group_899	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004683507	MULTISPECIES: ATP-binding protein [Brucella]	Brucella
+group_2569	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002965704	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2476	TRUE	TRUE	TRUE	TRUE	TRUE	WP_005971381	zinc-binding dehydrogenase [Brucella abortus]	Brucella abortus
+group_3795	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002964935	MULTISPECIES: IS6-like element IS2020 family transposase [Brucella]	Brucella
+group_2422	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004686193	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_569	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004684800	MULTISPECIES: gamma-glutamyl-gamma-aminobutyrate hydrolase family protein [Brucella]	Brucella
+group_569	TRUE	TRUE	TRUE	TRUE	TRUE	WP_075620509	gamma-glutamyl-gamma-aminobutyrate hydrolase family protein [Brucella sp. CMUL 015]	Brucella sp. CMUL 015
+group_1647	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002971397	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_98	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006153176	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_2423	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002964751	MULTISPECIES: NepR family anti-sigma factor [Brucella]	Brucella
+group_623	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004686078	MULTISPECIES: IS5 family transposase, partial [Brucella]	Brucella
+group_2290	TRUE	TRUE	TRUE	TRUE	TRUE	WP_210162754	MULTISPECIES: hypothetical protein, partial [Brucella]	Brucella
+tgt_2	TRUE	TRUE	TRUE	FALSE	TRUE	WP_005968547	MULTISPECIES: tRNA guanosine(34) transglycosylase Tgt [Brucella]	Brucella
+group_2118	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002966247	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2466	TRUE	TRUE	TRUE	TRUE	TRUE	WP_203080284	heavy-metal-associated domain-containing protein [Brucella melitensis]	Brucella melitensis
+group_2574	TRUE	TRUE	TRUE	TRUE	TRUE	NA	NA	NA
+group_943	TRUE	TRUE	TRUE	TRUE	TRUE	WP_005969653	MULTISPECIES: IS5/IS1182 family transposase [Brucella]	Brucella
+group_46	TRUE	TRUE	TRUE	FALSE	TRUE	WP_005971403	MULTISPECIES: IS5 family transposase [Brucella]	Brucella
+group_2294	TRUE	TRUE	TRUE	TRUE	TRUE	WP_009363059	hypothetical protein [Brucella sp. NF 2653]	Brucella sp. NF 2653
+group_2980	TRUE	TRUE	TRUE	TRUE	FALSE	WP_180881653	MULTISPECIES: crotonase/enoyl-CoA hydratase family protein [unclassified Brucella]	unclassified Brucella
+group_903	TRUE	TRUE	TRUE	TRUE	FALSE	WP_004686250	MULTISPECIES: GNAT family N-acetyltransferase [Brucella]	Brucella
+group_902	TRUE	TRUE	TRUE	TRUE	FALSE	WP_004686248	MULTISPECIES: amino acid ABC transporter ATP-binding protein [Brucella]	Brucella
+group_2386	TRUE	TRUE	TRUE	TRUE	TRUE	WP_075678850	IS3-like element IS1953 family transposase, partial [Brucella abortus]	Brucella abortus
+group_2617	TRUE	TRUE	TRUE	TRUE	FALSE	WP_006642931	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_1239	TRUE	TRUE	TRUE	TRUE	FALSE	WP_155245681	hypothetical protein [Brucella suis]	Brucella suis
+group_2601	TRUE	FALSE	TRUE	TRUE	TRUE	WP_004683822	MULTISPECIES: tRNA-guanine transglycosylase, partial [Brucella]	Brucella
+group_1759	TRUE	TRUE	TRUE	TRUE	TRUE	WP_206461332	hypothetical protein, partial [Brucella melitensis]	Brucella melitensis
+group_945	TRUE	TRUE	TRUE	FALSE	TRUE	WP_002975117	MULTISPECIES: helix-turn-helix domain-containing protein [Brucella]	Brucella
+group_2156	TRUE	TRUE	TRUE	FALSE	TRUE	NA	NA	NA
+group_1560	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002975449	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2618	TRUE	TRUE	TRUE	TRUE	FALSE	WP_004689129	histidine ammonia-lyase, partial [Brucella suis]	Brucella suis
+group_2607	TRUE	TRUE	TRUE	TRUE	TRUE	WP_004687552	hypothetical protein [Brucella neotomae]	Brucella neotomae
+group_2602	TRUE	TRUE	TRUE	TRUE	TRUE	NA	NA	NA
+group_707	TRUE	FALSE	FALSE	FALSE	TRUE	WP_002972548	MULTISPECIES: hypothetical protein, partial [Brucella]	Brucella
+group_3917	TRUE	TRUE	FALSE	FALSE	TRUE	WP_002965542	MULTISPECIES: IS5 family transposase [Brucella]	Brucella
+group_201	TRUE	TRUE	TRUE	FALSE	TRUE	WP_155245419	IS3-like element IS1953 family transposase [Brucella melitensis]	Brucella melitensis
+group_1764	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006092667	hypothetical protein [Brucella abortus]	Brucella abortus
+betA_1	TRUE	FALSE	FALSE	FALSE	TRUE	WP_070996463	choline dehydrogenase [Brucella inopinata]	Brucella inopinata
+group_2131	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002964197	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_4163	TRUE	TRUE	FALSE	FALSE	TRUE	WP_234702993	IS5 family transposase, partial [Brucella suis]	Brucella suis
+group_2616	TRUE	TRUE	TRUE	TRUE	FALSE	NA	NA	NA
+group_2613	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002966414	hypothetical protein [Brucella abortus]	Brucella abortus
+group_2291	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002972227	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2652	TRUE	TRUE	TRUE	TRUE	FALSE	NA	NA	NA
+group_1689	TRUE	TRUE	TRUE	TRUE	TRUE	WP_019444193	heparan-alpha-glucosaminide N-acetyltransferase domain-containing protein, partial [Brucella abortus]	Brucella abortus
+group_3175	TRUE	TRUE	TRUE	FALSE	TRUE	WP_002966670	MULTISPECIES: helix-turn-helix transcriptional regulator [Brucella]	Brucella
+group_2437	TRUE	TRUE	TRUE	TRUE	TRUE	WP_002965116	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2300	TRUE	FALSE	TRUE	TRUE	TRUE	WP_006015997	hypothetical protein [Brucella ovis]	Brucella ovis
+group_2659	TRUE	TRUE	TRUE	TRUE	TRUE	NA	NA	NA
+group_2604	TRUE	TRUE	TRUE	TRUE	TRUE	NA	NA	NA
+group_2622	TRUE	FALSE	FALSE	FALSE	TRUE	WP_005970024	MULTISPECIES: recombinase family protein [Brucella]	Brucella
+group_2612	TRUE	TRUE	TRUE	FALSE	TRUE	WP_141059814	gamma-glutamyl-gamma-aminobutyrate hydrolase family protein, partial [Brucella melitensis]	Brucella melitensis
+group_1763	TRUE	TRUE	TRUE	TRUE	TRUE	NA	NA	NA
+group_591	TRUE	TRUE	TRUE	FALSE	TRUE	WP_004682376	MULTISPECIES: gamma-glutamyl-gamma-aminobutyrate hydrolase family protein [Brucella]	Brucella
+group_2631	TRUE	FALSE	TRUE	TRUE	TRUE	WP_006015997	hypothetical protein [Brucella ovis]	Brucella ovis
+group_2661	TRUE	TRUE	TRUE	TRUE	FALSE	WP_002964066	hypothetical protein [Brucella abortus]	Brucella abortus
+tuf	TRUE	FALSE	TRUE	TRUE	TRUE	WP_244443590	EF-Tu/IF-2/RF-3 family GTPase, partial [Brucella canis]	Brucella canis
+group_2557	TRUE	FALSE	FALSE	FALSE	TRUE	NA	NA	NA
+group_2603	TRUE	TRUE	TRUE	TRUE	TRUE	WP_006073930	ABC transporter ATP-binding protein [Brucella suis]	Brucella suis
+group_2292	TRUE	FALSE	FALSE	FALSE	TRUE	WP_004689057	FAD/NAD(P)-binding oxidoreductase [Brucella suis]	Brucella suis
+group_2621	TRUE	TRUE	TRUE	FALSE	FALSE	WP_080000531	hypothetical protein, partial [Brucella abortus]	Brucella abortus
+group_2363	TRUE	TRUE	FALSE	TRUE	FALSE	WP_057056745	IS3 family transposase, partial [Brucella abortus]	Brucella abortus
+group_2653	TRUE	FALSE	FALSE	TRUE	FALSE	WP_069125173	ABC transporter ATP-binding protein [Brucella melitensis]	Brucella melitensis
+group_2615	TRUE	TRUE	TRUE	TRUE	FALSE	WP_198006121	hypothetical protein [Brucella sp. NVSL 07-0026]	Brucella sp. NVSL 07-0026
+group_2654	TRUE	FALSE	FALSE	FALSE	FALSE	WP_005971330	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_2303	TRUE	FALSE	FALSE	FALSE	FALSE	WP_105985299	PilZ domain-containing protein [Brucella sp. BCCN 84-3]	Brucella sp. BCCN 84-3
+group_1932	TRUE	FALSE	FALSE	FALSE	FALSE	WP_080630773	autotransporter outer membrane beta-barrel domain-containing protein [Brucella canis]	Brucella canis
+group_1246	TRUE	TRUE	TRUE	TRUE	TRUE	WP_141059687	porin, partial [Brucella melitensis]	Brucella melitensis
+group_2302	TRUE	FALSE	FALSE	TRUE	FALSE	NA	NA	NA
+group_2335	TRUE	FALSE	FALSE	FALSE	FALSE	WP_105984614	aminotransferase class III-fold pyridoxal phosphate-dependent enzyme [Brucella sp. BCCN 84-3]	Brucella sp. BCCN 84-3
+group_2335	TRUE	FALSE	FALSE	FALSE	FALSE	WP_006161781	MULTISPECIES: aminotransferase class III-fold pyridoxal phosphate-dependent enzyme [Brucella]	Brucella
+group_2335	TRUE	FALSE	FALSE	FALSE	FALSE	WP_006178672	MULTISPECIES: aminotransferase class III-fold pyridoxal phosphate-dependent enzyme [Brucella]	Brucella
+group_3057	TRUE	FALSE	FALSE	FALSE	FALSE	WP_199719266	NUDIX hydrolase [Brucella abortus]	Brucella abortus
+group_3274	TRUE	FALSE	FALSE	FALSE	FALSE	WP_080112877	NUDIX hydrolase [Brucella abortus]	Brucella abortus
+group_3275	TRUE	FALSE	FALSE	FALSE	FALSE	WP_234821737	AzlD family protein, partial [Brucella suis]	Brucella suis
+group_2626	TRUE	FALSE	TRUE	TRUE	TRUE	WP_002964621	MULTISPECIES: cold-shock protein [Brucella]	Brucella
+group_1240	TRUE	FALSE	FALSE	TRUE	TRUE	WP_198430219	DNA translocase FtsK 4TM domain-containing protein, partial [Brucella abortus]	Brucella abortus
+group_2296	TRUE	FALSE	FALSE	FALSE	FALSE	WP_243463234	4Fe-4S binding protein, partial [Brucella suis]	Brucella suis
+group_1772	TRUE	FALSE	FALSE	FALSE	TRUE	WP_243463338	biotin/lipoyl-binding protein, partial [Brucella suis]	Brucella suis
+group_1765	TRUE	TRUE	FALSE	FALSE	FALSE	WP_141686205	tRNA guanosine(34) transglycosylase Tgt, partial [Brucella melitensis]	Brucella melitensis
+group_2657	TRUE	FALSE	FALSE	FALSE	FALSE	WP_025198605	recombinase family protein, partial [Brucella melitensis]	Brucella melitensis
+group_2655	TRUE	FALSE	FALSE	TRUE	FALSE	WP_002969534	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2663	TRUE	FALSE	TRUE	FALSE	FALSE	WP_002970219	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_3276	TRUE	FALSE	FALSE	FALSE	FALSE	NA	NA	NA
+group_3273	TRUE	FALSE	FALSE	FALSE	FALSE	WP_006147468	peptidogalycan biosysnthesis protein [Brucella melitensis]	Brucella melitensis
+group_2376	TRUE	FALSE	FALSE	FALSE	FALSE	WP_006149454	double-strand break repair helicase AddA, partial [Brucella melitensis]	Brucella melitensis
+group_3055	TRUE	FALSE	FALSE	FALSE	FALSE	WP_025200720	IS66 family transposase, partial [Brucella abortus]	Brucella abortus
+group_3383	TRUE	FALSE	FALSE	FALSE	FALSE	WP_006259385	UvrD-helicase domain-containing protein, partial [Brucella melitensis]	Brucella melitensis
+group_2354	TRUE	FALSE	FALSE	FALSE	FALSE	WP_004689903	MULTISPECIES: response regulator transcription factor [Brucella]	Brucella
+group_2356	TRUE	FALSE	FALSE	FALSE	FALSE	WP_014490230	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2739	TRUE	FALSE	FALSE	FALSE	FALSE	WP_134792417	IS3 family transposase [Brucella ceti]	Brucella ceti
+group_3083	TRUE	FALSE	FALSE	FALSE	FALSE	NA	NA	NA
+group_3375	TRUE	FALSE	FALSE	FALSE	FALSE	NA	NA	NA
+group_3376	TRUE	FALSE	FALSE	FALSE	FALSE	NA	NA	NA
+group_160	FALSE	TRUE	TRUE	TRUE	TRUE	WP_158332664	FAD-dependent oxidoreductase [Brucella melitensis]	Brucella melitensis
+group_2029	FALSE	TRUE	TRUE	TRUE	TRUE	WP_002968445	MULTISPECIES: Lrp/AsnC family transcriptional regulator [Brucella]	Brucella
+group_2030	FALSE	TRUE	TRUE	TRUE	TRUE	WP_025198199	ABC transporter substrate-binding protein [Brucella suis]	Brucella suis
+group_2030	FALSE	TRUE	TRUE	TRUE	TRUE	WP_006073752	ABC transporter substrate-binding protein [Brucella suis]	Brucella suis
+group_2031	FALSE	TRUE	TRUE	TRUE	TRUE	WP_025198058	ABC transporter substrate-binding protein [Brucella suis]	Brucella suis
+group_487	FALSE	TRUE	TRUE	TRUE	TRUE	WP_006135397	MULTISPECIES: amidohydrolase [Brucella]	Brucella
+group_487	FALSE	TRUE	TRUE	TRUE	TRUE	WP_014489616	amidohydrolase [Brucella melitensis]	Brucella melitensis
+group_487	FALSE	TRUE	TRUE	TRUE	TRUE	WP_025200560	amidohydrolase [Brucella abortus]	Brucella abortus
+lysDH	FALSE	TRUE	TRUE	TRUE	TRUE	WP_002966005	MULTISPECIES: saccharopine dehydrogenase family protein [Brucella]	Brucella
+group_2298	FALSE	TRUE	TRUE	TRUE	FALSE	WP_014489609	zinc-binding dehydrogenase [Brucella melitensis]	Brucella melitensis
+group_2665	FALSE	TRUE	TRUE	FALSE	FALSE	WP_002964434	MULTISPECIES: entericidin A/B family lipoprotein [Brucella]	Brucella
+group_2623	FALSE	TRUE	TRUE	FALSE	TRUE	WP_032450957	winged helix-turn-helix domain-containing protein, partial [Brucella ceti]	Brucella ceti
+group_200	FALSE	TRUE	TRUE	FALSE	TRUE	WP_112861090	alpha-D-glucose phosphate-specific phosphoglucomutase, partial [Brucella suis]	Brucella suis
+group_2660	FALSE	TRUE	FALSE	FALSE	TRUE	WP_080114798	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2670	FALSE	TRUE	FALSE	TRUE	FALSE	WP_141059809	FAD-binding protein, partial [Brucella melitensis]	Brucella melitensis
+group_1788	FALSE	TRUE	FALSE	TRUE	FALSE	WP_004683498	MULTISPECIES: AAA family ATPase [Brucella]	Brucella
+group_3174	FALSE	TRUE	TRUE	TRUE	FALSE	NA	NA	NA
+group_2353	FALSE	TRUE	FALSE	FALSE	FALSE	WP_002967156	MULTISPECIES: 4'-phosphopantetheinyl transferase [Brucella]	Brucella
+group_2664	FALSE	TRUE	TRUE	FALSE	FALSE	NA	NA	NA
+group_2667	FALSE	TRUE	FALSE	FALSE	FALSE	WP_006240014	hypothetical protein [Brucella abortus]	Brucella abortus
+group_2307	FALSE	TRUE	FALSE	FALSE	FALSE	WP_208936955	DUF995 domain-containing protein [Brucella melitensis]	Brucella melitensis
+group_3628	FALSE	TRUE	FALSE	FALSE	FALSE	WP_225868632	MULTISPECIES: DNA photolyase [Brucella]	Brucella
+group_2676	FALSE	FALSE	TRUE	FALSE	TRUE	WP_129171604	IS5 family transposase, partial [Brucella canis]	Brucella canis
+group_2666	FALSE	FALSE	TRUE	TRUE	FALSE	NA	NA	NA
+group_2304	FALSE	FALSE	TRUE	TRUE	FALSE	WP_234430259	DUF882 domain-containing protein, partial [Brucella melitensis]	Brucella melitensis
+group_2452	FALSE	FALSE	TRUE	FALSE	TRUE	WP_029661139	penicillin-binding protein 1A, partial [Brucella ceti]	Brucella ceti
+group_2453	FALSE	FALSE	TRUE	FALSE	TRUE	WP_006642063	transglycosylase domain-containing protein, partial [Brucella ceti]	Brucella ceti
+group_1966	FALSE	FALSE	TRUE	FALSE	TRUE	WP_164858518	penicillin-binding protein 1A, partial [Brucella melitensis]	Brucella melitensis
+group_3005	FALSE	FALSE	TRUE	TRUE	FALSE	WP_006127242	ActS/PrrB/RegB family redox-sensitive histidine kinase [Brucella abortus]	Brucella abortus
+group_3005	FALSE	FALSE	TRUE	TRUE	FALSE	WP_006104438	ActS/PrrB/RegB family redox-sensitive histidine kinase [Brucella abortus]	Brucella abortus
+group_3032	FALSE	FALSE	TRUE	TRUE	FALSE	WP_021310775	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_1245	FALSE	FALSE	TRUE	FALSE	TRUE	WP_025199963	IS6-like element IS2020 family transposase, partial [Brucella abortus]	Brucella abortus
+group_3002	FALSE	FALSE	TRUE	TRUE	FALSE	WP_008936230	MULTISPECIES: hypothetical protein [unclassified Brucella]	unclassified Brucella
+group_1243	FALSE	FALSE	TRUE	FALSE	TRUE	WP_006173708	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_3254	FALSE	FALSE	TRUE	TRUE	FALSE	WP_154707504	serine hydrolase, partial [Brucella suis]	Brucella suis
+group_3255	FALSE	FALSE	TRUE	TRUE	FALSE	WP_234430276	serine hydrolase, partial [Brucella melitensis]	Brucella melitensis
+group_2628	FALSE	FALSE	TRUE	TRUE	FALSE	WP_019443805	MULTISPECIES: type 1 glutamine amidotransferase domain-containing protein, partial [Brucella]	Brucella
+group_3003	FALSE	FALSE	TRUE	TRUE	FALSE	WP_075678938	DNA-processing protein DprA, partial [Brucella abortus]	Brucella abortus
+group_1775	FALSE	FALSE	TRUE	FALSE	FALSE	WP_243463631	DNA repair protein RadA, partial [Brucella suis]	Brucella suis
+group_1778	FALSE	FALSE	TRUE	FALSE	FALSE	WP_025200649	recombinase family protein, partial [Brucella abortus]	Brucella abortus
+group_2299	FALSE	FALSE	TRUE	FALSE	FALSE	WP_025200501	substrate-binding domain-containing protein, partial [Brucella canis]	Brucella canis
+group_2366	FALSE	FALSE	TRUE	FALSE	FALSE	WP_006135623	MULTISPECIES: Re/Si-specific NAD(P)(+) transhydrogenase subunit alpha [Brucella]	Brucella
+group_2366	FALSE	FALSE	TRUE	FALSE	FALSE	WP_006151783	MULTISPECIES: Re/Si-specific NAD(P)(+) transhydrogenase subunit alpha [Brucella]	Brucella
+group_2366	FALSE	FALSE	TRUE	FALSE	FALSE	WP_004684804	MULTISPECIES: Re/Si-specific NAD(P)(+) transhydrogenase subunit alpha [Brucella]	Brucella
+group_2366	FALSE	FALSE	TRUE	FALSE	FALSE	WP_206463590	Re/Si-specific NAD(P)(+) transhydrogenase subunit alpha [Brucella melitensis]	Brucella melitensis
+group_2366	FALSE	FALSE	TRUE	FALSE	FALSE	WP_054598431	MULTISPECIES: Re/Si-specific NAD(P)(+) transhydrogenase subunit alpha [Brucella]	Brucella
+group_2366	FALSE	FALSE	TRUE	FALSE	FALSE	WP_006254075	Re/Si-specific NAD(P)(+) transhydrogenase subunit alpha [Brucella melitensis]	Brucella melitensis
+group_2366	FALSE	FALSE	TRUE	FALSE	FALSE	WP_054593080	Re/Si-specific NAD(P)(+) transhydrogenase subunit alpha [Brucella melitensis]	Brucella melitensis
+group_2625	FALSE	FALSE	TRUE	FALSE	FALSE	WP_019443534	3-hydroxyacyl-CoA dehydrogenase, partial [Brucella abortus]	Brucella abortus
+group_2646	FALSE	FALSE	TRUE	FALSE	FALSE	WP_017403648	NADH:flavin oxidoreductase/NADH oxidase family protein, partial [Brucella melitensis]	Brucella melitensis
+group_2620	FALSE	FALSE	TRUE	FALSE	FALSE	WP_160318693	MULTISPECIES: IS6 family transposase, partial [Brucella]	Brucella
+group_2638	FALSE	FALSE	TRUE	FALSE	FALSE	WP_017403607	4-hydroxythreonine-4-phosphate dehydrogenase PdxA, partial [Brucella melitensis]	Brucella melitensis
+group_3344	FALSE	FALSE	TRUE	FALSE	FALSE	WP_002969568	MULTISPECIES: pyridoxamine 5'-phosphate oxidase family protein [Brucella]	Brucella
+group_2632	FALSE	FALSE	TRUE	FALSE	FALSE	WP_017403577	MOSC domain-containing protein, partial [Brucella melitensis]	Brucella melitensis
+group_2634	FALSE	FALSE	TRUE	FALSE	FALSE	WP_019444444	phosphoglycerate kinase, partial [Brucella melitensis]	Brucella melitensis
+group_2634	FALSE	FALSE	TRUE	FALSE	FALSE	WP_017403602	phosphoglycerate kinase, partial [Brucella melitensis]	Brucella melitensis
+group_2635	FALSE	FALSE	TRUE	FALSE	FALSE	WP_017403604	transketolase, partial [Brucella melitensis]	Brucella melitensis
+group_2636	FALSE	FALSE	TRUE	FALSE	FALSE	WP_017403604	transketolase, partial [Brucella melitensis]	Brucella melitensis
+group_2637	FALSE	FALSE	TRUE	FALSE	FALSE	WP_017403607	4-hydroxythreonine-4-phosphate dehydrogenase PdxA, partial [Brucella melitensis]	Brucella melitensis
+group_2639	FALSE	FALSE	TRUE	FALSE	FALSE	WP_017403609	peptidylprolyl isomerase, partial [Brucella melitensis]	Brucella melitensis
+group_2640	FALSE	FALSE	TRUE	FALSE	FALSE	WP_029689694	ATP-binding cassette domain-containing protein, partial [Brucella melitensis]	Brucella melitensis
+group_2642	FALSE	FALSE	TRUE	FALSE	FALSE	WP_017403627	ABC-F family ATP-binding cassette domain-containing protein, partial [Brucella melitensis]	Brucella melitensis
+group_2643	FALSE	FALSE	TRUE	FALSE	FALSE	WP_080589759	ABC-F family ATP-binding cassette domain-containing protein, partial [Brucella melitensis]	Brucella melitensis
+group_2644	FALSE	FALSE	TRUE	FALSE	FALSE	WP_076780798	MULTISPECIES: biotin transporter BioY [unclassified Brucella]	unclassified Brucella
+group_2645	FALSE	FALSE	TRUE	FALSE	FALSE	WP_019444458	AMP-binding protein, partial [Brucella melitensis]	Brucella melitensis
+group_2575	FALSE	FALSE	FALSE	TRUE	TRUE	WP_005977916	FABP family protein [Brucella ovis]	Brucella ovis
+group_2319	FALSE	FALSE	FALSE	TRUE	TRUE	WP_019444465	LOG family protein, partial [Brucella melitensis]	Brucella melitensis
+group_3006	FALSE	FALSE	FALSE	TRUE	FALSE	WP_208016355	DEAD/DEAH box helicase, partial [Brucella melitensis]	Brucella melitensis
+group_3026	FALSE	FALSE	FALSE	TRUE	FALSE	NA	NA	NA
+group_3149	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004683905	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2379	FALSE	FALSE	FALSE	TRUE	FALSE	WP_120119758	AAA family ATPase, partial [Pseudomonas syringae]	Pseudomonas syringae
+group_2624	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004688315	molybdopterin-guanine dinucleotide biosynthesis protein B [Brucella neotomae]	Brucella neotomae
+group_3401	FALSE	FALSE	FALSE	TRUE	FALSE	WP_006012381	alpha/beta hydrolase [Brucella ovis]	Brucella ovis
+group_3403	FALSE	FALSE	FALSE	TRUE	FALSE	WP_006135231	MULTISPECIES: IclR family transcriptional regulator [Brucella]	Brucella
+group_2355	FALSE	FALSE	FALSE	TRUE	FALSE	WP_065870129	30S ribosomal protein S1 [Brucella melitensis]	Brucella melitensis
+group_2355	FALSE	FALSE	FALSE	TRUE	FALSE	WP_006107517	30S ribosomal protein S1 [Brucella abortus]	Brucella abortus
+group_2355	FALSE	FALSE	FALSE	TRUE	FALSE	WP_002967062	MULTISPECIES: 30S ribosomal protein S1 [Brucella]	Brucella
+group_2355	FALSE	FALSE	FALSE	TRUE	FALSE	WP_006086681	MULTISPECIES: 30S ribosomal protein S1 [Brucella]	Brucella
+group_2355	FALSE	FALSE	FALSE	TRUE	FALSE	WP_006146582	30S ribosomal protein S1 [Brucella melitensis]	Brucella melitensis
+group_2355	FALSE	FALSE	FALSE	TRUE	FALSE	WP_065879781	MULTISPECIES: 30S ribosomal protein S1 [Brucella]	Brucella
+group_2355	FALSE	FALSE	FALSE	TRUE	FALSE	WP_002965274	MULTISPECIES: 30S ribosomal protein S1 [Brucella]	Brucella
+group_2355	FALSE	FALSE	FALSE	TRUE	FALSE	WP_141056828	30S ribosomal protein S1 [Brucella melitensis]	Brucella melitensis
+group_2381	FALSE	FALSE	FALSE	TRUE	FALSE	WP_219624989	site-specific integrase, partial [Vibrio parahaemolyticus]	Vibrio parahaemolyticus
+group_2780	FALSE	FALSE	FALSE	TRUE	TRUE	WP_019443782	VOC family protein, partial [Brucella abortus]	Brucella abortus
+group_1766	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004691825	DEAD/DEAH box helicase, partial [Brucella suis]	Brucella suis
+bla	FALSE	FALSE	FALSE	TRUE	FALSE	WP_015058867	MULTISPECIES: class A beta-lactamase TEM-171 [Bacteria]	eubacteria
+group_2306	FALSE	FALSE	FALSE	TRUE	FALSE	WP_154142177	MULTISPECIES: hypothetical protein [unclassified Brucella]	unclassified Brucella
+group_2317	FALSE	FALSE	FALSE	TRUE	TRUE	WP_016769613	porin, partial [Brucella melitensis]	Brucella melitensis
+group_2323	FALSE	FALSE	FALSE	TRUE	TRUE	WP_032452322	malate synthase G, partial [Brucella melitensis]	Brucella melitensis
+group_2658	FALSE	FALSE	FALSE	TRUE	FALSE	WP_008934063	DEAD/DEAH box helicase, partial [Brucella sp. NVSL 07-0026]	Brucella sp. NVSL 07-0026
+group_2990	FALSE	FALSE	FALSE	TRUE	FALSE	WP_023035621	sugar ABC transporter substrate-binding protein [Brucella abortus]	Brucella abortus
+group_3295	FALSE	FALSE	FALSE	TRUE	FALSE	WP_016650695	anthranilate synthase component I [Brucella abortus]	Brucella abortus
+group_3368	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004685481	threonine synthase [Brucella melitensis]	Brucella melitensis
+group_3395	FALSE	FALSE	FALSE	TRUE	FALSE	WP_002964426	MULTISPECIES: bifunctional adenosylcobinamide kinase/adenosylcobinamide-phosphate guanylyltransferase [Brucella]	Brucella
+group_914	FALSE	FALSE	FALSE	TRUE	FALSE	WP_042110189	DNA-binding transcriptional repressor LacI, partial [Escherichia coli]	Escherichia coli
+group_1774	FALSE	FALSE	FALSE	TRUE	FALSE	WP_180549110	DNA primase, partial [Brucella abortus]	Brucella abortus
+group_2295	FALSE	FALSE	FALSE	TRUE	FALSE	NA	NA	NA
+group_2328	FALSE	FALSE	FALSE	TRUE	TRUE	WP_006161807	MULTISPECIES: imidazolonepropionase [Brucella]	Brucella
+group_2349	FALSE	FALSE	FALSE	TRUE	FALSE	WP_076770966	MULTISPECIES: argininosuccinate synthase [unclassified Brucella]	unclassified Brucella
+tetA	FALSE	FALSE	FALSE	TRUE	FALSE	XP_037877428	tetracycline resistance protein, class C-like, partial [Bombyx mori]	domestic silkworm
+group_2838	FALSE	FALSE	FALSE	TRUE	TRUE	WP_006268197	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_3406	FALSE	FALSE	FALSE	TRUE	FALSE	WP_156101631	MULTISPECIES: sulfate adenylyltransferase subunit CysD [Brucella]	Brucella
+group_2315	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004685796	DUF4159 domain-containing protein [Brucella melitensis]	Brucella melitensis
+group_2316	FALSE	FALSE	FALSE	TRUE	FALSE	WP_008933875	glycoside hydrolase TIM-barrel-like domain-containing protein [Brucella sp. NVSL 07-0026]	Brucella sp. NVSL 07-0026
+group_2350	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004682503	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2378	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004685291	YdcF family protein [Brucella melitensis]	Brucella melitensis
+group_2378	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004684555	MULTISPECIES: YdcF family protein [Brucella]	Brucella
+group_2753	FALSE	FALSE	FALSE	TRUE	FALSE	WP_087930919	1-(5-phosphoribosyl)-5-[(5-phosphoribosylamino)methylideneamino]imidazole-4-carboxamide isomerase [Brucella melitensis]	Brucella melitensis
+group_2774	FALSE	FALSE	FALSE	TRUE	TRUE	WP_004684724	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_2834	FALSE	FALSE	FALSE	TRUE	FALSE	WP_141060526	branched-chain amino acid ABC transporter permease, partial [Brucella melitensis]	Brucella melitensis
+group_3020	FALSE	FALSE	FALSE	TRUE	FALSE	NA	NA	NA
+group_3286	FALSE	FALSE	FALSE	TRUE	FALSE	WP_008936930	MULTISPECIES: Gfo/Idh/MocA family oxidoreductase [unclassified Brucella]	unclassified Brucella
+group_3297	FALSE	FALSE	FALSE	TRUE	FALSE	WP_006119916	phosphate acyltransferase PlsX [Brucella abortus]	Brucella abortus
+group_3325	FALSE	FALSE	FALSE	TRUE	FALSE	WP_005978168	response regulator transcription factor [Brucella ovis]	Brucella ovis
+group_3404	FALSE	FALSE	FALSE	TRUE	FALSE	WP_243463607	2'-deoxycytidine 5'-triphosphate deaminase, partial [Brucella suis]	Brucella suis
+group_3424	FALSE	FALSE	FALSE	TRUE	FALSE	NA	NA	NA
+group_3430	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004686344	MULTISPECIES: BA14K family protein [Brucella]	Brucella
+group_1790	FALSE	FALSE	FALSE	TRUE	FALSE	WP_234430412	cobaltochelatase subunit CobN, partial [Brucella melitensis]	Brucella melitensis
+group_2321	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004685880	thiamine pyrophosphate-dependent dehydrogenase E1 component subunit alpha [Brucella melitensis]	Brucella melitensis
+group_2331	FALSE	FALSE	FALSE	TRUE	TRUE	WP_206736409	cbb3-type cytochrome c oxidase subunit I, partial [Brucella canis]	Brucella canis
+group_2365	FALSE	FALSE	FALSE	TRUE	FALSE	WP_206515326	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_2370	FALSE	FALSE	FALSE	TRUE	FALSE	WP_002968225	MgtC/SapB family protein [Brucella abortus]	Brucella abortus
+group_3282	FALSE	FALSE	FALSE	TRUE	FALSE	WP_032450842	Nramp family divalent metal transporter [Brucella ovis]	Brucella ovis
+group_3287	FALSE	FALSE	FALSE	TRUE	FALSE	NA	NA	NA
+group_3288	FALSE	FALSE	FALSE	TRUE	FALSE	WP_006234428	coniferyl aldehyde dehydrogenase [Brucella abortus]	Brucella abortus
+group_3289	FALSE	FALSE	FALSE	TRUE	FALSE	WP_006277733	coniferyl aldehyde dehydrogenase [Brucella suis]	Brucella suis
+group_3298	FALSE	FALSE	FALSE	TRUE	FALSE	WP_076781509	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_3298	FALSE	FALSE	FALSE	TRUE	FALSE	WP_006012125	hypothetical protein [Brucella ovis]	Brucella ovis
+group_3299	FALSE	FALSE	FALSE	TRUE	FALSE	WP_032450095	methionine--tRNA ligase [Brucella sp. NVSL 07-0026]	Brucella sp. NVSL 07-0026
+group_3305	FALSE	FALSE	FALSE	TRUE	FALSE	WP_006239592	DUF2157 domain-containing protein [Brucella abortus]	Brucella abortus
+group_3306	FALSE	FALSE	FALSE	TRUE	FALSE	WP_025200877	magnesium transporter CorA family protein [Brucella ovis]	Brucella ovis
+group_3306	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004689537	magnesium transporter CorA family protein [Brucella suis]	Brucella suis
+group_3307	FALSE	FALSE	FALSE	TRUE	FALSE	NA	NA	NA
+group_3372	FALSE	FALSE	FALSE	TRUE	FALSE	WP_008936316	MULTISPECIES: lytic murein transglycosylase [unclassified Brucella]	unclassified Brucella
+group_3405	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004684690	MULTISPECIES: phosphoadenylyl-sulfate reductase [Brucella]	Brucella
+group_3412	FALSE	FALSE	FALSE	TRUE	FALSE	WP_140075524	MFS transporter, partial [Vibrio parahaemolyticus]	Vibrio parahaemolyticus
+group_3413	FALSE	FALSE	FALSE	TRUE	FALSE	WP_200896822	Rop family plasmid primer RNA-binding protein, partial [Methanosarcina mazei]	Methanosarcina mazei
+group_3415	FALSE	FALSE	FALSE	TRUE	FALSE	WP_007811919	L-serine ammonia-lyase, iron-sulfur-dependent, subunit alpha, partial [Rhizobium sp. CF142]	Rhizobium sp. CF142
+group_1771	FALSE	FALSE	FALSE	TRUE	FALSE	WP_154170392	MULTISPECIES: beta-ketoacyl-ACP synthase II [unclassified Brucella]	unclassified Brucella
+group_2339	FALSE	FALSE	FALSE	TRUE	FALSE	WP_146209442	MFS transporter, partial [Brucella abortus]	Brucella abortus
+group_2345	FALSE	FALSE	FALSE	TRUE	FALSE	WP_025200703	ATP-dependent helicase HrpB, partial [Brucella abortus]	Brucella abortus
+group_2357	FALSE	FALSE	FALSE	TRUE	FALSE	WP_002964973	MULTISPECIES: GNAT family N-acetyltransferase [Brucella]	Brucella
+group_2371	FALSE	FALSE	FALSE	TRUE	FALSE	WP_234430405	c-type cytochrome biogenesis protein CcmI, partial [Brucella melitensis]	Brucella melitensis
+group_2373	FALSE	FALSE	FALSE	TRUE	FALSE	WP_154142862	class I SAM-dependent rRNA methyltransferase [Brucella sp. 10RB9210]	Brucella sp. 10RB9210
+group_2375	FALSE	FALSE	FALSE	TRUE	FALSE	WP_075679008	SspB family protein, partial [Brucella abortus]	Brucella abortus
+group_2382	FALSE	FALSE	FALSE	TRUE	FALSE	WP_113002097	citrate synthase, partial [Brucella melitensis]	Brucella melitensis
+group_2985	FALSE	FALSE	FALSE	TRUE	FALSE	WP_164986662	ABC transporter permease, partial [Brucella canis]	Brucella canis
+group_3012	FALSE	FALSE	FALSE	TRUE	FALSE	WP_002964254	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_3296	FALSE	FALSE	FALSE	TRUE	FALSE	NA	NA	NA
+group_3308	FALSE	FALSE	FALSE	TRUE	FALSE	WP_002967908	MULTISPECIES: type B 50S ribosomal protein L36 [Brucellaceae]	Brucellaceae
+group_3318	FALSE	FALSE	FALSE	TRUE	FALSE	WP_223596924	Gfo/Idh/MocA family oxidoreductase [Brucella suis]	Brucella suis
+group_3326	FALSE	FALSE	FALSE	TRUE	FALSE	WP_243463617	glycerate kinase, partial [Brucella suis]	Brucella suis
+group_3330	FALSE	FALSE	FALSE	TRUE	FALSE	WP_094285339	adenosylcobinamide-GDP ribazoletransferase [Brucella melitensis]	Brucella melitensis
+group_3338	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004687480	Ldh family oxidoreductase [Brucella neotomae]	Brucella neotomae
+group_3411	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004683101	MULTISPECIES: 50S ribosomal protein L9 [Brucella]	Brucella
+group_3414	FALSE	FALSE	FALSE	TRUE	FALSE	WP_025199584	endonuclease/exonuclease/phosphatase family protein, partial [Brucella sp. BO2]	Brucella sp. BO2
+group_3428	FALSE	FALSE	FALSE	TRUE	FALSE	WP_005968453	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_3434	FALSE	FALSE	FALSE	TRUE	FALSE	NA	NA	NA
+group_3435	FALSE	FALSE	FALSE	TRUE	FALSE	WP_032450564	PAS sensor domain-containing protein, partial [Brucella pinnipedialis]	Brucella pinnipedialis
+group_2337	FALSE	FALSE	FALSE	TRUE	FALSE	WP_029661256	sugar ABC transporter permease, partial [Brucella ceti]	Brucella ceti
+group_2342	FALSE	FALSE	FALSE	TRUE	FALSE	WP_082247684	cell division protein FtsZ, partial [Brucella abortus]	Brucella abortus
+group_2348	FALSE	FALSE	FALSE	TRUE	FALSE	WP_138143855	MULTISPECIES: DEAD/DEAH box helicase [unclassified Brucella]	unclassified Brucella
+group_2374	FALSE	FALSE	FALSE	TRUE	FALSE	WP_032450884	DUF882 domain-containing protein, partial [Brucella ceti]	Brucella ceti
+group_2962	FALSE	FALSE	FALSE	TRUE	FALSE	WP_006139878	urocanate hydratase [Brucella melitensis]	Brucella melitensis
+group_3009	FALSE	FALSE	FALSE	TRUE	FALSE	WP_171379907	DNA topoisomerase IV subunit A [Brucella pseudogrignonensis]	Brucella pseudogrignonensis
+group_3017	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004685594	protein-L-isoaspartate(D-aspartate) O-methyltransferase [Brucella melitensis]	Brucella melitensis
+pepN_1	FALSE	FALSE	FALSE	TRUE	FALSE	NA	NA	NA
+group_3285	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004682961	MULTISPECIES: LysR family transcriptional regulator [Brucella]	Brucella
+group_3294	FALSE	FALSE	FALSE	TRUE	FALSE	WP_129171575	cobaltochelatase subunit CobT, partial [Brucella canis]	Brucella canis
+group_3301	FALSE	FALSE	FALSE	TRUE	FALSE	NA	NA	NA
+group_3302	FALSE	FALSE	FALSE	TRUE	FALSE	WP_138143930	molybdopterin-guanine dinucleotide biosynthesis protein B [Brucella sp. 10RB9215]	Brucella sp. 10RB9215
+hemL	FALSE	FALSE	FALSE	TRUE	FALSE	NA	NA	NA
+group_3309	FALSE	FALSE	FALSE	TRUE	FALSE	WP_180549121	flagellar biosynthetic protein FliO, partial [Brucella abortus]	Brucella abortus
+group_3312	FALSE	FALSE	FALSE	TRUE	FALSE	WP_234430464	double-strand break repair protein AddB, partial [Brucella melitensis]	Brucella melitensis
+group_3324	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004683973	MULTISPECIES: TerC family protein [Brucella]	Brucella
+group_3329	FALSE	FALSE	FALSE	TRUE	FALSE	NA	NA	NA
+group_3332	FALSE	FALSE	FALSE	TRUE	FALSE	WP_024767913	Asp-tRNA(Asn)/Glu-tRNA(Gln) amidotransferase subunit GatA [Brucella melitensis]	Brucella melitensis
+group_3342	FALSE	FALSE	FALSE	TRUE	FALSE	WP_087913330	molybdenum cofactor guanylyltransferase [Brucella melitensis]	Brucella melitensis
+group_3343	FALSE	FALSE	FALSE	TRUE	FALSE	WP_014490093	MULTISPECIES: hypothetical protein [Brucella]	Brucella
+group_3352	FALSE	FALSE	FALSE	TRUE	FALSE	NA	NA	NA
+group_3364	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004686125	MULTISPECIES: EAL domain-containing protein [Brucella]	Brucella
+group_3396	FALSE	FALSE	FALSE	TRUE	FALSE	WP_234430358	MFS transporter, partial [Brucella melitensis]	Brucella melitensis
+group_3398	FALSE	FALSE	FALSE	TRUE	FALSE	WP_006175123	MULTISPECIES: 5,6-dimethylbenzimidazole synthase [Brucella]	Brucella
+group_3398	FALSE	FALSE	FALSE	TRUE	FALSE	WP_006097822	5,6-dimethylbenzimidazole synthase [Brucella abortus]	Brucella abortus
+group_3402	FALSE	FALSE	FALSE	TRUE	FALSE	WP_225868622	TIGR02301 family protein [Brucella melitensis]	Brucella melitensis
+fliE_1	FALSE	FALSE	FALSE	TRUE	FALSE	WP_002966429	MULTISPECIES: flagellar hook-basal body complex protein FliE [Brucella]	Brucella
+group_3426	FALSE	FALSE	FALSE	TRUE	FALSE	WP_115636396	MULTISPECIES: helix-turn-helix transcriptional regulator [Brucella]	Brucella
+group_3429	FALSE	FALSE	FALSE	TRUE	FALSE	WP_075589491	MULTISPECIES: FAD-dependent oxidoreductase [Brucella]	Brucella
+group_3433	FALSE	FALSE	FALSE	TRUE	FALSE	WP_143254943	GntR family transcriptional regulator, partial [Brucella abortus]	Brucella abortus
+group_3436	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004685838	cell division protease CdlP [Brucella melitensis]	Brucella melitensis
+group_3437	FALSE	FALSE	FALSE	TRUE	FALSE	WP_207148862	hypothetical protein, partial [Listeria monocytogenes]	Listeria monocytogenes
+group_3440	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004688547	DUF2461 domain-containing protein [Brucella neotomae]	Brucella neotomae
+group_3448	FALSE	FALSE	FALSE	TRUE	FALSE	WP_004685096	bifunctional riboflavin kinase/FAD synthetase [Brucella melitensis]	Brucella melitensis
+group_3454	FALSE	FALSE	FALSE	TRUE	FALSE	WP_032450816	biotin carboxylase N-terminal domain-containing protein, partial [Brucella ceti]	Brucella ceti
+group_1821	FALSE	FALSE	FALSE	FALSE	TRUE	WP_023035629	choline dehydrogenase, partial [Brucella abortus]	Brucella abortus
+group_2401	FALSE	FALSE	FALSE	FALSE	TRUE	NA	NA	NA
+group_2406	FALSE	FALSE	FALSE	FALSE	TRUE	WP_023035629	choline dehydrogenase, partial [Brucella abortus]	Brucella abortus
+group_2450	FALSE	FALSE	FALSE	FALSE	TRUE	WP_004686250	MULTISPECIES: GNAT family N-acetyltransferase [Brucella]	Brucella
+group_2461	FALSE	FALSE	FALSE	FALSE	TRUE	WP_016650666	DUF992 domain-containing protein [Brucella abortus]	Brucella abortus
+group_2461	FALSE	FALSE	FALSE	FALSE	TRUE	WP_006106488	DUF992 domain-containing protein [Brucella abortus]	Brucella abortus
+group_2474	FALSE	FALSE	FALSE	FALSE	TRUE	WP_002966007	MULTISPECIES: ABC transporter substrate-binding protein [Brucella]	Brucella
+group_2250	FALSE	FALSE	FALSE	FALSE	TRUE	WP_004682221	MULTISPECIES: UbiA family prenyltransferase [Brucella]	Brucella
+group_2599	FALSE	FALSE	FALSE	FALSE	TRUE	WP_032451909	FHIPEP family type III secretion protein [Brucella melitensis]	Brucella melitensis
+group_2678	FALSE	FALSE	FALSE	FALSE	TRUE	WP_006072672	hypothetical protein [Brucella suis]	Brucella suis
+group_2309	FALSE	FALSE	FALSE	FALSE	TRUE	WP_038405272	acyl-CoA carboxylase subunit beta [Brucella suis]	Brucella suis
+group_2679	FALSE	FALSE	FALSE	FALSE	TRUE	NA	NA	NA
+group_2463	FALSE	FALSE	FALSE	FALSE	TRUE	WP_004683507	MULTISPECIES: ATP-binding protein [Brucella]	Brucella
+group_2473	FALSE	FALSE	FALSE	FALSE	TRUE	WP_016149355	CoA transferase subunit B [Brucella abortus]	Brucella abortus
+group_2673	FALSE	FALSE	FALSE	FALSE	TRUE	WP_019443943	thioredoxin domain-containing protein, partial [Brucella suis]	Brucella suis
+group_2682	FALSE	FALSE	FALSE	FALSE	TRUE	WP_244391811	MULTISPECIES: BRO family protein [Brucella]	Brucella
+group_2672	FALSE	FALSE	FALSE	FALSE	TRUE	WP_105984781	hypothetical protein, partial [Brucella sp. BCCN 84-3]	Brucella sp. BCCN 84-3
+group_2310	FALSE	FALSE	FALSE	FALSE	TRUE	NA	NA	NA
+group_2674	FALSE	FALSE	FALSE	FALSE	TRUE	WP_004685132	MULTISPECIES: aminotransferase class IV family protein [Brucella]	Brucella
+group_2611	FALSE	FALSE	FALSE	FALSE	TRUE	WP_243463552	FAD/NAD(P)-binding oxidoreductase, partial [Brucella suis]	Brucella suis
+group_2469	FALSE	FALSE	FALSE	FALSE	TRUE	WP_173679111	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_2656	FALSE	FALSE	FALSE	FALSE	TRUE	NA	NA	NA
+group_2694	FALSE	FALSE	FALSE	FALSE	TRUE	WP_004687345	HlyD family efflux transporter periplasmic adaptor subunit [Brucella neotomae]	Brucella neotomae
+group_2694	FALSE	FALSE	FALSE	FALSE	TRUE	WP_008536572	MULTISPECIES: HlyD family efflux transporter periplasmic adaptor subunit [Brucella]	Brucella
+group_2320	FALSE	FALSE	FALSE	FALSE	TRUE	WP_195891402	hypothetical protein, partial [Brucella suis]	Brucella suis
+group_2693	FALSE	FALSE	FALSE	FALSE	TRUE	WP_003507130	MULTISPECIES: transposase [Hyphomicrobiales]	Hyphomicrobiales
+group_2322	FALSE	FALSE	FALSE	FALSE	TRUE	WP_032452322	malate synthase G, partial [Brucella melitensis]	Brucella melitensis
+group_2605	FALSE	FALSE	FALSE	FALSE	TRUE	WP_004687753	thioredoxin domain-containing protein [Brucella neotomae]	Brucella neotomae
+group_2797	FALSE	FALSE	FALSE	FALSE	TRUE	WP_141068138	kinesin, partial [Brucella melitensis]	Brucella melitensis
+group_2798	FALSE	FALSE	FALSE	FALSE	TRUE	WP_141068138	kinesin, partial [Brucella melitensis]	Brucella melitensis
+group_2799	FALSE	FALSE	FALSE	FALSE	TRUE	WP_005973133	hypothetical protein [Brucella melitensis]	Brucella melitensis
+group_2799	FALSE	FALSE	FALSE	FALSE	TRUE	WP_141056762	kinesin [Brucella melitensis]	Brucella melitensis
+group_2816	FALSE	FALSE	FALSE	FALSE	TRUE	WP_006137827	heavy metal translocating P-type ATPase [Brucella melitensis]	Brucella melitensis
+group_2816	FALSE	FALSE	FALSE	FALSE	TRUE	WP_006144702	heavy metal translocating P-type ATPase [Brucella melitensis]	Brucella melitensis
+group_2816	FALSE	FALSE	FALSE	FALSE	TRUE	WP_004684705	MULTISPECIES: heavy metal translocating P-type ATPase [Brucella]	Brucella
+group_2816	FALSE	FALSE	FALSE	FALSE	TRUE	WP_006146403	heavy metal translocating P-type ATPase [Brucella melitensis]	Brucella melitensis
+group_2816	FALSE	FALSE	FALSE	FALSE	TRUE	WP_087907753	heavy metal translocating P-type ATPase [Brucella melitensis]	Brucella melitensis
+group_2311	FALSE	FALSE	FALSE	FALSE	TRUE	WP_181406694	PhoH family protein, partial [Brucella melitensis]	Brucella melitensis
+group_2318	FALSE	FALSE	FALSE	FALSE	TRUE	WP_032450920	siroheme synthase CysG [Brucella sp. 63/311]	Brucella sp. 63/311
+group_2325	FALSE	FALSE	FALSE	FALSE	TRUE	WP_005978107	NAD(P)-dependent oxidoreductase [Brucella ovis]	Brucella ovis
+group_2325	FALSE	FALSE	FALSE	FALSE	TRUE	WP_006111178	NAD(P)-dependent oxidoreductase [Brucella abortus]	Brucella abortus
+group_2325	FALSE	FALSE	FALSE	FALSE	TRUE	WP_006257367	NAD(P)-dependent oxidoreductase [Brucella melitensis]	Brucella melitensis
+group_2325	FALSE	FALSE	FALSE	FALSE	TRUE	WP_006205186	NAD(P)-dependent oxidoreductase [Brucella suis]	Brucella suis
+group_2325	FALSE	FALSE	FALSE	FALSE	TRUE	WP_004685419	MULTISPECIES: NAD(P)-dependent oxidoreductase [Brucella]	Brucella
+group_2325	FALSE	FALSE	FALSE	FALSE	TRUE	WP_004682835	MULTISPECIES: NAD(P)-dependent oxidoreductase [Brucella]	Brucella
+group_2325	FALSE	FALSE	FALSE	FALSE	TRUE	WP_006093268	NAD(P)-dependent oxidoreductase [Brucella abortus]	Brucella abortus
+group_2325	FALSE	FALSE	FALSE	FALSE	TRUE	WP_006194058	NAD(P)-dependent oxidoreductase [Brucella suis]	Brucella suis
+group_2325	FALSE	FALSE	FALSE	FALSE	TRUE	WP_004691999	MULTISPECIES: NAD(P)-dependent oxidoreductase [Brucella]	Brucella
+group_2325	FALSE	FALSE	FALSE	FALSE	TRUE	WP_002963447	MULTISPECIES: NAD(P)-dependent oxidoreductase [Brucella]	Brucella
+group_2329	FALSE	FALSE	FALSE	FALSE	TRUE	WP_141059872	imidazolonepropionase, partial [Brucella melitensis]	Brucella melitensis
+group_2332	FALSE	FALSE	FALSE	FALSE	TRUE	WP_210239702	hypothetical protein, partial [Brucella melitensis]	Brucella melitensis
+group_2775	FALSE	FALSE	FALSE	FALSE	TRUE	WP_141059842	cobalt-precorrin-5B (C(1))-methyltransferase [Brucella melitensis]	Brucella melitensis
+group_2777	FALSE	FALSE	FALSE	FALSE	TRUE	WP_143254961	bifunctional precorrin-2 dehydrogenase/sirohydrochlorin ferrochelatase, partial [Brucella abortus]	Brucella abortus
+group_2783	FALSE	FALSE	FALSE	FALSE	TRUE	WP_141049083	carbamoyl phosphate synthase small subunit, partial [Brucella melitensis]	Brucella melitensis
+group_2849	FALSE	FALSE	FALSE	FALSE	TRUE	WP_210243521	hypothetical protein, partial [Brucella melitensis]	Brucella melitensis
+group_2852	FALSE	FALSE	FALSE	FALSE	TRUE	WP_210243535	hypothetical protein, partial [Brucella melitensis]	Brucella melitensis
+group_2854	FALSE	FALSE	FALSE	FALSE	TRUE	WP_154143157	helix-turn-helix domain-containing protein, partial [Brucella sp. 10RB9210]	Brucella sp. 10RB9210
+group_2874	FALSE	FALSE	FALSE	FALSE	TRUE	WP_210239700	hypothetical protein, partial [Brucella melitensis]	Brucella melitensis
+group_2890	FALSE	FALSE	FALSE	FALSE	TRUE	NA	NA	NA
+group_3373	FALSE	FALSE	FALSE	FALSE	TRUE	WP_002966536	MULTISPECIES: response regulator [Brucella/Ochrobactrum group]	Brucella/Ochrobactrum group

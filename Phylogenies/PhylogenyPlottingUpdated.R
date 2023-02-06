@@ -21,7 +21,7 @@ colour <- c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#
 ann_colors <- list(ST = c("Outgroup" = colour[3], "7" = colour[15], "8" = colour[10], "9" = colour[9], "10" = colour[6], "11" = colour[17], "12" = colour[8], "39" = colour[13], "40" = colour[2], "41" = colour[16], "42" = colour[7], "43" = colour[4], "71" = colour[11], "88" = colour[12], "102" = colour[19], "Geridu" = colour[5],"Ancient" = colour[1], "NF" = colour[20], "NIPH" = colour[22]))
 clusterColours <- c("Western Mediterranean" = "#4D9DE0", "Fertile Crescent" = "#E15554", "Africa/America" = "#E1BC29", "Indo-Pacific" = "#3BB273", "Russia" = "#7768AE")
 ##############
-metaData <- read.delim("../PanGenomeAnalysisFixedMapping/MetadataAll.tab", header =T) %>% as_tibble
+metaData <- read.delim("../AssemblyOnly/MetadataAll.tab", header =T) %>% as_tibble
 
 ########################
 ### W. Med Phylogeny ###
@@ -48,7 +48,9 @@ STData["Reference",] <- list(Sample = "Reference", ST = "7")
 
 STData <- STData[tree@phylo$tip.label,]
 STData <- STData %>% mutate(ST = gsub("[^[:alnum:] ]","", ST))
-STData <- STData %>% left_join(metaData %>% select(-ST)) %>% distinct() # Getting the countries included
+STData <- STData %>% left_join(metaData %>% select(-ST)) %>% distinct() %>% 
+	mutate(Type = ifelse(Sample == "Reference", "Reference", ifelse(Sample == "Brancorsini", "Ancient", "Modern"))) %>%
+	mutate(Type = factor(Type, levels = c("Modern", "Ancient", "Reference")))
 
 # Let's filter the ann_colors list so that only the STs present in the phylogeny are used
 WMedColours <- ann_colors$ST[unique(STData$ST)]
@@ -61,37 +63,28 @@ tree@data$height_range_hi <- as.numeric(gsub(",.*","",tmp))
 
 #  WMED
 p1Wmed <- ggtree(tree, right = T, mrsd = "2017-01-01") %<+% STData +  #This is for the ST11 Phylo
-#p1 <- ggtree(tree, right = T, mrsd = "2017-01-01") %<+% tipLabels +  #This is for the ST11 Phylo
-	#geom_rect(aes(xmin = -3500, xmax = -2100, ymax = Inf, ymin = -Inf), fill = "blue", alpha = 0.1)+ # NEED DATES
 	theme_tree2() +
 	geom_rootedge(rootedge = 50) +
 	geom_tiplab(aes(label = Country), align = T) + 
-	#annotate("rect", xmin = -9000, xmax = -6000, ymin = -Inf, ymax = Inf, fill = "#3BB273", alpha = 0.5) + # Machova, Malkova, and Vostry 2022
-	annotate("rect", xmin = -8500, xmax = -6500, ymin = 24, ymax = 25, fill = "#3BB273", alpha = 0.5) + # Zeder 2008
-	annotate("rect", xmin = -8500, xmax = -5800, ymin = 23, ymax = 24, fill = "#4D9DE0", alpha = 0.5) + # 
-	annotate("rect", xmin = -7000, xmax = -5600, ymin = 25, ymax = 26, fill = "#7768AE", alpha = 0.5) + # 
-	annotate("rect", xmin = -6400, xmax = -3700, ymin = 24, ymax = 25, fill = "#E1BC29", alpha = 0.5) +  # 
-	annotate("text", x = -7500, y = 24.5, label = "Sheep\nDomestication") +
-	annotate("text", x = -7150, y = 23.5, label = "Anatolia") +
-	annotate("text", x = -6300, y = 25.5,label = "Mediterannean\nLittoral") + # Zeder 2008
-	annotate("text", x = -5050, y = 24.5, label = "Central\nEurope") +
-	geom_range("height_0.95_HPD", colour = "red", size = 0.75, alpha = 0.75) +
-	#geom_range("HistoricalInfo", colour = "blue", size = 0.75, alpha = 0.75) +
-	geom_tippoint(aes(colour = ST),size = 2) + 
+	annotate("rect", xmin = -8500, xmax = -6500, ymin = 2, ymax = 3.5, fill = "#3BB273", alpha = 0.5) + # Zeder 2008
+	annotate("rect", xmin = -8500, xmax = -5800, ymin = 0.5, ymax = 2, fill = "#4D9DE0", alpha = 0.5) + # 
+	annotate("rect", xmin = -7000, xmax = -5600, ymin = 3.5, ymax = 5, fill = "#7768AE", alpha = 0.5) + # 
+	annotate("rect", xmin = -6400, xmax = -3700, ymin = 2, ymax = 3.5, fill = "#E1BC29", alpha = 0.5) +  # 
+	annotate("text", x = -7500, y = 2.75, label = "Sheep\nDomestication") +
+	annotate("text", x = -7150, y = 1.25, label = "Anatolia") +
+	annotate("text", x = -6300, y = 4.25,label = "Mediterannean\nLittoral") + # Zeder 2008
+	annotate("text", x = -5050, y = 2.75, label = "Central\nEurope") +
+	geom_range("height_0.95_HPD", colour = "red", linewidth = 0.75, alpha = 0.75) +
+	geom_tippoint(aes(colour = ST, shape = Type),size = 2) + 
 	scale_color_manual(values = WMedColours) +
-	guides(color = guide_legend(nrow = 2))+
-#       	geom_nodepoint(aes(color = ifelse(posterior < 0.5, NA,
-#						 ifelse(posterior >= 0.5 & posterior < 0.9, "Fifty", "Ninety"))),
-#			      shape = "square", show.legend = F) +
-#	scale_color_manual(values = c("NA" = NA, "Fifty" = "grey", "Ninety" = "black")) +
-       	geom_nodelab(mapping = aes(label = ifelse(round(decimal_date(ymd("2017-01-01")) - height) < 1500,
+	guides(colour = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5), shape = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5, title = "Sample")) +
+       	geom_nodelab(mapping = aes(label = ifelse(round(decimal_date(ymd("2017-01-01")) - height) < 1300,
 							 paste0("[",paste(round(decimal_date(ymd("2017-01-01")) - height_range_low),round(decimal_date(ymd("2017-01-01")) - height_range_hi), sep = ","), "]"), NA)), # This is for the ST11 Phylo
-			    geom = "text", nudge_y = 0.4, nudge_x = -50) +
-	#geom_nodelab(mapping = aes(label = node)) +
+			    geom = "text", nudge_y = 0.4, nudge_x = -250) +
 	xlab("Year") +
 	scale_x_continuous(breaks = scales:::pretty_breaks(n = 10)) +
-	theme(panel.grid.major.x = element_line(color = "grey10", size = 0.2),
-	      panel.grid.minor.x = element_line(color = "grey80", size = 0.2),
+	theme(panel.grid.major.x = element_line(color = "grey50", size = 0.2),
+	      panel.grid.minor.x = element_line(color = "grey90", size = 0.2),
 	      legend.position = "bottom") 
 
 treeData <- tree@data[,c(10,1:3)]
@@ -141,7 +134,9 @@ STData["Reference",] <- list(Sample = "Reference", ST = "7")
 STData <- STData %>% mutate(ST = gsub("[^[:alnum:] ]","", ST))
 
 # Now to label the NIPH Strains
-STData <- STData %>% mutate(ST = replace(ST, grepl("^NIPH-*|NI_2007", Sample) & grepl("8",ST), "NIPH"))
+STData <- STData %>% mutate(ST = replace(ST, grepl("^NIPH-*|NI_2007", Sample) & grepl("8",ST), "NIPH")) %>%
+	mutate(Type = ifelse(Sample == "Reference", "Reference", ifelse(Sample == "Brancorsini", "Ancient", "Modern"))) %>%
+	mutate(Type = factor(Type, levels = c("Modern", "Ancient", "Reference")))
 
 STData <- STData[tree$tip.label,]
 
@@ -154,11 +149,11 @@ p1Global <- ggtree(tree, right = T) %<+% STData +
 	#geom_text2(aes(subset=!isTip, label = node)) +
        	#geom_nodepoint(size = 1.5, colour = ifelse(as.numeric(tree$node.label) >= 90, "black", ifelse(as.numeric(tree$node.label) >= 50, "grey",NA)),
 	#	     shape = "square") +
-	geom_tippoint(mapping = aes(colour = ST), size = 1.5) +
+	geom_tippoint(mapping = aes(colour = ST, shape = Type), size = 1.5) +
 	#geom_tiplab(align = T) + 
 	geom_treescale(linesize = 1, offset = 2) + theme_tree() + geom_rootedge(rootedge = 0.00005) +
 	scale_color_manual(values = GlobalColours, name = "Sequence Type") +
-	theme(legend.position = "bottom") + guides(colour = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5))
+	theme(legend.position = "bottom") + guides(colour = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5), shape = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5, title = "Sample"))
 
 p1Global <- p1Global + 
 	geom_cladelabel(align = T, node = 123, label = "Western\nMediterranean", colour = ann_colors$ST["11"]) +

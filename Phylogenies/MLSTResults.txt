@@ -1,1 +1,1 @@
-../PanGenomeAnalysisFixedMapping/MLSTResults.txt
+../AssemblyOnly/MLSTResults.txt

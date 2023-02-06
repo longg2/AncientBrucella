@@ -90,7 +90,7 @@ coreGenes <- roaryOutput$Gene[coreGenes]
 # Getting as much information as possible on the missing core genes
 PABrancorsini <- roaryOutput[,c(1,169)]
 
-coreGenesMissingBrancorsini <- PABrancorsini %>% left_join(read.delim("../../BlastResults/Pangenome.tab"), by = c("Gene" = "Query")) %>% rename(COGGene = Gene.y) %>% 
+coreGenesMissingBrancorsini <- PABrancorsini %>% left_join(read.delim("../BlastResults/Pangenome.tab"), by = c("Gene" = "Query")) %>% rename(COGGene = Gene.y) %>% 
 	filter(Brancorsini == 0, Gene %in% coreGenes)
 coreGenesMissingBrancorsini$Gene <- apply(coreGenesMissingBrancorsini, MARGIN = 1, function(x){
 	      if(grepl("group_",x[1]) & !is.na(x[8]) & nchar(x[8]) > 0){
@@ -187,7 +187,7 @@ ann_colorsHeat <- list(ST = ann_colors$ST)
 pheatmap(coreDataSub, clustering_distance_rows = "binary",clustering_distance_cols = "binary", clustering_method = "ward.D2",
 	 show_rownames = F, show_colnames = F, legend = F,
 	 annotation_row = annotationHeat, annotation_colors = ann_colorsHeat, annotation_legend = T,
-	 annotation_names_row = F, filename = "CoreHeatmap.pdf", width = 6, height = 6)
+	 annotation_names_row = T, filename = "CoreHeatmap.pdf", width = 6, height = 6)
 
 #################################
 ### Accessory Genome Analysis ###
@@ -238,11 +238,14 @@ accessPlotData <- coord %>% left_join(metaData %>% select(-ST), by = c("Genome" 
 coreColours <- ann_colors$ST[names(ann_colors$ST) %in% accessPlotData$ST]
 coreColours <- coreColours[mixedsort(names(coreColours))]
 accessPlotData$ST <- factor(accessPlotData$ST, levels = unique(mixedsort(accessPlotData$ST)))
+accessPlotData <- accessPlotData %>% mutate(Type = ifelse(Genome == "Reference", "Reference", ifelse(Genome == "Brancorsini", "Ancient", "Modern"))) %>%
+	mutate(Type = factor(Type, levels = c("Modern", "Ancient", "Reference")))
+
 # Getting the labels for the ellipses
 labelCoord <- accessPlotData %>% group_by(clusters) %>% summarize(V1 = mean(V1), V2 = mean(V2), V3 = mean(V3), V4 = mean(V4))
 
 p1 <- accessPlotData %>%
-       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, group = clusters)) +#, group = clusters)) +
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, shape = Type, group = clusters)) +#, group = clusters)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
@@ -255,25 +258,10 @@ p1 <- accessPlotData %>%
 	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
 	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
 	geom_text_repel(data = labelCoord, aes(x = V1, y = V2, label = clusters, colour = clusters), inherit.aes = F, show.legend = F) +
-	guides(colour = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5)) +
+	guides(colour = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5), shape = guide_legend(nrow = 1, title.position = "top", title.hjust = 0.5, title = "Sample")) +
 	theme(legend.position = "bottom")
  #theme(legend.position = "bottom", axis.text.x = element_blank(), axis.title.x = element_blank())
 
-p2 <- accessPlotData %>%
-       	ggplot(aes(x = V1, y = V3, label = Genome, colour = ST, group = clusters)) +#, group = clusters)) +
-	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
-	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
-	geom_point() +
-	scale_colour_manual(values = ann_colors$ST) +
-	new_scale_colour() +
-	stat_ellipse(mapping = aes(colour = clusters)) +
-	scale_colour_manual(values = clusterColours) +
-	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
-	ylab(bquote("PCoA 3 ("~.(round(contrib[3],2))~"%)")) +
-	guides(colour = guide_legend(nrow = 2)) +
-	theme(legend.position = "bottom")
-
-#STLabelledPCoA <- ggarrange(p1,p2, nrow = 1, align = "hv", common.legend = T, legend = "bottom", labels = "auto")
 ggsave(p1,file = "FixedAccessoryDecPCoA.pdf", width = 9, height = 6)
 
 # Now to look at a heatmap
@@ -287,15 +275,15 @@ annotationHeat <- accessPlotData %>% select(Genome, ST, clusters, Country) %>% d
 
 rownames(annotationHeat) <- annotationHeat$Genome
 annotationHeat <- annotationHeat[,-1]
-colnames(annotationHeat)[2] <- "Accessory Clusters"
+colnames(annotationHeat)[2] <- "PAV Clusters"
 
-ann_colorsHeat <- list("Accessory Clusters" = clusterColours, ST = ann_colors$ST, Region = unlist(countryColours))
+ann_colorsHeat <- list("PAV Clusters" = clusterColours, ST = ann_colors$ST, Region = unlist(countryColours))
 
 pheatmap(accessDataSub, clustering_distance_rows = "binary",clustering_distance_cols = "binary", clustering_method = "ward.D2",
-	 show_rownames = F, show_colnames = T, legend = F,
+	 show_rownames = F, show_colnames = F, legend = F,
 	 cutree_rows = 5,
 	 annotation_row = annotationHeat, annotation_colors = ann_colorsHeat, annotation_legend = T,
-	 annotation_names_row = F, filename = "AccessoryHeatmap.pdf", width = 12, height = 12)
+	 annotation_names_row = T, filename = "AccessoryHeatmap.pdf", width = 12, height = 12)
 
 # Let's only look at the third cluster now! Hopefully get names as well
 #annotationHeat <- accessPlotData %>% select(Genome, ST, clusters) %>% filter(grepl("Afr", clusters)) %>% distinct() %>% as.data.frame()
@@ -324,7 +312,40 @@ sharedGenesbyCluster <- lapply(clusteredResults, function(x){
 	       tmp <- tmp[,-1]
 	       tmp <- rowSums(tmp)
 	       return(names(tmp)[tmp > 1])
-	})
+	 })
+tmp <- sharedGenesbyCluster %>% unlist()
+
+tmp <- tibble(Cluster = names(tmp),Gene = tmp) %>% mutate(Cluster = gsub("\\d*","", Cluster), TMP = T) %>%
+       	pivot_wider(id_cols = Gene, names_from = Cluster, values_from = TMP, values_fill = F)
+write.table(tmp, file = "AccessoryGeneLocation.tab", row.names = F, sep = "\t", quote = F)
+
+# Making a quick table
+geneLocation <- tmp
+tmp <- geneLocation %>% filter(Gene %in% colnames(accessDataSub))
+
+geneInfo <- tmp %>% mutate(ClustersPresent = rowSums(tmp[,-1])) %>%
+		filter(ClustersPresent == 1 | ClustersPresent == 4)
+       
+geneInfo <- geneInfo %>% mutate(Unique = apply(geneInfo, 1, function(data){
+					   if(data[7] == 1){
+						   return(names(which(data == T)))
+					   }else{
+						   return(NA)
+					   }
+				 })) %>%
+		mutate(Absent = apply(geneInfo, 1, function(data){
+					   if(data[7] == 4){
+						   return(names(which(data == F)))
+					   }else{
+						   return(NA)
+					   }
+				 })) %>% mutate(Unique = replace(Unique, is.na(Unique), ""), Absent = replace(Absent, is.na(Absent), ""), Unique = paste0(Unique,Absent)) %>%
+		select(Gene, ClustersPresent, Unique) %>% mutate(ClustersPresent = ifelse(ClustersPresent == 4, "Absent", "Present")) %>% 
+		rename(PresentAbsent = ClustersPresent, AccessoryCluster = Unique)
+
+geneInfo %>% group_by(AccessoryCluster) %>% count(PresentAbsent) %>% pivot_wider(id_cols = AccessoryCluster, names_from = PresentAbsent, values_from = `n`, values_fill = 0) %>%
+	xtable(auto = T) %>% print(file = "UniquePresentAbsentTable.tex")
+
 pdf("SharedAccessorybyCluster.pdf", width = 9, height = 9)
 plot(euler(sharedGenesbyCluster, shape = "ellipse"), quantities = T,  legend = list(side = "bottom", nrow = 3, ncol = 2), fills = list(fill = clusterColours[names(sharedGenesbyCluster)]))
 dev.off()

@@ -6,7 +6,7 @@ library(pbapply)
 op <- pboptions(type = "timer")
 ncores <- 7
 
-classifiedHits <- read.delim(paste0("IdentifiedProteinsAfrica.list"), header = T)
+classifiedHits <- read.delim(paste0("AllAmbiguousRefSeqProteins.tab"), header = T)
 	
 for (file in list.files("WeirdAfrica/", full.names = T)){
 	#FileName
@@ -37,4 +37,4 @@ for (file in list.files("WeirdAfrica/", full.names = T)){
 	
 	#FilteredAmbiguousGenes %>% pull(Match) %>% unique() %>% write.table(paste0("BlastTop/",filename,".list"), col.names = F, quote = F, row.names = F)
 }
-	write.table(FilteredAmbiguousGenes, file = "WeirdAfrica.tab", sep = "\t", quote = F, row.name = F)
+	write.table(FilteredAmbiguousGenes, file = "AmbiguousOnlyRefseq.tab", sep = "\t", quote = F, row.name = F)
