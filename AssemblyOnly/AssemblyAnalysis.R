@@ -7,6 +7,7 @@ library(ape)
 library(scales)
 library(ggExtra)
 library(ggnewscale)
+#library(ggbreak)
 library(cluster)
 library(parallel)
 library(pbapply)
@@ -41,6 +42,34 @@ BlastParsing <- function(blastFile, ncores){
 			return(filtResults[1,])
 	 }) %>% bind_rows() %>% filter(PIdent >= 90)
 }
+
+CorrectingGC <- function(depthData){ # From the iREP Paper
+	GCModel <- lm(Mean ~ GCContent, data = depthData)
+	resids <- abs(summary(GCModel)$residuals) # Trying to find the top 1% largest residuals. Don't care about location
+	residFilt <- resids < quantile(resids,0.99)
+	GCModelFilt <- lm(Mean ~ GCContent, data = depthData[residFilt,])
+	adjr2 <- summary(GCModel)$adj.r.squared
+	beforeGC <- depthData[residFilt,] %>% ggplot(aes(x = GCContent, y = Mean)) +
+		geom_point() + geom_density_2d(colour = "grey") + theme_bw() + geom_smooth(method = "lm") +
+	       	ggtitle(bquote("Before GC Correction"~R[adj]^2 == .(round(adjr2, 3))), subtitle = "Top 1% Residuals Filtered") + 
+	       	ylab("Mean Coverage") + xlab("GC Content")
+	if(adjr2 > 0){ # We make the correction
+		covAverage <- mean(depthData$Mean)
+		correction <- covAverage - predict(GCModel, data = depthData$GCContent)
+		depthData <- depthData %>% mutate(GCCorrected = Mean + correction)
+	}else{
+		depthData <- depthData %>% mutate(GCCorrected = Mean)
+	}
+	NewGCModel <- lm(GCCorrected ~ GCContent, data = depthData[residFilt,])
+	adjr2 <- summary(NewGCModel)$adj.r.squared
+	afterGC <- depthData[residFilt,] %>% ggplot(aes(x = GCContent, y = GCCorrected)) +
+		geom_point() + geom_density_2d(colour = "grey") + theme_bw() + geom_smooth(method = "lm") +
+	       	ggtitle(bquote("After GC Correction"~R[adj]^2 == .(round(adjr2, 3))), subtitle = "Top 1% Residuals Filtered") +
+	       	ylab("Mean Coverage") + xlab("GC Content")
+	GCPlots <- ggarrange(beforeGC, afterGC, ncol = 2, align = "hv")
+	return(list("Plot" = GCPlots, UpdatedDepths = depthData))
+
+}
 ############
 theme_set(theme_classic())
 
@@ -68,16 +97,40 @@ ann_colors <- list(ST = c("5" = colour[3], "7" = colour[15], "8" = colour[10], "
 
 ############# Mean Assembly Coverage ###########
 assemblyMapping <- read.delim(file = "SummarizedDepths.tab", header = F, col.names = c("Source", "CHROM", "Mean", "SD", "SE", "CV", "PCov")) %>% as_tibble()
+
+gcContent <- read.delim("BrucellaContigsFilteredStats.tab", header = F, col.names = c("CHROM", "Length", "GCContent"))
+
+assemblyMappingCorrected <- assemblyMapping %>% left_join(gcContent) %>% CorrectingGC()
+assemblyMapping <- assemblyMappingCorrected$UpdatedDepths
+
 summarizedResults <- assemblyMapping %>% 
-	summarize(MeanCov = mean(Mean), SD = sd(Mean), SE = qnorm(0.975) * SD/sqrt(nrow(assemblyMapping)), Lo = MeanCov - SE, Hi = MeanCov + SE) %>%
+	summarize(MeanCov = mean(GCCorrected), SD = sd(GCCorrected), SE = qnorm(0.975) * SD/sqrt(nrow(assemblyMapping)), Lo = MeanCov - SE, Hi = MeanCov + SE) %>%
        	as.data.frame()
 
 assemblyMapping %>% mutate(Length = as.numeric(gsub(".*length_|_.*","", CHROM))) %>% arrange(-Mean) 
 
-assemblyMapping %>% ggplot(aes(x = Mean)) + 
+histPlot <- assemblyMapping %>% ggplot(aes(x = GCCorrected)) + 
+	geom_rect(inherit.aes = F,data = summarizedResults,
+		  aes(ymin = -Inf, ymax = Inf, xmin = MeanCov - 2 * SD, xmax =  MeanCov + 2 * SD), fill = "black", alpha = 0.5) +
 	geom_histogram(fill = colour[1], colour = "black") +
-	xlab("Mean Read Depth") + ylab("Contigs") 
-ggsave("AssemblyMapped.pdf", width = 6, height = 4)
+	geom_vline(xintercept = summarizedResults$MeanCov, lty = 2) +
+	xlab("Mean Read Depth") + ylab("Contigs")
+	#scale_x_break(breaks = c(35,45), space = 1)
+
+GCScatter <- assemblyMapping %>% select(CHROM, Mean, GCCorrected, GCContent) %>% pivot_longer(-c(CHROM,GCContent), names_to = "GCCorrection", values_to = "Coverage") %>% 
+	mutate(GCCorrection = ifelse(GCCorrection == "Mean", "Before", "After"))
+
+scatterPlot <- GCScatter %>% ggplot(aes(x = GCContent/100, y = Coverage, colour = GCCorrection)) +
+	geom_point() +
+	geom_smooth(method = "lm") +
+	scale_y_continuous(breaks = breaks_pretty(10)) +
+	scale_colour_manual(values = c("Before" = colour[4], "After" = colour[1]), "GC Correction") +
+	ylab("Mean Read Coverage") +
+	xlab("GC Content")
+
+bot <- ggarrange(scatterPlot, plot.new(), nrow = 1, common.legend = T, legend = "bottom", labels = c("b","c"))
+ggarrange(histPlot, bot, ncol = 1, labels = c("A",""))
+ggsave("Figure2.pdf", width = 9, height = 6)
 
 ############# Core Gene Presence #####
 roaryOutput <- as_tibble(read.delim("gene_presence_absence.Rtab"))
