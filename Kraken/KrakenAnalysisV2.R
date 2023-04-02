@@ -82,7 +82,7 @@ ranked = "^F$"
 
 # Getting the ID numbers - Used to ease IDing the files of interest
 #num <- gsub(".tab","", basename(report_files))
-num <- c("Brancorsini - Nodule", "Brancorsini - Water Blank", "Geridu")
+num <- c("Brancorsini - Nodule", "Brancorsini - Extraction Blank", "Geridu")
 
 tmp <- lapply(report_files, function(x){KrakenParsingProp(x,ranked)})
 krakentable <- as_tibble(reduce(tmp, by = "Taxon",full_join))
@@ -149,7 +149,8 @@ ind <- c(which(tmp == "Homo"), which(tmp == "Other"))
 ind2 <- which(tmp == "Brucella")
 ind3 <- c(ind, ind2)
 plotDf <- krakenProp %>%
-       	mutate(Taxon = factor(Taxon, levels = c(tmp[ind2],tmp[-ind3],tmp[ind])))#, Sample = factor(Sample, levels = c("Brancorsini", "Geridu", "Water Blank")))# %>% mutate(Type = unlist(GroupList[Sample]))
+       	mutate(Taxon = factor(Taxon, levels = c(tmp[ind2],tmp[-ind3],tmp[ind]))) %>%
+	mutate(Sample = factor(Sample, levels = c("Brancorsini - Nodule", "Brancorsini - Extraction Blank", "Geridu")))#, Sample = factor(Sample, levels = c("Brancorsini", "Geridu", "Water Blank")))# %>% mutate(Type = unlist(GroupList[Sample]))
 #plotDf <- krakenProp %>%
 #       	mutate(Taxon = factor(Taxon, levels = c(tmp[ind2],tmp[-ind3],tmp[ind])), Sample = factor(Sample, levels = c("Brancorsini", "Geridu", "Library Blank", "Extraction Blank")))# %>% mutate(Type = unlist(GroupList[Sample]))
 #
