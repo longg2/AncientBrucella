@@ -1,0 +1,61 @@
+Gene	Length	GC	Sample	MeanCoverage	Status	CopyNumber	HeteroFrac	Match	COG	COGMembershipClass	FunctionalCategory	Name	Gene.y	FunctionalPathway	PMID	PDBID
+group_1322	174	0.5	Brancorsini	31.4616588287241	Accessory	1.56235706105261	0.0229885057471264	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_1501	426	0.561	Brancorsini	28.1350912165026	Core	1.39716277087494	0	WP_004684408	COG5319	0	S	Uncharacterized conserved protein, DUF1178 domain				
+group_2352	282	0.4858	Brancorsini	31.2225421122337	Accessory	1.55048274468365	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_3616	324	0.5617	Brancorsini	26.8436700441571	Core	1.33303198240028	0	WP_004683653	COG5467	0	S	Uncharacterized conserved protein, DUF1476 domain			16468998	
+group_3769	393	0.5878	Brancorsini	27.4884902466131	Core	1.36505316100058	0	WP_002966620	COG3232	0	E	5-carboxymethyl-2-hydroxymuconate isomerase	HpaF			1OTG
+group_3912	561	0.5829	Brancorsini	27.0851758093714	Core	1.34502493673309	0	WP_004681380	COG3334	0	N	Flagellar motility protein MotE, a chaperone for MotC folding	MotE		15101977	
+group_4134	393	0.5089	Brancorsini	45.3521597250957	Accessory	2.25214656881976	0.0203562340966921	WP_005970228	COG3293	0	X	Transposase				
+group_50	363	0.6006	Brancorsini	32.1684680147874	Accessory	1.59745655560483	0.00550964187327824	NA	NA	NA	NA	NA	NA	NA	NA	NA
+modA	756	0.5675	Brancorsini	28.997783281477	Core	1.44000326592207	0	WP_004681258	COG0725	0	P	ABC-type molybdate transport system, periplasmic Mo-binding protein ModA	ModA	Molybdopterin biosynthesis		1AMF
+tuf_1	1176	0.5842	Brancorsini	27.0859766868342	Accessory	1.3450647075718	0	WP_002970090	COG0050	0	J	Translation elongation factor EF-Tu, a GTPase	TufA	Translation factors		1EFU
+bamD	864	0.5648	Geridu	4.02081437016321	Core	1.69738312611114	0	WP_002964530	COG4105	0	M	Outer membrane protein assembly factor BamD, BamD/ComL family	BamD			2YHC
+dsbB	627	0.5279	Geridu	4.19828511759637	Core	1.77230224058375	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+dut	474	0.6139	Geridu	5.16998438303016	Core	2.18250420092319	0	WP_002964766	COG0756	0	FV	dUTP pyrophosphatase (dUTPase)	Dut	Thymidylate biosynthesis		1DUC
+folP	840	0.5798	Geridu	4.07333635664624	Core	1.71955523489281	0	WP_002964147	COG0294	0	H	Dihydropteroate synthase	FolP	Folate biosynthesis		1AD1
+gadB	861	0.5621	Geridu	4.13349660758917	Core	1.7449518300629	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+galE_1	1008	0.5377	Geridu	4.30038518583607	Core	1.81540369144676	0	WP_004683806	COG1087	0	M	UDP-glucose 4-epimerase	GalE			1A9Y
+group_1009	855	0.4456	Geridu	4.14715210333875	Core	1.75071648516263	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_1137	318	0.522	Geridu	4.60288968238508	Accessory	1.94310568928711	0	WP_002975117	COG2963	3	X	Transposase InsE and inactivated derivatives	InsE		23818957	2JN6
+group_1138	240	0.5417	Geridu	4.39721291838675	Accessory	1.85627943059819	0	WP_002968715	COG3293	2	X	Transposase				
+group_1576	717	0.5718	Geridu	4.88382016231596	Core	2.06170023565151	0	WP_002965610	COG1968	0	I	Undecaprenyl pyrophosphate phosphatase	UppP			5OON
+group_1821	231	0.5152	Geridu	4.40027735041167	Core	1.85757307778788	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_198	882	0.4921	Geridu	7.87653202795562	Accessory	3.32507082538684	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_2102	408	0.5784	Geridu	4.00838572588376	Core	1.69213638524269	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_2119	240	0.575	Geridu	4.54547641091876	Core	1.91886872900242	0	WP_002966406	COG2841	0	S	Uncharacterized conserved protein YdcH, DUF465 family	YdcH			1ZHC
+group_2132	705	0.5404	Geridu	4.1769907391477	Core	1.76331283810648	0	WP_002966482	COG3683	0	R	ABC-type uncharacterized transport system, periplasmic component				
+group_2269	1236	0.5477	Geridu	4.06441475761961	Core	1.71578898998528	0	WP_004682068	COG1653	0	G	ABC-type glycerol-3-phosphate transport system, periplasmic component	UgpB			2Z8D
+group_2275	363	0.4904	Geridu	4.43497295680683	Core	1.87221979644327	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_2352	282	0.4858	Geridu	5.38421949479549	Accessory	2.27294335833105	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_2525	390	0.4718	Geridu	4.16265058144094	Core	1.7572591535848	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_2603	504	0.5357	Geridu	6.1404633830528	Accessory	2.59219102733014	0.00198412698412698	WP_005969858	COG0616	1	O	Periplasmic serine protease, ClpP class	SppA			3BEZ
+group_2603	504	0.5357	Geridu	6.1404633830528	Accessory	2.59219102733014	0.00198412698412698	WP_005969858	COG3004	1	CP	Na+/H+ antiporter NhaA	NhaA		25746996	1ZCD
+group_3629	960	0.5562	Geridu	4.26056463935915	Core	1.79859348400122	0	WP_002967147	COG0715	0	P	ABC-type nitrate/sulfonate/bicarbonate transport system, periplasmic component	TauA			2X26
+group_3635	195	0.5538	Geridu	4.1661630547738	Core	1.75874194100476	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_3743	555	0.564	Geridu	4.18146044241469	Core	1.76519971927175	0	WP_004682002	COG0450	0	V	Alkyl hydroperoxide reductase subunit AhpC (peroxiredoxin)	AhpC			2RII
+group_3807	1365	0.548	Geridu	5.45967767774015	Accessory	2.30479796156957	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_3826	348	0.4828	Geridu	4.42451466331037	Core	1.8678048373642	0	WP_004684095	COG0640	0	K	DNA-binding transcriptional regulator, ArsR family	ArsR			3F6V
+group_3827	528	0.4981	Geridu	4.20779712709086	Core	1.77631772673282	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_3846	399	0.594	Geridu	4.05642631096055	Core	1.71241667450025	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_3882	882	0.5544	Geridu	4.04435610528957	Core	1.70732124816407	0	WP_005971225	COG1175	0	G	ABC-type sugar transport system, permease component	UgpA			3FH6
+group_3903	735	0.5401	Geridu	4.16295461448213	Core	1.75738750085636	0	WP_002966603	COG2188	0	K	DNA-binding transcriptional regulator, GntR family	MngR			2WV0
+group_3974	444	0.5811	Geridu	4.05252818182302	Core	1.71077108283341	0	WP_004683411	COG1051	1	F	ADP-ribose pyrophosphatase YjhB, NUDIX family	YjhB			3GZ5
+group_3982	453	0.5629	Geridu	4.14589501285741	Core	1.75018580556029	0	WP_002966676	COG3427	0	C	Carbon monoxide dehydrogenase subunit CoxG	CoxG			2NS9
+group_3985	372	0.5591	Geridu	4.07560057495148	Core	1.72051107258918	0	WP_004684435	COG0346	0	Q	Catechol 2,3-dioxygenase or related enzyme, vicinal oxygen chelate (VOC) family	GloA		11830595	3R4Q
+group_4009	1212	0.5668	Geridu	4.28130947432424	Core	1.80735089719717	0	WP_004681714	COG0683	0	E	ABC-type branched-chain amino acid transport system, periplasmic component	LivK			1USG
+group_4042	708	0.5438	Geridu	4.61984479436004	Core	1.95026327437265	0	WP_002971235	COG0847	0	L	DNA polymerase III, epsilon subunit or related 3'-5' exonuclease	DnaQ			1J53
+group_4084	288	0.5417	Geridu	4.22985180727564	Core	1.78562808989587	0	WP_002964887	COG5425	0	S	Usg protein (tryptophan operon, function unknown)	Usg			
+group_4095	285	0.5544	Geridu	4.08298840031285	Core	1.72362983634015	0	WP_002967394	COG2337	0	V	mRNA-degrading endonuclease MazF, toxin component of the MazEF toxin-antitoxin module	MazF			2MF2
+group_4134	393	0.5089	Geridu	22.3010599353171	Accessory	9.41437215045168	0.0127226463104326	WP_005970228	COG3293	0	X	Transposase				
+group_50	363	0.6006	Geridu	4.09350526484719	Accessory	1.72806952112955	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_538	762	0.5512	Geridu	4.22935468308212	Core	1.78541822937012	0	WP_004681283	COG1922	0	M	UDP-N-acetyl-D-mannosaminuronic acid transferase, WecB/TagA/CpsF family	WecG			
+group_617	285	0.5158	Geridu	4.84144852555971	Core	2.04381308776688	0	NA	NA	NA	NA	NA	NA	NA	NA	NA
+group_662	462	0.5779	Geridu	4.89617164688813	Core	2.06691440361978	0	WP_004691907	COG0054	0	H	6,7-dimethyl-8-ribityllumazine synthase (Riboflavin synthase beta chain)	RibE	Riboflavin/FAD biosynthesis		1C2Y
+group_802	1029	0.5112	Geridu	4.21808209422816	Core	1.78065951624715	0	WP_004681353	COG2207	1	K	AraC-type DNA-binding domain and AraC-containing proteins	AraC			1BL0
+hcaB_2	477	0.543	Geridu	4.34358590720696	Core	1.83364083664673	0	WP_012093398	COG1028	0	I	NAD(P)-dependent dehydrogenase, short-chain alcohol dehydrogenase family	FabG	Fatty acid biosynthesis		6L1H
+hslV	555	0.5964	Geridu	4.15859969640981	Core	1.75554907615653	0	WP_004686729	COG5405	0	O	ATP-dependent protease HslVU (ClpYQ), peptidase subunit	HslV			5JI3
+macB_2	801	0.588	Geridu	4.69214331181726	Core	1.98078402770198	0	WP_004686311	COG0577	2	V	ABC-type antimicrobial peptide transport system, permease component	SalY			
+rimM	570	0.5807	Geridu	4.75686915035486	Core	2.00810798151899	0	WP_002964983	COG0806	0	J	Ribosomal 30S subunit maturation factor RimM, required for 16S rRNA processing	RimM	16S rRNA modification		2QGG
+tuf_1	1176	0.5842	Geridu	4.51867339306423	Accessory	1.90755385941462	0	WP_002970090	COG0050	0	J	Translation elongation factor EF-Tu, a GTPase	TufA	Translation factors		1EFU
+ubiE	810	0.5679	Geridu	4.28598262655842	Core	1.80932366415873	0	WP_002965588	COG2226	0	H	Ubiquinone/menaquinone biosynthesis C-methylase UbiE/MenG	UbiE	Biotin biosynthesis		4OBW
+wbkC	780	0.4513	Geridu	4.39190066823594	Core	1.85403686903291	0	WP_002963675	COG0223	0	J	Methionyl-tRNA formyltransferase	Fmt			1FMT

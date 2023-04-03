@@ -112,7 +112,7 @@ assemblyMapping %>% mutate(Length = as.numeric(gsub(".*length_|_.*","", CHROM)))
 histPlot <- assemblyMapping %>% ggplot(aes(x = GCCorrected)) + 
 	geom_rect(inherit.aes = F,data = summarizedResults,
 		  aes(ymin = -Inf, ymax = Inf, xmin = MeanCov - 2 * SD, xmax =  MeanCov + 2 * SD), fill = "black", alpha = 0.5) +
-	geom_histogram(fill = colour[1], colour = "black") +
+	geom_histogram(fill = colour[1], colour = "black", bins = 100) +
 	geom_vline(xintercept = summarizedResults$MeanCov, lty = 2) +
 	xlab("Mean Read Depth") + ylab("Contigs")
 	#scale_x_break(breaks = c(35,45), space = 1)
