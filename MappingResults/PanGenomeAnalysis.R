@@ -117,8 +117,6 @@ metaData <- read.delim("MetadataAll.tab", header =T) %>% as_tibble
 
 ann_colors <- list(ST = c("5" = colour[3], "7" = colour[15], "8" = colour[10], "9" = colour[9], "10" = colour[6], "11" = colour[17], "12" = colour[8], "39" = colour[13], "40" = colour[2], "41" = colour[16], "42" = colour[7], "43" = colour[4], "71" = colour[11], "88" = colour[12], "102" = colour[19],"Brancorsini" = colour[1], "NF" = colour[20], "NIPH" = colour[22]),
 	Norway = c("Normal" = "#00205B" , "Odd" = "#BA0C2F", "Other" = "#FFFFFF"))
-#ann_colors <- list(ST = c("5" = colour[3], "7" = colour[15], "8" = colour[10], "9" = colour[9], "10" = colour[6], "11" = colour[17], "12" = colour[8], "39" = colour[13], "40" = colour[2], "41" = colour[16], "42" = colour[7], "43" = colour[4], "71" = colour[11], "88" = colour[12], "102" = colour[19], "Geridu" = colour[5],"Brancorsini" = colour[1], "NF" = colour[20], "NIPH" = colour[22]),
-#	Norway = c("Normal" = "#00205B" , "Odd" = "#BA0C2F", "Other" = "#FFFFFF"))
 
 ############ Let's get the Depths ###########
 op <- pboptions(type = "timer")
@@ -151,17 +149,17 @@ GCCorrected <- lapply(split(GCBiased, GCBiased$Genome), function(x)CorrectingGC(
 depthDf <- depthDf %>% full_join(GCCorrected %>% select(Genome,Gene, GCCorrected)) %>% mutate(GCCorrected = replace(GCCorrected, is.na(GCCorrected), 0))
 
 # Properly naming the samples
-depthDf <- depthDf %>% mutate(Genome = ifelse(grepl("Brancorsini", Genome), "Brancorsini", "Geridu"))
+#depthDf <- depthDf %>% mutate(Genome = ifelse(grepl("Brancorsini", Genome), "Brancorsini", "Geridu"))
 
 # Testing the limits of the detection thresholds
-tmp <- depthDf %>% filter(Genome == "Brancorsini")
-covThresh <- tmp %>% filter(GCCorrected > 0) %>% pull(GCCorrected) %>% quantile(probs = seq(0,0.5,0.05))
-CVThresh <- tmp %>% pull(CV) %>% quantile(probs = seq(0,0.9,0.1))
+#tmp <- depthDf %>% filter(Genome == "Brancorsini")
+covThresh <- depthDf %>% filter(GCCorrected > 0) %>% pull(GCCorrected) %>% quantile(probs = seq(0,0.5,0.05))
+CVThresh <- depthDf %>% pull(CV) %>% quantile(probs = seq(0,0.9,0.1))
 CVThresh <- c(CVThresh, 1.5)
 
 threshTests <- pblapply(covThresh, cl = 8, function(x){
 	       lapply(CVThresh, function(y){
-			      numGenes <- tmp %>% filter(GCCorrected >= x, CV <= y) %>% nrow()
+			      numGenes <- depthDf %>% filter(GCCorrected >= x, CV <= y) %>% nrow()
 			      df <- tibble(x, y, numGenes)
 			      return(df)
 }) %>% bind_rows()
@@ -182,17 +180,10 @@ coreGenes <- rowSums(roaryOutput[,-1]) >= floor(0.99 * ncol(roaryOutput))
 coreGenes <- roaryOutput$Gene[coreGenes]
 
 ######### Looking for the inflection Point ##############
-#CVSearch <- lapply(seq(0,5,0.5), function(x) depthDf %>% filter(GCCorrected > 0, CV <= x) %>% group_by(Genome) %>% count(Genome, name = as.character(x))) %>%
-#	reduce(full_join, by = "Genome") %>% pivot_longer(-Genome, names_to = "CV", values_to = "Genes") %>%
-#       	mutate(Genes = replace(Genes, is.na(Genes), 0),DiffGenes = diff(c(0, Genes)), CV = as.numeric(CV))
-
 CVSearchBran <- lapply(seq(0,5,0.5), function(x) depthDf %>% filter(Genome == "Brancorsini", CV <= x) %>% count(Genome, name = as.character(x))) %>%
        	reduce(full_join, by = "Genome")
 
-CVSearchGeridu <- lapply(seq(0,5,0.5), function(x) depthDf %>% filter(Genome != "Brancorsini", CV <= x) %>% count(Genome, name = as.character(x))) %>%
-       	reduce(full_join, by = "Genome")
-
-CVSearch <- CVSearchBran %>% bind_rows(CVSearchGeridu) %>%  group_by(Genome) %>% 
+CVSearch <- CVSearchBran %>% 
 	pivot_longer(-Genome, names_to = "CV", values_to = "Genes") %>%
        	mutate(Genes = replace(Genes, is.na(Genes), 0),DiffGenes = diff(c(0, Genes)), CV = as.numeric(CV))
 
@@ -216,12 +207,6 @@ CVSearch %>% ggplot(aes(x = CV, y = Genes, colour = Genome, group = Genome)) +
 	theme(legend.position = "bottom") + 
 	guides(colour = guide_legend(title = "Sample"))
 
-########### Saving the genes that failed slightly...###########
-slightFail <- depthDf %>% filter(CV > 1.5 & CV <= 2)
-corsiniSlight <- slightFail %>% filter(Genome == "Brancorsini", GCCorrected >= 10)
-geriduSlight <- slightFail %>% filter(Genome != "Brancorsini", GCCorrected >= 1)
-
-corsiniSlight %>% bind_rows(geriduSlight) %>% write.table("SlightFail.tab", sep = "\t", row.names =F, quote = F)
 ########### Some basic Coverage Data  ###############
 HistRect <- depthDf %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% group_by(Genome) %>%
        	filter(CV <= 1.5) %>% summarize(Mean = mean(GCCorrected), SD2 = 2*sd(GCCorrected))
@@ -249,30 +234,20 @@ histPlotBran <- depthDf %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", 
 	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10))
 	#theme(axis.title.x = element_blank(), axis.text.x = element_blank())
 
-histPlotGer <- depthDf %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% filter(Genome != "Brancorsini") %>% filter(CV <= 1.5) %>%
-       	mutate(Status = factor(Status, levels = c("Core","Accessory"))) %>%
-	ggplot(aes(x = GCCorrected, fill = Status)) + 
-	geom_rect(data = HistRect %>% filter(Genome != "Brancorsini"), inherit.aes = F, aes(xmin = ifelse(Mean - SD2 >= 0,Mean - SD2,0) , xmax = Mean + SD2, ymin = -Inf, ymax = Inf), colour = "black", lty = 1, alpha = 0.5) +
-	geom_histogram(position = "identity", alpha = 0.75, colour = "black", binwidth = 1) +
-	geom_vline(data = HistRect %>% filter(Genome != "Brancorsini"), aes(xintercept = Mean), colour = "black", lty = 2) +
-	#geom_vline(xintercept = CorsiniRect$Mean, colour = "purple", lty = 2) +
-	scale_fill_manual(values = c(Accessory = "#028090",Core = "#1b998b")) +
-	#scale_fill_manual(values = c(Accessory = "#007dba",Core = "#1b998b")) +
-	xlab("Mean Read Depth") + ylab("Genes") + theme(legend.position = "bottom") + 
-	scale_x_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0,50)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0,1300))
+# Core genes found in ancient sample
+genesAncient <- depthDf %>% filter(CV <= 1.5, GCCorrected >= 10) %>% pull(Gene)
+length(coreGenes) - sum(coreGenes %in% genesAncient)
 
 # Some quick t-tests
 tmp <- depthDf %>% filter(Genome == "Brancorsini") %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% 
 	filter(CV <= 1.5, GCCorrected >= 10)
 t.test(tmp %>% filter(Status == "Core") %>% pull(GCCorrected), tmp %>% filter(Status != "Core") %>% pull(GCCorrected))
 
-##########################################
-### Seeing the Number of Rescued Genes ###
-##########################################
+##### Seeing the Number of Rescued Genes #####
 GCPlots <- lapply(split(GCBiased, GCBiased$Genome), function(x)CorrectingGC(x))
 
-covThresh <- c("Brancorsini" = 10, "Geridu" = 1)
-covThreshDf <- data.frame("Genome" = c("Brancorsini", "Geridu"), Cov = c(10,1))
+covThresh <- c("Brancorsini" = 10)
+covThreshDf <- data.frame("Genome" = c("Brancorsini"), Cov = c(10,1))
 
 GCRescue <- depthDf %>% group_by(Genome) %>% filter(CV <= 1.5) %>% select(Genome,Gene, MeanCoverage, GCCorrected, GC) %>%
 	rowwise() %>%# This is for plotting only the regions that matter
@@ -312,14 +287,13 @@ ggsave(file = "FixedGCRescue.png", width = 9, height = 6)
 # Gene Presence table
 Corsini <- depthDf %>% filter(Genome == "Brancorsini", CV <= 1.5, GCCorrected >= 10) %>% select(-c(CV,MeanCoverage,sdCoverage, PercentCoverage, Genome)) %>%
 	mutate(.keep = "unused", Brancorsini = GCCorrected)
-Geridu <- depthDf %>% filter(Genome == "Geridu", CV <= 1.5, GCCorrected >= 1) %>% select(-c(CV,MeanCoverage,sdCoverage, PercentCoverage, Genome)) %>% 
-	mutate(.keep = "unused", Geridu = GCCorrected)
+
+# Reading in the Contig mapping results
+contigCoverages <- read.delim("../contigCoverage.tab", header = T) %>% as_tibble()
+t.test(Corsini$Brancorsini, contigCoverages$GCCorrected)
 
 AllPA <- roaryOutput %>% left_join(Corsini %>% select(-c(Length, GC))) %>%
-#AllPA <- roaryOutput %>% left_join(full_join(Corsini, Geridu) %>% select(-c(Length, GC))) %>% # Removing Geridu
        	mutate(Brancorsini = ifelse(is.na(Brancorsini)|Brancorsini == 0, 0,1))
-       	#mutate(Brancorsini = ifelse(is.na(Brancorsini)|Brancorsini == 0, 0,1),
-	#Geridu = ifelse(is.na(Geridu)|Geridu == 0, 0,1)) 
 
 # Merging the Corsini and Geridu Data
 ancientOnly <- Corsini %>% 
@@ -327,38 +301,11 @@ ancientOnly <- Corsini %>%
 	mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>%
        	inner_join(depthDf %>% select(Gene, GC) %>% distinct())
 
-# Getting as much information as possible on the missing core genes
-coreGenesMissingBrancorsini <- depthDf %>% left_join(read.delim("../BlastResults/COGClassified90/Pangenome.tab"), by = c("Gene" = "Query")) %>% rename(COGGene = Gene.y) %>% 
-	filter(Gene %in% coreGenes[!(coreGenes %in% Corsini$Gene)], Genome == "Brancorsini")# %>% mutate(Gene = replace(Gene, grepl("group_", Gene), COGGene))
-coreGenesMissingBrancorsini$Gene <- apply(coreGenesMissingBrancorsini, MARGIN = 1, function(x){
-	      if(grepl("group_",x[2])){
-		      return(x[15])
-	      }else{
-		      return(x[2])
-	      }
-	})
-
-#coreGenesMissingGeridu <- depthDf %>% left_join(read.delim("../BlastResults/COGClassified90/Pangenome.tab"), by = c("Gene" = "Query")) %>% rename(COGGene = Gene.y) %>% 
-#	filter(Gene %in% coreGenes[!(coreGenes %in% Corsini$Gene)], Genome == "Geridu")# %>% mutate(Gene = replace(Gene, grepl("group_", Gene), COGGene))
-#coreGenesMissingGeridu$Gene <- apply(coreGenesMissingGeridu, MARGIN = 1, function(x){
-#	      if(grepl("group_",x[2])){
-#		      return(x[15])
-#	      }else{
-#		      return(x[2])
-#	      }
-#	})
-coreGenesMissingBrancorsini$Gene %>% write.table("CoreMissing/CoreMissingCorsiniCV15.list", col.names = F, row.names =F, quote =F)
-#coreGenesMissingGeridu$Gene %>% write.table("CoreMissing/CoreMissingGeriduCV15.list", col.names = F, row.names =F, quote = F)# Now to make a boxplot to compare our gene to everyone else
-
-rm(coreGenesMissingGeridu, coreGenesMissingBrancorsini)
-
 tmp <- AllPA %>% select(-Gene) %>% summarize_all(sum) %>% t() %>% as.data.frame()
 tmp$Genome <- rownames(tmp)
 geneCounts <- tmp %>% as_tibble() 
 geneCounts <- geneCounts %>% left_join(MLSTResults)
 colnames(geneCounts)[1] <- "Genes"
-geneCounts %>% filter(grepl("Brancorsini|Geridu", Genome))
-geneCounts %>% filter(!grepl("Brancorsini|Geridu", Genome)) %>% summarize(mean(Genes))
 geneCounts %>% filter(!grepl("Brancorsini|Geridu", Genome)) %>% ggplot(aes(y = Genes, x ="", color = ST)) +
        	geom_boxplot(colour = "black") + 
 	#geom_jitter(height = 0) +
@@ -368,25 +315,12 @@ geneCounts %>% filter(!grepl("Brancorsini|Geridu", Genome)) %>% ggplot(aes(y = G
 	guides(colour = guide_legend(title = "Sample"))
 ggsave("GeneCountsBmelFixed.png", width = 6, height = 9)
 
-# How many overlapping genes?
-#foundGenesList <- list("Brancorsini" =Corsini$Gene, "Geridu-1" = Geridu$Gene)
-#ggvenn(foundGenesList, fill_color = c(colour[1], colour[5]))
-#ggsave("FoundGenesVenn.pdf", height= 6, width = 6)
-
-##############################
-### Core Gene Scatter Plot ###
-##############################
+##### Core Gene Scatter Plot #####
 depthDf %>% filter(Genome == "Brancorsini", Gene %in% coreGenes) %>%
 	ggplot(aes(y = CV, x = GCCorrected)) + geom_point() +
 	geom_vline(xintercept = 10, lty =2 , colour = "red") +
 	geom_hline(yintercept = 1.5, lty = 2, colour = "red") 
 
-#depthDf %>% filter(Genome != "Brancorsini", Gene %in% coreGenes) %>%
-#	ggplot(aes(y = CV, x = GCCorrected)) + geom_point() +
-#	geom_vline(xintercept = 1, lty =2 , colour = "red") +
-#	geom_hline(yintercept = 1.5, lty = 2, colour = "red")
-
-#####################################################################
 # Going to do this in a more sane way
 coreDf <- AllPA %>% filter(Gene %in% coreGenes)
 
@@ -431,9 +365,7 @@ pCore <- coord %>%
 pCore
 ggsave(pCore, file = "PCoACoreSept2022.pdf", width = 6, height = 4)
 
-#################################
-### Accessory Genome Analysis ###
-#################################
+##### Accessory Genome Analysis #####
 accessDf <- AllPA %>% filter(!(Gene %in% coreGenes))
 
 # Preparing the data
@@ -589,9 +521,7 @@ coord %>% select(Genome, clusters) %>% write.table(file = "GenomeAccessClustered
 
 rm(clusterColoursTmp, NIPHUniqueClust3, notWmed, p1Clusts, p2clutss, tmp, tmp2, tmp3, uniqueAfAmGenes, tmpColours, ind, maxCount, coord, contrib, colour, coreColours, clustered, clusteredResults, annotationHeat, ann_colorsHeat, afAm, accessDataSub, accessData)
 
-################################################
-### Let's take a look at the Virulence Genes ###
-################################################
+##### Let's take a look at the Virulence Genes #####
 # These are all coming from the Głowacka et al. 2018 paper Brucella - Virulence Factors, Pathogenesis and Treatment
 identifiedCOGGenes <- read.delim("../BlastResults/COGClassified90/Pangenome.tab") %>% as_tibble()
 
@@ -666,9 +596,7 @@ p1 <- coord %>%
 
 p1
 
-################################################
-# Now to do to the SNP heterozygosity analysis #
-################################################
+##### Now to do to the SNP heterozygosity analysis #####
 ancientOnly %>% group_by(Sample) %>% summarize(sum(Length)) # What's our estimated genome lengths?
 ancientOnly <- ancientOnly %>% group_by(Sample) %>% mutate(CopyNumber = MeanCoverage/mean(MeanCoverage))
 geneLengths <- gcContent %>% select(-GC)
@@ -845,9 +773,7 @@ xtable(as.data.frame(virCatSummarized)) %>% print(file = "VirulenceGenesSummariz
 write.csv(file = "VirulenceGenesSummarize.csv", virCatSummarized, row.names = F, quote = F)
 write.table(unique(c(fromCOGName, fromGeneName)), file = "../VirulenceGenes.list", quote = F, row.names = F, col.names = F)
 
-###################################
-### Now to search the AMR Genes ###
-###################################
+##### Now to search the AMR Genes #####
 
 cardBlastnucl <- BlastParsing("AMRData/NuclearBlast.tab", 7) %>% rename(Gene = Query) %>%
        	separate(Match, into = c("DB", "NCBI Accession", "Strand", "Location", "ARO", "AROGene"), sep = "\\|") %>% mutate(ARO = gsub("ARO:","", ARO))
@@ -879,9 +805,7 @@ cardBlastnucl <- cardBlastnucl %>% select(Gene, ARO, AROGene, PIdent, Evalue) %>
 ancientAMR <- ancientOnly %>% inner_join(cardBlastnucl) %>% select(Sample, Gene, MeanCoverage, Name, AROGene)
 xtable(ancientAMR) %>% print(file = "AMRTable.tex", include.rownames = F)
 
-################
-# Finally, looking at the core genes which were absent. What's their COG Functions?
-################
+##### Finally, looking at the core genes which were absent. What's their COG Functions?####
 cogDefinitions <- read.delim("../BlastResults/fun-20.tab", header =F , col.names = c("ID", "Colour", "Function"))
 cogDefList <- as.list(cogDefinitions %>% pull(Function))
 names(cogDefList) <- cogDefinitions$ID

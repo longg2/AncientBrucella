@@ -2,8 +2,8 @@ library(NELSI)
 library(lubridate)
 library(phytools)
 
-trName <- 'AssemblyMLTrees/WMedDiff.boottrees'
-datesName <- '../BruceDates.tab'
+trName <- 'AssemblyMLTrees/GlobalReview.boottrees'
+datesName <- '../BruceDatesUpdated.tab'
 
 tr1 <- read.tree(trName)
 dates1 <- read.table(datesName, head = F, stringsAsFactors = F)
@@ -49,20 +49,20 @@ for(i in 1:length(tr1)){
     if(is.na(tMRCA[i])) stop("Check")
     datedTrees[[i]] <- read.nexus('resultTemp.date.nexus')
 }
-write.nexus(datedTrees, file = 'datedBootAssemblyWMedDiff.nexus')
+write.nexus(datedTrees, file = 'datedBootAssemblyGlobalReview.nexus')
 system("rm -rf tmp.wdates.tree outdateTemp.date resultTemp.date.nexus resultTemp* temp*")
 
 # Creating the Target Tree!
-mltree <- read.tree("AssemblyMLTrees/WMedDiff.treefile")
+mltree <- read.tree("AssemblyMLTrees/GlobalReview.treefile")
 #mltree <- read.tree("NewMLTrees/WMed.treefile")
 mltree$tip.label <- gsub('[.].+', '', mltree$tip.label)
 mltree$tip.label <- dates1$newname[match(mltree$tip.label, dates1$V1)]
 mltree <- root(mltree, outgroup = outgroupLabel, resolve.root = T)
-write.nexus(mltree, file = "WMedWithWdatesDiff.nexus")
+write.nexus(mltree, file = "GlobalREviewWithWdates.nexus")
 
 #system('~/Applications/BEASTv1.10.4/bin/treeannotator -heights mean datedBoot.nexus datedBootSummaryTree.nexus')
 #system('~/Applications/BEASTv1.10.4/bin/treeannotator -heights mean -target WMedWithWdates.nexus datedBoot.nexus WMedSummary.nexus')
-system('~/Applications/BEASTv1.10.4/bin/treeannotator -heights mean -target WMedWithWdatesDiff.nexus datedBootAssemblyWMedDiff.nexus NewMLTrees/WMedSummaryDiff.nexus')
+system('~/Applications/BEASTv1.10.4/bin/treeannotator -heights mean -target GlobalReviewWithWdates.nexus datedBootAssemblyGlobalReview.nexus AssemblyMLTrees/GlobalReviewSummary.nexus')
 
 cat("Rate:", quantile(rates, c(0.5, 0.025, 0.975)), "\n")
 cat("tMRCA:", quantile(tMRCA, c(0.5, 0.025, 0.975)), "\n")
