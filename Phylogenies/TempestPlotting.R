@@ -2,17 +2,21 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(ggtree)
-library(phangorn)
-library(treeio)
 library(ggpubr)
 library(ggstance)
 library(ggnewscale)
-library(phytools)
-library(ape)
 library(gtools)
-library(lubridate)
+library(latex2exp)
 
 # For the colours
+pvalText <- function(pval){
+
+	if(pval < 0.001){
+		return(paste0("$p < ", 0.001, "$"))
+	}else{
+		return(paste0("$p = ", round(pval, 3), "$"))
+	}
+}
 colour <- c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6',
 '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3',
 '#808000', '#ffd8b1', '#000075', '#808080', '#f0f0ff', '#000000')
@@ -88,17 +92,16 @@ tempPlots <- lapply(sepDat, function(x){
 		scale_shape_manual(values = c("Modern" = 16, "Reference" = 15, "Ancient" = 17), name = "Sequence Type") + 
 		theme(legend.position = "bottom") +
 		guides(colour = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5), shape = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5, title = "Sample")) 
-	# Now to calculated the model
+	# Now to calculate the model
 
-	model <- lm(distance ~date, data = x) 
+	model <- lm(distance ~date, data = x %>% filter(Type != "Ancient")) 
 	r2 <- round(summary(model)$adj.r.squared,3)
 	tmp <- summary(model)$fstatistic
-	pval <- round(pf(tmp[1],tmp[2],tmp[3], lower.tail = F),3)
+	pval <- pvalText(pf(tmp[1],tmp[2],tmp[3], lower.tail = F))
 
-	tempPlot <- tempPlot + annotate(geom = "text", x = xloc, y = yloc, label = bquote(R[adj]^2 == .(r2))) +
-		annotate(geom = "text", x = xloc, y = yloc * 0.99, label = bquote(P == .(pval))) 
-		#scale_x_continuous(breaks = scales:::pretty_breaks(n = 10)) +
-		#scale_y_continuous(breaks = scales:::pretty_breaks(n = 10)) 
+	tempPlot <- tempPlot +
+	       	annotate(geom = "text", x = xloc, y = yloc, label = TeX(paste0("$R^2_{adj} =", r2, "$"))) +
+		annotate(geom = "text", x = xloc, y = yloc * 0.99, label = TeX(pval)) 
 
 })
 

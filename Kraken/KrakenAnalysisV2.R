@@ -74,8 +74,6 @@ KrakenAnalysis <- function(profile_grouped, noise = 0.01){
 
 theme_set(theme_classic())
 ############
-###Kraken###
-############
 # Getting the files of interest
 report_files <- list.files(path ="CombinedReports", full.names = T)
 ranked = "^F$"
@@ -94,9 +92,7 @@ krakentable <- krakentable %>% pivot_longer(c(everything(), -Taxon)) %>% group_b
 	pivot_wider(Taxon)
 krakenProp <- KrakenAnalysis(krakentable, 0.01)
 
-########################################
-### Preparing the Proportional Data ####
-########################################
+### Preparing the Proportional Data
 #Sample Translations
 krakenabund <- krakentableCount %>% filter(Taxon %in% unique(krakenProp$Taxon)) %>% pivot_longer(c(everything(), -Taxon), names_to = "Sample") %>% group_by(Sample) %>%
 	summarize(Abundance = sum(value, na.rm = T))
@@ -123,9 +119,7 @@ fam <- plotDf %>%
 ggsave(fam,file = "Kraken2Family0.012.pdf", width = 9, height = 6)
 fam
 
-#############
-### Genus ###
-#############
+#### Genus ####
 ranked = "^G$"
 tmp <- lapply(report_files, function(x){KrakenParsingProp(x,ranked)})
 krakentable <- as_tibble(reduce(tmp, by = "Taxon",full_join))
@@ -137,9 +131,7 @@ krakentable <- krakentable %>% pivot_longer(c(everything(), -Taxon)) %>% group_b
 	pivot_wider(Taxon)
 krakenProp <- KrakenAnalysis(krakentable, 0.01)
 
-########################################
-### Preparing the Proportional Data ####
-########################################
+### Preparing the Proportional Data 
 krakenabund <- krakentableCount %>% filter(Taxon %in% unique(krakenProp$Taxon)) %>% pivot_longer(c(everything(), -Taxon), names_to = "Sample") %>% group_by(Sample) %>%
 	summarize(Abundance = sum(value, na.rm = T))
 
@@ -165,9 +157,7 @@ gen <- plotDf %>%
        	ylab("Abundance") + theme(legend.position = "bottom")
 gen
 ggsave(gen,file = "Kraken2Genus.pdf", width = 6, height = 4)
-###############
-### Species ###
-###############
+#### Species ####
 ranked = "^S$"
 tmp <- lapply(report_files, function(x){KrakenParsingProp(x,ranked)})
 krakentable <- as_tibble(reduce(tmp, by = "Taxon",full_join))
@@ -179,9 +169,7 @@ krakentable <- krakentable %>% pivot_longer(c(everything(), -Taxon)) %>% group_b
 	pivot_wider(Taxon)
 krakenProp <- KrakenAnalysis(krakentable, 0.01)
 
-########################################
-### Preparing the Proportional Data ####
-########################################
+### Preparing the Proportional Data 
 krakenabund <- krakentableCount %>% filter(Taxon %in% unique(krakenProp$Taxon)) %>% pivot_longer(c(everything(), -Taxon), names_to = "Sample") %>% group_by(Sample) %>%
 	summarize(Abundance = sum(value, na.rm = T))
 # What are we looking at specifically
