@@ -12,6 +12,15 @@ library(lme4)
 library(emmeans)
 library(latex2exp)
 
+pvalText <- function(pval){
+
+	if(pval < 0.001){
+		return(paste0("$p < ", 0.001, "$"))
+	}else{
+		return(paste0("$p = ", round(pval, 3), "$"))
+	}
+}
+
 RateParsing <- function(fileName){
 	tallyName <- gsub(".*\\/","",gsub("\\/Stats_out_.*","", fileName))
 	tallyName <- gsub("_.*", "", tallyName)
@@ -209,13 +218,10 @@ colour = c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#4
 #colour <- c("#2e294e", "#f8333c", "#007dba", "#1b998b", "#34d1bf")
 
 colourList <- c("Human" = colour[4], "Brucella melitensis" = colour[1])
-#colourList <- c(`Human - Brancorsini` = colour[22], `Brucella melitensis - Brancorsini` = colour[1],`Human - Geridu` = colour[4], `Brucella melitensis - Geridu` = colour[5])
-#colourList <- c(`Human - Brancorsini` = "#007dba", `Brucella melitensis - Brancorsini` = "#f8333c",`Human - Geridu` = "#1b998b", `Brucella melitensis - Geridu` = "#34d1bf")
 ############# Readcounts ##########
 files <- list.files(path = "FLD", full.names = T)
 fld <- as_tibble(reduce(lapply(files, function(f){FLDParsing(f)}), bind_rows))
 fld <- fld %>% filter(!grepl("Nodule1", Sample)) %>% mutate(Sample = ifelse(Sample == "Brancorsini", "Brucella melitensis", "Human"))
-#fld <- fld %>% mutate(Sample = replace(Sample, Sample == "Brancorsini", "Brucella melitensis - Brancorsini"), Sample = replace(Sample, Sample == "Nodule1", "Brucella melitensis - Geridu"), Sample = replace(Sample, Sample == "HumanBrancorsini", "Human - Brancorsini"), Sample = replace(Sample, Sample == "HumanNodule1", "Human - Geridu"))
 fld %>% group_by(Sample,Length) %>% summarize(Reads = sum(Reads)) %>% summarize(MeanLength = mean(rep(Length, Reads)), SD = sd(rep(Length,Reads)))
 
 MedianLength <- fld %>% group_by(Sample,Length) %>% summarize(Reads = sum(Reads)) %>% summarize(Length = median(rep(Length, Reads)))
@@ -232,6 +238,7 @@ fldModel %>% summary()
 rsquaredAdjust <- summary(fldModel)$adj.r.squared
 f <- summary(fldModel)$fstatistic
 pval <- pf(f[1], f[2], f[3], lower.tail = F)
+pvalLab <- pvalText(pval)
 
 BranSlope <- abs(coef(fldModel)["Length"]) # We can rearrange the formula so that it works out
 HumanSlope <- abs(sum(coef(fldModel)[c("Length:SampleHuman","Length")]))
@@ -249,7 +256,7 @@ FLDfigure <- fld %>%
 	xlab("Read Length")  +
 	annotate(geom = "text", x = 90, y = 3e5, label = "Median Read Lengths") +
 	annotate(geom = "text", x = 60, y = 1e2, label = TeX(paste0("$R^2_{adj} = ", round(rsquaredAdjust, 3), "$"))) +
-	annotate(geom = "text", x = 60, y = 3e1, label = TeX(paste0("$p = ", round(pval, 3), "$"))) +
+	annotate(geom = "text", x = 60, y = 3e1, label = TeX(pvalLab)) +
 	annotate(geom = "text", x = 120, y = 1e4, label = "Depurination") +
 	annotate(geom = "text", x = 120, y = 3e3, label = round(BranSlope, 3), colour = colour[1]) +
 	annotate(geom = "text", x = 120, y = 1e3, label = round(HumanSlope, 3), colour = colour[4])

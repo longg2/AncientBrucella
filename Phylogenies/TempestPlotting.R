@@ -106,11 +106,12 @@ tempPlots <- lapply(sepDat, function(x){
 })
 
 ggarrange(plotlist = tempPlots, nrow = 2, ncol = 2, common.legend = T, legend = "bottom", labels = "auto")
-ggsave("IndividualTempestPlots.pdf", width = 9, height = 6)
 
-#################################
-### Now to label via clusters ###
-#################################
+tempPlots[4]
+
+ggsave("WesternMedTempest.pdf", width = 9, height = 6)
+
+#### Now to label via clusters ####
 datGlob <- datGlob %>% left_join(clusterInfo, by = c("tip" = "Genome")) %>%
 	mutate(clusters = ifelse(clusters == 1, "Western Mediterranean",
 				 ifelse(clusters == 2, "Fertile Crescent",
