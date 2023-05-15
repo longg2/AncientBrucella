@@ -149,7 +149,7 @@ CVResults <- CVSearch %>% ggplot(aes(x = CV, y = DiffGenes)) +
 	geom_line() + geom_point() + ylab("New Genes") +
 	geom_vline(xintercept = 1.5, lty = 2, colour = colour[1]) +
 	xlab("CV Threshold") 
-#ggsave(CVResults, "CVSearch.pdf", width = 6, height = 4)
+ggsave(CVResults, "CVSearch.pdf", width = 6, height = 4)
 
 HistRect <- depthDf %>% filter(CV <= 1.5, GCCorrected > 0) %>% summarize(Mean = mean(GCCorrected), SD = sd(GCCorrected))
 
@@ -168,8 +168,19 @@ histPlotBoth <- depthDf %>% filter(CV <= 1.5, GCCorrected > 0) %>%
 	geom_vline(data = HistRect, aes(xintercept = Mean), colour = "black", lty = 2) +
 	xlab("Mean Read Depth") + ylab("Genes") + theme(legend.position = "bottom") + 
 	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) 
+
+#depthSearch <- lapply(20 - seq(0,20,0.5), function(x) depthDf %>% filter(GCCorrected >= x, CV <= 1.5) %>% count(Genome, name = as.character(x))) %>%
+#       	reduce(full_join, by = "Genome") %>% pivot_longer(-Genome, names_to = "Depth", values_to = "Genes") %>%
+#       	mutate(Genes = replace(Genes, is.na(Genes), 0),DiffGenes = diff(c(0, Genes)), Depth = as.numeric(Depth)) %>% filter(Depth < 20)
+#
+#depthResults <- depthSearch %>% ggplot(aes(x = Depth, y = DiffGenes)) +
+#	theme_classic() +
+#	scale_x_reverse(breaks = pretty_breaks(n = 10)) +
+#	geom_point() + geom_smooth(se = F) +ylab("New Genes") +
+#	#geom_vline(xintercept = 1.5, lty = 2, colour = colour[1]) +
+#	xlab("Mean Gene Depth Threshold") 
+
 ggarrange(CVResults, histPlotBoth, labels = "auto", align = "hv")
-ggsave("CVSearch.pdf", width = 6, height = 4)
 
 threshBoth <- lapply(seq(0,5,0.5), function(x){
 		lapply(seq(0,20,0.5), function(y){
@@ -196,6 +207,7 @@ threshBoth %>% ggplot(aes(x = CV, y = Mean, fill = Count)) +
 
 ggsave("ThresholdTest.pdf", width = 12, height = 9)
 
+
 ############# Core Gene Presence #####
 roaryOutput <- as_tibble(read.delim("PresenceAbsence.tab"))
 colnames(roaryOutput)[2:ncol(roaryOutput)] <- gsub("^X|\\.scaffold|\\.genome|\\.result|_genomic", "", colnames(roaryOutput)[2:ncol(roaryOutput)])
@@ -205,6 +217,19 @@ coreGenes <- rowSums(roaryOutput[,-1]) >= floor(0.99 * ncol(roaryOutput))
 coreGenes <- roaryOutput$Gene[coreGenes]
 
 ########### Some basic Coverage Data  ###############
+HistRect <- depthDf %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% group_by(Genome) %>%
+       	filter(CV <= 1.5) %>% summarize(Mean = mean(GCCorrected), SD2 = 2*sd(GCCorrected))
+
+histPlotBoth <- depthDf %>% filter(CV <= 1.5) %>%
+	ggplot(aes(x = GCCorrected, fill = Genome)) +
+	geom_rect(data = HistRect, inherit.aes = F, aes(xmin = ifelse(Mean - SD2 >= 0,Mean - SD2,0) , xmax = Mean + SD2, ymin = -Inf, ymax = Inf), colour = "black", lty = 1, alpha = 0.5) +
+	geom_histogram(position = "identity", alpha = 0.75, colour = "black", binwidth = 1) +
+	geom_vline(data = HistRect, aes(xintercept = Mean), colour = "black", lty = 2) +
+	scale_fill_manual("Samples", values = c(Brancorsini = colour[1], Geridu = colour[5])) + 
+	xlab("Mean Read Depth") + ylab("Genes") + theme(legend.position = "bottom") + 
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) 
+ggsave(histPlotBoth, file = "BothHistogram.pdf", width = 6, height = 4)
+
 histPlotBran <- depthDf %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% filter(Genome == "Brancorsini") %>% filter(CV <= 1.5) %>%
        	mutate(Status = factor(Status, levels = c("Core","Accessory"))) %>%
 	ggplot(aes(x = GCCorrected, fill = Status)) + 
@@ -219,37 +244,68 @@ histPlotBran <- depthDf %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", 
 	#theme(axis.title.x = element_blank(), axis.text.x = element_blank())
 
 # Core genes found in ancient sample
-SD2 <- HistRect$Mean - 2 * HistRect$SD
-SD3 <- HistRect$Mean - 3 * HistRect$SD
-genesAncient <- depthDf %>% filter(CV <= 1.5, GCCorrected >= SD2) %>% pull(Gene)
-length(coreGenes) - sum(coreGenes %in% genesAncient)
-
-genesAncient <- depthDf %>% filter(CV <= 1.5, GCCorrected >= SD3) %>% pull(Gene)
+genesAncient <- depthDf %>% filter(CV <= 1.5, GCCorrected >= 10) %>% pull(Gene)
 length(coreGenes) - sum(coreGenes %in% genesAncient)
 
 # Some quick t-tests
 tmp <- depthDf %>% filter(Genome == "Brancorsini") %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% 
-	filter(CV <= 1.5, GCCorrected >= SD2)
+	filter(CV <= 1.5, GCCorrected >= 10)
 t.test(tmp %>% filter(Status == "Core") %>% pull(GCCorrected), tmp %>% filter(Status != "Core") %>% pull(GCCorrected))
 
-tmp <- depthDf %>% filter(Genome == "Brancorsini") %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% 
-	filter(CV <= 1.5, GCCorrected >= SD3)
-t.test(tmp %>% filter(Status == "Core") %>% pull(GCCorrected), tmp %>% filter(Status != "Core") %>% pull(GCCorrected))
+##### Seeing the Number of Rescued Genes #####
+GCPlots <- lapply(split(GCBiased, GCBiased$Genome), function(x)CorrectingGC(x))
 
-##### Gene Presence table #####
-SD2Genes <- depthDf %>% filter(Genome == "Brancorsini", CV <= 1.5, GCCorrected >= SD2) %>% select(-c(CV,MeanCoverage,sdCoverage, PercentCoverage, Genome)) %>%
-	mutate(.keep = "unused", AncientSD2 = GCCorrected)
+covThresh <- c("Brancorsini" = 10)
+covThreshDf <- data.frame("Genome" = c("Brancorsini"), Cov = c(10,1))
 
-SD3Genes <- depthDf %>% filter(Genome == "Brancorsini", CV <= 1.5, GCCorrected >= SD3) %>% select(-c(CV,MeanCoverage,sdCoverage, PercentCoverage, Genome)) %>%
-	mutate(.keep = "unused", AncientSD3 = GCCorrected)
+GCRescue <- depthDf %>% group_by(Genome) %>% filter(CV <= 1.5) %>% select(Genome,Gene, MeanCoverage, GCCorrected, GC) %>%
+	rowwise() %>%# This is for plotting only the regions that matter
+	mutate(Alpha = ifelse(between(covThresh[Genome], min(MeanCoverage,GCCorrected), max(MeanCoverage,GCCorrected)),1,0.5)) %>% ungroup() %>%
+		pivot_longer(-c(Genome,Gene, GC, Alpha), names_to = "Status", values_to = "MeanDepth") %>%
+		mutate(Status = factor(ifelse("MeanCoverage" == Status, "Before GC Correction", "After GC Correction"), levels = c("Before GC Correction", "After GC Correction"))) 
 
-AllPA <- roaryOutput %>% left_join(SD2Genes %>% select(-c(Length, GC))) %>% left_join(SD3Genes %>% select(-c(Length, GC))) %>%
-       	mutate(AncientSD2 = ifelse(is.na(AncientSD2)|AncientSD2 == 0, 0,1)) %>%
-       	mutate(AncientSD3 = ifelse(is.na(AncientSD3)|AncientSD3 == 0, 0,1))
+GCPlot <- GCRescue %>% filter(Genome == "Brancorsini") %>% ggplot(aes(x = GC, y = MeanDepth, alpha = Alpha)) + 
+	geom_line(aes(group = Gene), arrow = arrow(length = unit(0.25, "cm"))) + geom_point(aes(colour = Status)) +
+	geom_smooth(aes(group = Status, colour = Status), method = "lm") +
+	scale_colour_manual(values = c(colour[6],colour[7])) + 
+	geom_hline(data = covThreshDf, aes(yintercept = 10), lty = 2, colour = "grey60") +
+	scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+	theme(legend.position = "bottom") + xlab("GC Content") + ylab("Mean Read Depth") +
+	guides(alpha = guide_none())
+
+GCRescue %>% group_by(Genome) %>% filter(Alpha == 1) %>% pivot_wider(names_from = Status, values_from = MeanDepth) %>%
+       	rename(Before = `Before GC Correction`, After = `After GC Correction`) %>%
+	group_by(Genome) %>%
+	summarize(Diff = After - Before) %>% count(Diff > 0)
+
+depthDf %>% filter(Genome == "Brancorsini", CV <= 1.5, GCCorrected >= 10) %>%
+       	mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% group_by(Status) %>%
+	summarize(Mean = mean(GCCorrected), Error = qnorm(0.975) * sd(GCCorrected)/sqrt(length(GCCorrected)), CILow = Mean - Error, CIHigh = Mean + Error) %>% 
+	as.data.frame()
+
+lm(MeanDepth ~ GC * Status, GCRescue %>% filter(Genome == "Brancorsini")) %>% summary()
+
+#ggarrange(GCPlots$KayBMel$Plot, dumbbellCor, ncol = 1, labels = "AUTO")
+#ggsave("GCCorrectionGeriduAroundThreshold.pdf", width = 9, height = 6)
+
+#With the Histograms
+#ggsave(file = "~/Documents/University/ComprehensiveExamination/Paper/Figures/BruceCov.pdf", width = 9, height = 6)
+ggsave(file = "FixedGCRescue.png", width = 9, height = 6)
+
+# Gene Presence table
+Corsini <- depthDf %>% filter(Genome == "Brancorsini", CV <= 1.5, GCCorrected >= 10) %>% select(-c(CV,MeanCoverage,sdCoverage, PercentCoverage, Genome)) %>%
+	mutate(.keep = "unused", Brancorsini = GCCorrected)
+
+# Reading in the Contig mapping results
+contigCoverages <- read.delim("../contigCoverage.tab", header = T) %>% as_tibble()
+t.test(Corsini$Brancorsini, contigCoverages$GCCorrected)
+
+AllPA <- roaryOutput %>% left_join(Corsini %>% select(-c(Length, GC))) %>%
+       	mutate(Brancorsini = ifelse(is.na(Brancorsini)|Brancorsini == 0, 0,1))
 
 # Merging the Corsini and Geridu Data
-ancientOnly <- SD3Genes %>% 
-	pivot_longer(cols = AncientSD3, names_to = "Sample", values_to = "MeanCoverage", values_drop_na = T) %>%
+ancientOnly <- Corsini %>% 
+	pivot_longer(cols = Brancorsini, names_to = "Sample", values_to = "MeanCoverage", values_drop_na = T) %>%
 	mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>%
        	inner_join(depthDf %>% select(Gene, GC) %>% distinct())
 
@@ -258,19 +314,19 @@ tmp$Genome <- rownames(tmp)
 geneCounts <- tmp %>% as_tibble() 
 geneCounts <- geneCounts %>% left_join(MLSTResults)
 colnames(geneCounts)[1] <- "Genes"
-geneCounts %>% filter(!grepl("Ancient", Genome)) %>% ggplot(aes(y = Genes, x ="", color = ST)) +
+geneCounts %>% filter(!grepl("Brancorsini|Geridu", Genome)) %>% ggplot(aes(y = Genes, x ="", color = ST)) +
        	geom_boxplot(colour = "black") + 
 	#geom_jitter(height = 0) +
-	geom_point(data = geneCounts %>% filter(grepl("Ancient", Genome)), aes(colour = Genome, x = "")) +
-	scale_colour_manual(values = colour[4:5]) + 
+	geom_point(data = geneCounts %>% filter(grepl("Brancorsini|Geridu", Genome)), aes(colour = Genome, x = "")) +
+	scale_colour_manual(values = ann_colors$ST[names(ann_colors$ST) %in% c("Brancorsini", "Geridu")]) + 
 	theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), axis.title.x = element_blank(), legend.position = "right") +
 	guides(colour = guide_legend(title = "Sample"))
 ggsave("GeneCountsBmelFixed.png", width = 6, height = 9)
 
 ##### Core Gene Scatter Plot #####
-depthDf %>% filter(Gene %in% coreGenes) %>%
+depthDf %>% filter(Genome == "Brancorsini", Gene %in% coreGenes) %>%
 	ggplot(aes(y = CV, x = GCCorrected)) + geom_point() +
-	geom_vline(xintercept = SD3, lty =2 , colour = "red") +
+	geom_vline(xintercept = 10, lty =2 , colour = "red") +
 	geom_hline(yintercept = 1.5, lty = 2, colour = "red") 
 
 # Going to do this in a more sane way
@@ -289,7 +345,6 @@ maxCount <- coreDataSub %>% colSums() %>% max()
 ind <- coreDataSub %>% colSums() == maxCount
 coreDataSub <- coreDataSub[,!ind]
 
-######################################
 # If I want to use a MDS plot
 geneDist <- dist(coreDataSub, method = "binary")
 
@@ -298,7 +353,7 @@ coord <- fit$points %>% as_tibble()
 coord$Genome <- rownames(fit$points)
 contrib <- fit$eig/sum(fit$eig) * 100
 coord <- coord %>% left_join(MLSTResults)
-coord$ST[(nrow(coord)-2):nrow(coord)] <- "Brancorsini"
+coord$ST[(nrow(coord)-1):nrow(coord)] <- c("Brancorsini", "Geridu")
 
 # Quickly filtering the list so that only the STs present are used
 coreColours <- ann_colors$ST[names(ann_colors$ST) %in% coord$ST]
@@ -342,7 +397,7 @@ coord <- fit$points %>% as_tibble()
 coord$Genome <- rownames(fit$points)
 contrib <- fit$eig/sum(fit$eig) * 100
 coord <- coord %>% left_join(MLSTResults)
-coord$ST[grepl("Ancient", coord$Genome)] <- c("Brancorsini")
+coord$ST[coord$Genome %in% c("Brancorsini")] <- c("Brancorsini")
 #coord$ST[coord$Genome %in% c("Brancorsini", "Geridu")] <- c("Brancorsini", "Geridu")
 
 # Clustering based on PCoA Coordinates
@@ -350,7 +405,7 @@ fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "silhouette")
 fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "wss")
 #fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "gap_stat")
 #
-clustered <- clara(coord[,-c(5,6)], 4)
+clustered <- clara(coord[,-c(5,6)], 5)
 
 coord$clusters <- clustered$clustering
 coord  <- coord %>% mutate(clusters = ifelse(clusters == 1, "Western Mediterranean",
@@ -510,7 +565,7 @@ tmp <- apply(tmp, MARGIN = 1,FUN = as.numeric)
 rownames(tmp) <- genomes
 maxCount <- tmp %>% colSums() %>% max()
 colnames(tmp)[which(colSums(tmp) == 324)] %>% write.table("SharedVirGenes.list", col.names = F, row.names =F, quote = F)
-######################################
+
 # If I want to use a MDS plot
 geneDist <- dist(virulenceDataSub, method = "binary")
 
@@ -568,22 +623,6 @@ coreHet <-vcfCorsini %>% filter(Status == "Core") %>% pull(HeteroFrac)
 accessHet <-vcfCorsini %>% filter(Status == "Accessory") %>% pull(HeteroFrac)
 car:::Anova(type = 3, lm(HeteroFrac ~ Status, vcfCorsini))
 
-## Now for Geridu
-#vcf <- VCFParsing("HetData/Nodule1.vcf.gz") %>% select(CHROM,FILTER, QUAL, GT)
-#
-#vcfHet <- vcf %>% mutate(Hetero = ifelse(grepl("0/1|1/0", GT), T, F))
-#
-#geriduGenes <- geneLengths %>% filter(Gene %in% Geridu$Gene)
-#vcfGeridu <- vcfHet %>% filter(!is.na(FILTER),QUAL >= 100) %>%
-#       	group_by(CHROM) %>% summarize(Hetero = sum(Hetero)) %>% right_join(corsiniGenes, by = c("CHROM" = "Gene")) %>%
-#	mutate(Hetero = replace(Hetero, is.na(Hetero),0)) %>% group_by(CHROM) %>% summarize(HeteroFrac = Hetero/Length) %>%
-#	mutate(HeteroFrac = replace(HeteroFrac, is.infinite(HeteroFrac), 0), Status = ifelse(CHROM %in% coreGenes, "Core", "Accessory")) %>%
-#	mutate(Status = factor(Status, levels = c("Core", "Accessory"))) %>% mutate(Sample = "Geridu")
-#
-#coreHet <-vcfGeridu %>% filter(Status == "Core") %>% pull(HeteroFrac)
-#accessHet <-vcfGeridu %>% filter(Status == "Accessory") %>% pull(HeteroFrac)
-#car:::Anova(type = 3, lm(HeteroFrac ~ Status, vcfGeridu))
-#
 # Summary Statistics of both
 vcfPlot <- vcfCorsini# %>% bind_rows(vcfGeridu)
 vcfPlot %>% group_by(Sample) %>%
@@ -689,7 +728,6 @@ highCopyCor %>% bind_rows(highCopyGer) %>% write.table(file = "HighCopyGenes.tab
 tmp <- ancientOnly %>% filter(Sample == "Brancorsini") %>% mutate(High = ifelse(MeanCoverage > (mean(MeanCoverage) + 2*sd(MeanCoverage)), T, F))
 t.test(tmp %>% filter(High, HeteroFrac > 0) %>% pull(HeteroFrac), tmp %>% filter(!High) %>% pull(HeteroFrac))
 
-#############################################
 # Saving the list of virulence genes found in the ancient genomes
 ancientOnly %>% filter(Gene %in% unique(c(fromCOGName, fromGeneName,"group_2139"))) %>% write.table(file = "VirulenceGenes.tab", sep = "\t", row.names =F, quote = F) # <-- 2139 comes from a blast run against bvfA
 
