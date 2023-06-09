@@ -111,7 +111,7 @@ colnames(MLSTResults)[1] <- "Genome"
 
 # Reading the metadata table
 metaData <- read.delim("MetadataAll.tab", header =T) %>% as_tibble
-ann_colors <- list(ST = c("5" = colour[3], "7" = colour[15], "8" = colour[10], "9" = colour[9], "10" = colour[6], "11" = colour[17], "12" = colour[8], "39" = colour[13], "40" = colour[2], "41" = colour[16], "42" = colour[7], "43" = colour[4], "71" = colour[11], "88" = colour[12], "102" = colour[19],"Brancorsini" = colour[1], "NF" = colour[20], "NIPH" = colour[22]),
+ann_colors <- list(ST = c("5" = colour[3], "7" = colour[15], "8" = colour[10], "9" = colour[9], "10" = colour[6], "11" = colour[17], "12" = colour[8], "39" = colour[13], "40" = colour[2], "41" = colour[16], "42" = colour[7], "43" = colour[4], "71" = colour[11], "88" = colour[12], "102" = colour[19],"Ancient" = colour[1], "NF" = colour[20], "NIPH" = colour[22]),
 	Norway = c("Normal" = "#00205B" , "Odd" = "#BA0C2F", "Other" = "#FFFFFF"))
 
 ############ Let's get the Depths ###########
@@ -205,12 +205,12 @@ coreGenes <- rowSums(roaryOutput[,-1]) >= floor(0.99 * ncol(roaryOutput))
 coreGenes <- roaryOutput$Gene[coreGenes]
 
 ########### Some basic Coverage Data  ###############
-histPlotBran <- depthDf %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% filter(Genome == "Brancorsini") %>% filter(CV <= 1.5) %>%
+depthDf %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% filter(Genome == "Brancorsini") %>% filter(CV <= 1.5) %>%
        	mutate(Status = factor(Status, levels = c("Core","Accessory"))) %>%
 	ggplot(aes(x = GCCorrected, fill = Status)) + 
-	geom_rect(data = HistRect %>% filter(Genome == "Brancorsini"), inherit.aes = F, aes(xmin = ifelse(Mean - SD2 >= 0,Mean - SD2,0) , xmax = Mean + SD2, ymin = -Inf, ymax = Inf), colour = "black", lty = 1, alpha = 0.5) +
 	geom_histogram(colour = "black", binwidth = 1) +
-	geom_vline(data = HistRect %>% filter(Genome == "Brancorsini"), aes(xintercept = Mean), colour = "black", lty = 2) +
+	geom_vline(xintercept = HistRect$Mean + c(-2 *HistRect$SD, -3 * HistRect$SD), colour = colour[4:5]) +
+	geom_vline(data = HistRect, aes(xintercept = Mean), colour = "black", lty = 2) +
 	#geom_vline(xintercept = CorsiniRect$Mean, colour = "purple", lty = 2) +
 	scale_fill_manual(values = c(Accessory = colour[4],Core = colour[1]), "Genome") +
 	#scale_fill_manual(values = c(Accessory = "#007dba",Core = "#1b998b")) +
@@ -226,6 +226,33 @@ length(coreGenes) - sum(coreGenes %in% genesAncient)
 
 genesAncient <- depthDf %>% filter(CV <= 1.5, GCCorrected >= SD3) %>% pull(Gene)
 length(coreGenes) - sum(coreGenes %in% genesAncient)
+
+depthDf %>% filter(Gene %in% coreGenes[!(coreGenes %in% genesAncient)])
+
+threshBoth <- lapply(seq(0,5,0.5), function(x){
+		lapply(seq(0,20,0.5), function(y){
+				tmp <- depthDf %>% filter(CV <= x, GCCorrected >= y, Gene %in% coreGenes) %>% count(Genome, name = "Count") %>% pull(Count)
+				df <- tibble(CV = x, Mean = y, Count = tmp)
+				return(df)
+			}) %>% bind_rows()
+		}) %>% bind_rows()
+
+threshBoth %>% ggplot(aes(x = CV, y = Mean, fill = Count)) +
+	geom_tile(colour = "black") +
+	geom_text(aes(x = CV, y = Mean, label = Count)) +
+	geom_rect(aes(xmin = 1.75, xmax = 5.25, ymin = -0.25, ymax = 3.75), fill = NA, colour = colour[1], lty = 1, lwd = 1) +
+	geom_rect(aes(xmin = 1.25, xmax = 1.75, ymin = 11.25, ymax = 11.75), fill = NA, colour = colour[4], lty = 1, lwd = 1) +
+	geom_rect(aes(xmin = 1.25, xmax = 1.75, ymin = 6.75, ymax = 7.25), fill = NA, colour = colour[5], lty = 1, lwd = 1) +
+	scale_fill_gradient2(low = colour[4], mid = "white", high = colour[1],
+			     midpoint = 2826,
+			     #midpoint = min(CVSearch$Count) + (max(CVSearch$Count) - min(CVSearch$Count))/2,
+			     breaks = breaks_pretty(n = 3),
+			     limits = c(min(threshBoth$Count), max(threshBoth$Count))) +
+	scale_x_continuous(breaks = breaks_pretty(n = 5)) +
+	scale_y_continuous(breaks = breaks_pretty(n = 10)) +
+	theme(legend.position = "bottom")
+
+ggsave("ThresholdTestCore.pdf", width = 12, height = 9)
 
 # Some quick t-tests
 tmp <- depthDf %>% filter(Genome == "Brancorsini") %>% mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>% 
@@ -248,10 +275,14 @@ AllPA <- roaryOutput %>% left_join(SD2Genes %>% select(-c(Length, GC))) %>% left
        	mutate(AncientSD3 = ifelse(is.na(AncientSD3)|AncientSD3 == 0, 0,1))
 
 # Merging the Corsini and Geridu Data
-ancientOnly <- SD3Genes %>% 
-	pivot_longer(cols = AncientSD3, names_to = "Sample", values_to = "MeanCoverage", values_drop_na = T) %>%
+ancientOnly <- SD2Genes %>% 
+	pivot_longer(cols = AncientSD2, names_to = "Sample", values_to = "MeanCoverage", values_drop_na = T) %>%
 	mutate(Status = ifelse(Gene %in% coreGenes, "Core", "Accessory")) %>%
        	inner_join(depthDf %>% select(Gene, GC) %>% distinct())
+
+ancientOnly %>% 
+	 summarize(Length = sum(Length), GCMean = mean(GC), GCSE = qnorm(0.975) * sd(GC)/sqrt(length(GC)), GCHi = GCMean + GCSE, GCLo = GCMean - GCSE, MeanDepth = mean(MeanCoverage), MeanSE = qnorm(0.975)*sd(MeanCoverage)/sqrt(length(MeanCoverage)), MeanHi = MeanDepth + MeanSE, MeanLo = MeanDepth - MeanSE) %>% as.data.frame()
+ ancientOnly %>% count(Status)
 
 tmp <- AllPA %>% select(-Gene) %>% summarize_all(sum) %>% t() %>% as.data.frame()
 tmp$Genome <- rownames(tmp)
@@ -261,7 +292,7 @@ colnames(geneCounts)[1] <- "Genes"
 geneCounts %>% filter(!grepl("Ancient", Genome)) %>% ggplot(aes(y = Genes, x ="", color = ST)) +
        	geom_boxplot(colour = "black") + 
 	#geom_jitter(height = 0) +
-	geom_point(data = geneCounts %>% filter(grepl("Ancient", Genome)), aes(colour = Genome, x = "")) +
+	geom_point(data = geneCounts %>% filter(grepl("Ancient", Genome)), aes(shape = Genome, x = ""), colour = colour[1]) +
 	scale_colour_manual(values = colour[4:5]) + 
 	theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), axis.title.x = element_blank(), legend.position = "right") +
 	guides(colour = guide_legend(title = "Sample"))
@@ -342,7 +373,8 @@ coord <- fit$points %>% as_tibble()
 coord$Genome <- rownames(fit$points)
 contrib <- fit$eig/sum(fit$eig) * 100
 coord <- coord %>% left_join(MLSTResults)
-coord$ST[grepl("Ancient", coord$Genome)] <- c("Brancorsini")
+coord$ST[grepl("Ancient", coord$Genome)] <- c("Ancient")
+coord$Shape <- ifelse(grepl("Ancient.*", coord$Genome), ifelse(grepl("AncientSD2", coord$Genome), "2SD", "3SD"), "Modern")
 #coord$ST[coord$Genome %in% c("Brancorsini", "Geridu")] <- c("Brancorsini", "Geridu")
 
 # Clustering based on PCoA Coordinates
@@ -350,28 +382,30 @@ fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "silhouette")
 fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "wss")
 #fviz_nbclust(coord[,1:4],FUNcluster = clara, method = "gap_stat")
 #
-clustered <- clara(coord[,-c(5,6)], 4)
+clustered <- clara(coord[,-c(5,6)], 5)
 
 coord$clusters <- clustered$clustering
 coord  <- coord %>% mutate(clusters = ifelse(clusters == 1, "Western Mediterranean",
 				 ifelse(clusters == 2, "Fertile Crescent",
 				       	ifelse(clusters == 3, "Africa/America", ifelse(clusters == 4, "Indo-Pacific", "Russia")))))
 #write.table(coord, file = "FullPhyloClustering.tab", sep = "\t", row.names = F, col.names = T)
+coreColours <- ann_colors$ST[names(ann_colors$ST) %in% accessPlotData$ST]
+coreColours <- coreColours[mixedsort(names(coreColours))]
 
 accessPlotData <- coord %>% left_join(metaData %>% select(-ST), by = c("Genome" = "Sample")) %>%
        	#mutate(Norway3 = ifelse(grepl("^NIPH-*|NI_2007", Genome) & grepl("8",ST), "OddNorway", NA)) %>%
-       	mutate(ST = replace(ST, grepl("^NIPH-*|NI_2007", Genome) & grepl("8",ST), "NIPH"))
-coreColours <- ann_colors$ST[names(ann_colors$ST) %in% accessPlotData$ST]
-coreColours <- coreColours[mixedsort(names(coreColours))]
+       	mutate(ST = replace(ST, grepl("^NIPH-*|NI_2007", Genome) & grepl("8",ST), "NIPH")) %>%
+       	mutate(ST = factor(ST, levels = names(coreColours)))
 
 # Getting the labels for the ellipses
 labelCoord <- accessPlotData %>% group_by(clusters) %>% summarize(V1 = mean(V1), V2 = mean(V2), V3 = mean(V3), V4 = mean(V4))
 
 p1 <- accessPlotData %>%
-       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, group = clusters)) +#, group = clusters)) +
+       	ggplot(aes(x = V1, y = V2, label = Genome, colour = ST, group = clusters, shape = Shape)) +#, group = clusters)) +
 	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
 	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
 	geom_point() +
+	scale_shape_manual(values = c("Modern" = 16, "2SD" = 15, "3SD" = 17)) +
 	scale_colour_manual(values = coreColours, "Sequence Type") +
 	guides(colour = guide_legend(nrow = 3, title.position = "top", title.hjust = 0.5)) +
 	new_scale_colour() +
@@ -381,26 +415,14 @@ p1 <- accessPlotData %>%
 	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
 	ylab(bquote("PCoA 2 ("~.(round(contrib[2],2))~"%)")) +
 	geom_text_repel(data = labelCoord, aes(x = V1, y = V2, label = clusters, colour = clusters), inherit.aes = F, show.legend = F) +
-	guides(colour = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5)) 
+	guides(colour = guide_legend(nrow = 3, title.position = "top", title.hjust = 0.5),
+	       shape = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5))  +
+	theme(legend.position = "bottom")
 	#theme(legend.position = "bottom", axis.text.x = element_blank(), axis.title.x = element_blank())
 
-p2 <- accessPlotData %>%
-       	ggplot(aes(x = V1, y = V3, label = Genome, colour = ST, group = clusters)) +#, group = clusters)) +
-	geom_hline(yintercept=0, lty = 2, colour = "grey90") + 
-	geom_vline(xintercept=0, lty = 2, colour = "grey90") +
-	geom_point() +
-	scale_colour_manual(values = ann_colors$ST) +
-	new_scale_colour() +
-	stat_ellipse(mapping = aes(colour = clusters)) +
-	scale_colour_manual(values = clusterColours) +
-	xlab(bquote("PCoA 1 ("~.(round(contrib[1],2))~"%)")) +
-	ylab(bquote("PCoA 3 ("~.(round(contrib[3],2))~"%)")) +
-	guides(colour = guide_legend(nrow = 2)) +
-	theme(legend.position = "bottom")
-
-p1 + theme(legend.position = "bottom")
+p1
 #STLabelledPCoA <- ggarrange(p1,p2, nrow = 1, align = "hv", common.legend = T, legend = "bottom", labels = "auto")
-ggsave(file = "FixedAccessoryDecPCoA.pdf", width = 9, height = 6)
+ggsave(file = "ReviewMappingPCoA.pdf", width = 9, height = 6)
 
 # Now to look at a heatmap
 annotationHeat <- accessPlotData %>% select(Genome, ST, clusters) %>% distinct() %>% as.data.frame()

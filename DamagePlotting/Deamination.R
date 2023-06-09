@@ -217,15 +217,16 @@ colour = c('#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#4
 	   '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff', '#000000')
 #colour <- c("#2e294e", "#f8333c", "#007dba", "#1b998b", "#34d1bf")
 
-colourList <- c("Human" = colour[4], "Brucella melitensis" = colour[1])
+colourList <- c("Human" = colour[4], "Human Trimmed" = colour[7], "Brucella melitensis" = colour[1])
 ############# Readcounts ##########
 files <- list.files(path = "FLD", full.names = T)
 fld <- as_tibble(reduce(lapply(files, function(f){FLDParsing(f)}), bind_rows))
-fld <- fld %>% filter(!grepl("Nodule1", Sample)) %>% mutate(Sample = ifelse(Sample == "Brancorsini", "Brucella melitensis", "Human"))
+fld <- fld %>% filter(!grepl("Nodule1", Sample)) %>% 
+	mutate(Sample = ifelse(Sample == "Brancorsini", "Brucella melitensis", ifelse(Sample == "HumanBrancorsini","Human", "Human Trimmed")))
 fld %>% group_by(Sample,Length) %>% summarize(Reads = sum(Reads)) %>% summarize(MeanLength = mean(rep(Length, Reads)), SD = sd(rep(Length,Reads)))
 
 MedianLength <- fld %>% group_by(Sample,Length) %>% summarize(Reads = sum(Reads)) %>% summarize(Length = median(rep(Length, Reads)))
-MedianLength$Pos <- c(1e5, 3e4)
+MedianLength$Pos <- c(1e5, 3e4, 1e4)
 segmentPlot <- MedianLength %>% left_join(fld)
 
 # Quick test to see if I can get a significant difference
@@ -242,6 +243,7 @@ pvalLab <- pvalText(pval)
 
 BranSlope <- abs(coef(fldModel)["Length"]) # We can rearrange the formula so that it works out
 HumanSlope <- abs(sum(coef(fldModel)[c("Length:SampleHuman","Length")]))
+HumanTrimmedSlope <- abs(sum(coef(fldModel)[c("Length:SampleHuman Trimmed","Length")]))
 
 FLDfigure <- fld %>%
 	ggplot(aes(x = Length, y = Reads, colour = Sample)) +
@@ -259,21 +261,24 @@ FLDfigure <- fld %>%
 	annotate(geom = "text", x = 60, y = 3e1, label = TeX(pvalLab)) +
 	annotate(geom = "text", x = 120, y = 1e4, label = "Depurination") +
 	annotate(geom = "text", x = 120, y = 3e3, label = round(BranSlope, 3), colour = colour[1]) +
-	annotate(geom = "text", x = 120, y = 1e3, label = round(HumanSlope, 3), colour = colour[4])
+	annotate(geom = "text", x = 120, y = 1e3, label = round(HumanSlope, 3), colour = colour[4]) +
+	annotate(geom = "text", x = 120, y = 3e2, label = round(HumanTrimmedSlope, 3), colour = colour[7]) 
 	#guides(colour = guide_legend(nrow = 2))# + ylab(bquote(log[10]("Reads")))
 FLDfigure
-ggsave(FLDfigure, file = "FLDLog.pdf", width = 6, height = 4)
+ggsave(FLDfigure, file = "FLDLogSupplement.pdf", width = 6, height = 4)
+#ggsave(FLDfigure, file = "FLDLog.pdf", width = 6, height = 4)
 
 ############# Mismatches ##########
 files <- list.files("Mismatches", full.names = T)
 mismatches <- as_tibble(reduce(lapply(files, function(f){MismatchParsing(f)}), bind_rows))
-mismatches <- mismatches %>% filter(!grepl("Nodule1", Sample)) %>% mutate(Sample = ifelse(Sample == "Brancorsini", "Brucella melitensis", "Human"))
+mismatches <- mismatches %>% filter(!grepl("Nodule1", Sample)) %>% 
+	mutate(Sample = ifelse(Sample == "Brancorsini", "Brucella melitensis", ifelse(Sample == "HumanBrancorsini","Human", "Human Trimmed")))
 #mismatches <- mismatches %>% 
 #	mutate(Sample = replace(Sample, Sample == "Brancorsini", "Brucella melitensis - Brancorsini"), Sample = replace(Sample, Sample == "Nodule1", "Brucella melitensis - Geridu"), Sample = replace(Sample, Sample == "HumanBrancorsini", "Human - Brancorsini"), Sample = replace(Sample, Sample == "HumanNodule1", "Human - Geridu")) %>%
 #	mutate(TMP = ifelse(grepl("Brancorsini", Sample), "Brancorsini", "Geridu"))
 #mismatches <- mismatches %>% mutate(Sample = replace(Sample, Sample == "BmelMapped", "Brucella melitensis"), Sample = replace(Sample, Sample == "Human", "Homo sapiens"))
 
-mismatchMeans <- mismatches %>% group_by(Sample) %>% summarize(MeanMismatches = sum(Count * Mismatches)/sum(Count), MedianMismatches = median(rep(Mismatches, Count))) %>% mutate(height = c(1e6,3e5))
+mismatchMeans <- mismatches %>% group_by(Sample) %>% summarize(MeanMismatches = sum(Count * Mismatches)/sum(Count), MedianMismatches = median(rep(Mismatches, Count))) %>% mutate(height = c(1e6,3e5, 1e5))
 
 figure <- mismatches %>% group_by(Sample) %>% 
 	ggplot(aes(x = Mismatches, y = Count, fill = Sample)) + geom_col(position = "dodge") +
@@ -301,7 +306,8 @@ ggsave("BmelMismatches.png", width = 9, height = 6)
 
 ############# Overlapping Smiles ##########
 mapDamage <- mapDamageParsingOld("MapDamage") 
-mapDamage <- mapDamage %>% filter(!grepl("Nodule1", Sample)) %>% mutate(Sample = ifelse(Sample == "Brancorsini", "Brucella melitensis", "Human"))
+mapDamage <- mapDamage %>% filter(!grepl("Nodule1", Sample)) %>% 
+	mutate(Sample = ifelse(Sample == "Brancorsini", "Brucella melitensis", ifelse(Sample == "HumanBrancorsini","Human", "Human Trimmed")))
 #mapDamage <- mapDamage %>% mutate(Sample = replace(Sample, Sample == "Brancorsini", "Brucella melitensis - Brancorsini"), Sample = replace(Sample, Sample == "Nodule1", "Brucella melitensis - Geridu"), Sample = replace(Sample, Sample == "HumanBrancorsini", "Human - Brancorsini"), Sample = replace(Sample, Sample == "HumanNodule1", "Human - Geridu"))
 
 annotationDF <- mapDamage %>% group_by(Sample) %>% filter(Pos == 1)
