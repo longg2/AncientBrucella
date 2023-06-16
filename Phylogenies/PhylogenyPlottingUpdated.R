@@ -26,7 +26,7 @@ metaData <- metaData %>% left_join(dates)
 
 #### W. Med Phylogeny ####
 # Basic Tree
-tree <- read.beast(file = "AssemblyMLTrees/WMedSummary.nexus")
+tree <- read.beast(file = "AssemblyMLTrees/WMedNoOutSummary.nexus")
 Tiplabels <- tree@phylo$tip.label
 
 # Need to strip the dates off the ends of the tips for this tree
@@ -97,7 +97,7 @@ ggsave(p1Wmed, file = "WmedPhylogenyML.pdf", width = 9, height = 6)
 
 #### W. Med Phylogeny BEAST ####
 # Basic Tree
-tree <- read.beast(file = "Beast/SummarizedTrees/WMedStrict.nexus")
+tree <- read.beast(file = "Beast/SummarizedTrees/WMedNoOut.nexus")
 Tiplabels <- tree@phylo$tip.label
 
 # Need to strip the dates off the ends of the tips for this tree
@@ -113,7 +113,7 @@ STData <- read.delim("MLSTResults.txt")[,1:2]
 rownames(STData) <- STData$Sample
 STData["Brancorsini",] <- list(Sample = "Brancorsini", ST = "Ancient")
 STData["Babortus-2308_1940","ST"] <-  "Outgroup"
-STData["Reference",] <- list(Sample = "Reference", ST = "7")
+#STData["Reference",] <- list(Sample = "Reference", ST = "7")
 
 STData <- STData[tree@phylo$tip.label,]
 STData <- STData %>% mutate(ST = gsub("[^[:alnum:] ]","", ST))

@@ -54,13 +54,14 @@ logAnalyserOut <- logAnalyserOut[-1,] %>% mutate(across(!statistic, as.numeric))
 # Let's plot all of these results
 #burnInPlot <- tibble("Statistic" = names(burnInPeriods), "state" = unname(burnInPeriods))
 #plotData <- logFile %>% select(state, joint, prior, likelihood, pInv, alpha, age.root., treeLikelihood) %>% 
-plotData <- logFile %>% select(state, joint, prior, likelihood, pInv, alpha, ucld.mean,ucld.stdev,meanRate, age.root., treeLikelihood) %>% 
-#plotData <- logFile %>% select(state, joint, prior, likelihood, pInv, alpha, meanRate, age.root., treeLikelihood) %>% 
-	filter(state > 10000) %>% pivot_longer(-state, names_to = "Statistic", values_to = "Value")
-traceplotData <- plotData %>% filter(state %% 100000 == 0)
+#plotData <- logFile %>% select(state, joint, prior, likelihood, pInv, alpha, ucld.mean,ucld.stdev,meanRate, age.root., treeLikelihood) %>% 
+plotData <- logFile %>% select(state, joint, prior, likelihood, pInv, alpha, meanRate, age.root., treeLikelihood) %>% 
+	filter(state > guessSize) %>% pivot_longer(-state, names_to = "Statistic", values_to = "Value")
+#traceplotData <- plotData %>% filter(state %% 100000 == 0)
+traceplotData <- plotData #%>% filter(state %% 100000 == 0)
 
 tracePlot <- traceplotData %>% ggplot(aes(x = state, y = Value)) +
-	geom_line() + theme_classic() + facet_wrap("Statistic", scales = "free_y") + ggtitle("Traces filtering out the first 10000 states") +
+	geom_line() + theme_classic() + facet_wrap("Statistic", scales = "free_y") + ggtitle(paste("Traces filtering out the first", guessSize, "states")) +
 	geom_smooth() +
 	#annotate(geom = "vline", xintercept = burnInPeriods["joint"], colour = "red", lty =2)
 	geom_vline(xintercept = guessSize, colour = "red", lty = 2) +
@@ -69,9 +70,9 @@ tracePlot <- traceplotData %>% ggplot(aes(x = state, y = Value)) +
 ggsave(tracePlot, file = gsub(".log","TracePlot.png", fileName), width = 24, height = 18)
 
 summaryLog <- logFile %>%
-       	#select(state, joint, prior, likelihood, pInv, alpha, meanRate, age.root., treeLikelihood) %>% 
+       	select(state, joint, prior, likelihood, pInv, alpha, meanRate, age.root., treeLikelihood) %>% 
 #       	select(state, joint, prior, likelihood, pInv, alpha, age.root., treeLikelihood) %>% 
-       	select(state, joint, prior, likelihood, pInv, alpha, ucld.mean,ucld.stdev,meanRate, age.root., treeLikelihood) %>% 
+       	#select(state, joint, prior, likelihood, pInv, alpha, ucld.mean,ucld.stdev,meanRate, age.root., treeLikelihood) %>% 
 	pivot_longer(-state, names_to = "Statistic", values_to = "Value") %>%
        	mutate(state = replace(state, state < guessSize,NA)) %>%
        	#mutate(state = replace(state, state < burnInPeriods["joint"],NA)) %>%

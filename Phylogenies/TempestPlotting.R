@@ -38,7 +38,8 @@ STData <- STData %>% mutate(ST = gsub("[^[:alnum:] ]","", ST)) %>%
 	mutate(Type = factor(Type, levels = c("Modern", "Ancient", "Reference")))
 
 # Now let's start with the Global Plot
-datGlob <- as_tibble(read.delim("TempestTables/GlobalTempest.tab")) %>% filter(date > 0) %>% mutate(Phylogeny = "Global") %>% left_join(STData, by = c("tip" = "Sample"))
+datGlob <- as_tibble(read.delim("TempestTables/GlobalTempest.tab")) %>% filter(date > 0) %>% mutate(Phylogeny = "Global") %>% left_join(STData, by = c("tip" = "Sample")) %>%
+ mutate(ST = replace(ST, grepl("5", ST), "Outgroup"))
 
 ann_colors$ST <- ann_colors$ST[names(ann_colors$ST) %in% datGlob$ST]
 
@@ -78,6 +79,9 @@ sepDat <- lapply(files ,function(x){
 						 ifelse(clusters == 2, "Fertile Crescent",
 						       	ifelse(clusters == 3, "Africa/America", ifelse(clusters == 4, "Indo-Pacific", "Russia")))))
 	})
+for(i in 1:length(sepDat)){
+	sepDat[[i]] <- sepDat[[i]] %>% mutate(ST = replace(ST, grepl("5", ST), "Outgroup"))
+}
 
 tempPlots <- lapply(sepDat, function(x){
 	# Getting the location of the annotations ready
@@ -94,7 +98,7 @@ tempPlots <- lapply(sepDat, function(x){
 		guides(colour = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5), shape = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5, title = "Sample")) 
 	# Now to calculate the model
 
-	model <- lm(distance ~date, data = x %>% filter(Type != "Ancient")) 
+	model <- lm(distance ~date, data = x) 
 	r2 <- round(summary(model)$adj.r.squared,3)
 	tmp <- summary(model)$fstatistic
 	pval <- pvalText(pf(tmp[1],tmp[2],tmp[3], lower.tail = F))
@@ -106,10 +110,65 @@ tempPlots <- lapply(sepDat, function(x){
 })
 
 ggarrange(plotlist = tempPlots, nrow = 2, ncol = 2, common.legend = T, legend = "bottom", labels = "auto")
+ggsave("IndividualTempestPlots.pdf", width = 9, height = 6)
 
-tempPlots[4]
+tempPlots[5]
 
-ggsave("WesternMedTempest.pdf", width = 9, height = 6)
+ggsave("WesternMedTempestNoOut.pdf", width = 6, height = 4)
+
+##### Looking at only the WesternMed ####
+sepDat[[4]] <- sepDat[[4]] %>% mutate(ST = replace(ST, grepl("5", ST), "Outgroup"))
+tempEstPlot <- function(x){
+	xloc <- diff(range(x$date))/2 + range(x$date)[1]
+	yloc <- diff(range(x$distance))/2 + range(x$distance)[1]
+	
+	# Making the plot
+	tempPlot <- x %>%  ggplot(aes(x = date, y  = distance, group = Phylogeny)) +
+	       	geom_smooth(method = "lm", show.legend = F, colour = "black") +
+		geom_point(alpha = 0.75, aes(colour = ST, shape = Type), show.legend = T) + theme_classic() + ylab("Root to Tip Divergence") + xlab("Year") +
+		scale_color_manual(values = ann_colors$ST, name = "Sequence Type") + 
+		scale_shape_manual(values = c("Modern" = 16, "Reference" = 15, "Ancient" = 17), name = "Sequence Type") + 
+		theme(legend.position = "bottom") +
+		guides(colour = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5), shape = guide_legend(nrow = 2, title.position = "top", title.hjust = 0.5, title = "Sample")) 
+	# Now to calculate the model
+	
+	model <- lm(distance ~date, data = x) 
+	r2 <- round(summary(model)$adj.r.squared,3)
+	tmp <- summary(model)$fstatistic
+	pval <- pvalText(pf(tmp[1],tmp[2],tmp[3], lower.tail = F))
+	
+	tempPlot <- tempPlot +
+	       	annotate(geom = "text", x = xloc * 0.9, y = yloc, label = TeX(paste0("$R^2_{adj} =", r2, "$"))) +
+		annotate(geom = "text", x = xloc * 0.9, y = yloc * 0.99, label = TeX(pval)) 
+
+	# Now to remove the Ancient Genome from the model
+	model <- lm(distance ~date, data = x %>% filter(Type != "Ancient")) 
+	r2 <- round(summary(model)$adj.r.squared,3)
+	tmp <- summary(model)$fstatistic
+	pval <- pvalText(pf(tmp[1],tmp[2],tmp[3], lower.tail = F))
+
+	tempPlot <- tempPlot +
+		geom_smooth(method = "lm", lty = 2, data = x %>% filter(Type != "Ancient"), colour = "blue") +
+	       	annotate(geom = "text", x = xloc, y = yloc, label = TeX(paste0("$R^2_{adj} =", r2, "$")), colour = "blue") +
+		annotate(geom = "text", x = xloc, y = yloc * 0.99, label = TeX(pval), colour = "blue") 
+
+ 	# Now the samples from the 1960s
+	model <- lm(distance ~date, data = x %>% filter(Type != "Ancient", date > 1965)) 
+	r2 <- round(summary(model)$adj.r.squared,3)
+	tmp <- summary(model)$fstatistic
+	pval <- pvalText(pf(tmp[1],tmp[2],tmp[3], lower.tail = F))
+
+	tempPlot <- tempPlot +
+		geom_smooth(method = "lm", lty = 2, data = x %>% filter(Type != "Ancient", date > 1965), colour = "orange") +
+	       	annotate(geom = "text", x = xloc*1.1, y = yloc, label = TeX(paste0("$R^2_{adj} =", r2, "$")), colour = "orange") +
+		annotate(geom = "text", x = xloc*1.1, y = yloc * 0.99, label = TeX(pval), colour = "orange") 
+
+	return(tempPlot)
+}
+
+tempEstPlot(sepDat[[4]])
+
+ggsave("WMedTempestAllReg.pdf", width = 6, height = 4)
 
 #### Now to label via clusters ####
 datGlob <- datGlob %>% left_join(clusterInfo, by = c("tip" = "Genome")) %>%
@@ -163,4 +222,4 @@ tempPlots <- lapply(sepDat, function(x){
 
 })
 ggarrange(plotlist = tempPlots, nrow = 2, ncol = 2, common.legend = T, legend = "bottom", labels = "auto")
-#ggsave("IndividualTempestPlots.pdf", width = 9, height = 6)
+ggsave("IndividualTempestPlots.pdf", width = 9, height = 6)
